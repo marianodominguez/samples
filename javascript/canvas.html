@@ -1,0 +1,63 @@
+<HTML>
+
+<script language="javascript">
+
+var w = 800;
+var h = 600;
+var ctx;
+
+function drawDiamond() {
+    var canvas= document.getElementById("drawCanvas");
+    
+    if(canvas.getContext) {
+      ctx = canvas.getContext("2d");
+      ctx.strokeStyle = 'blue';
+      ctx.lineWidth = 1;
+    }
+    else {
+      alert("canvas unsupported in this browser");
+      return;
+    }
+
+   ctx.moveTo(w/2,h/2)
+   //diamond(20);
+   web();
+}
+
+function web() {
+    for(var x=0; x<w ; x+=10) {
+      ctx.beginPath()
+      ctx.moveTo(x, 0 );
+      ctx.lineTo(0, h - x);
+      ctx.closePath();
+      ctx.stroke();
+    }
+}
+
+function diamond(sides) {
+      var th = 2 * Math.PI / sides;
+   for(var i=0; i< sides ; i++) {
+
+      x = 200 * Math.sin(th * i);
+      y = 200 * Math.cos(th * i);
+      
+      for(var j=0; j< sides ; j++) {
+ 
+          x1 = 200 * Math.sin(th * j);
+          y1 = 200 * Math.cos(th * j);
+          ctx.beginPath()
+          ctx.moveTo(x + w/2, h/2 - y );
+          ctx.lineTo(x1 +w/2 , h/2 - y1);
+          ctx.closePath();
+          ctx.stroke();
+      }
+   }
+}
+
+</script>
+
+<canvas id='drawCanvas' width='800' height='600'></canvas>
+
+<button value="Draw canvas" onClick='drawDiamond();'>Draw</button>
+
+</HTML>

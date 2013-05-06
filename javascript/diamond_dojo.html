@@ -1,0 +1,66 @@
+<script src="http://ajax.googleapis.com/ajax/libs/dojo/1.4.1/dojo/dojo.xd.js" type="text/javascript"></script>
+
+<script>
+</script>
+
+<script type="text/javascript">
+dojo.require("dojox.gfx");
+var node;
+var surface;
+var w = 800;
+var h = 600;
+r=290;
+
+function init() {
+    node = dojo.byId("surface");
+    surface = dojox.gfx.createSurface(node, w, h);
+}
+
+function diamond(sides) {
+   surface.clear();
+   th = 2 * Math.PI / sides;
+   for(var i=0; i< sides ; i++) {
+
+      x = r * Math.sin(th * i);
+      y = r * Math.cos(th * i);
+      
+      for(var j=0; j< sides ; j++) {
+ 
+          x1 = r * Math.sin(th * j);
+          y1 = r * Math.cos(th * j);
+
+          surface.createLine({
+            x1 : x + w/2,
+            y1: h/2 - y,
+            x2: x1 + w/2,
+            y2: h/2 - y1}).setStroke("blue"); 
+      }
+   }
+}
+
+function polar(n) {
+   surface.clear();
+   th = 2 * Math.PI / 720;
+   
+   for(var i=0; i< n ; i++) {
+
+      x = r * (Math.sin(th * i) * Math.cos(th *2* i));
+      y = r * (Math.cos(5 * th * i) * Math.sin(th *3 * i)) ;
+      surface.createRect({  x: x + w/2,
+                            y: h/2 - y,
+                            width:  1,
+                            height: 1
+                          }).setStroke("blue");
+        
+   }
+}
+
+dojo.addOnLoad(init);
+  </script>
+
+<div style="width:800;height:600;border:solid 1px"
+       id="surface"></div>
+
+<button onClick='diamond(25);'>Draw diamond</button>
+<button onClick='polar(5000);'>Polar</button>
+

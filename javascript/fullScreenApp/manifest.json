@@ -1,0 +1,11 @@
+{
+  "name": "Full Screen canvas",
+  "description": "Test canvas application",
+  "version": "0.1",
+  "app": {
+    "background": {
+      "scripts": ["init.js"]
+    }
+  },
+  "icons": { "16": "calculator-16.png", "128": "calculator-128.png" }
+}

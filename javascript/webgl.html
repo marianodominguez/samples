@@ -1,0 +1,47 @@
+<HTML>
+
+<HEAD>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+
+<script type="text/javascript">
+var gl;
+
+function initGL(canvas) {
+    try {
+        gl = canvas.getContext("experimental-webgl");
+        gl.viewportWidth = canvas.width;
+        gl.viewportHeigh = canvas.heigh;
+    }
+    catch(e) {
+        if(!gl) {
+            alert("No webGL !");
+        }
+    }
+}
+
+function webGLStart() {
+    var canvas = document.getElementById("canvas");
+    initGL(canvas);
+    initShaders();
+    initBuffers();
+
+    gl.clearColor(0.0, 0.0, 0.0, 1.0);
+    gl.enable(gl.DEPTH_TEST);
+
+    drawScene();
+  }
+  
+function drawScene() {
+    
+}
+  
+</script>
+</HEAD>
+
+<BODY onload="webGLStart();">
+
+<canvas id="canvas" width="800" height="600">
+
+</BODY>
+
+

@@ -1,0 +1,59 @@
+<SCRIPT>
+
+function Hashtable() {
+    var keys = new Array();    
+    var values = new Array();    
+    var currIdx=0;
+    
+    this.keys = keys;
+    this.values = values;
+    
+    this.put = function (k,v) {
+        if(keys.indexOf(k) >=0 ) {
+            var i = keys.indexOf(k);
+            keys[i]=k;
+            values[i]=v;
+        }
+        else {
+            keys[currIdx] = k;
+            values[currIdx] = v;
+            currIdx++;
+        }        
+    }
+    
+    this.remove = function(k) {
+        if(keys.indexOf(k) >=0 ) {
+            var i = keys.indexOf(k);
+            keys[i]=null;
+            values[i]=null;
+            // shift next elements
+            
+            for(var j=i; j < currIdx ; j++) {
+                keys[j]=keys[j+1];
+                values[j]=values[j+1];                
+            }
+            
+            keys.pop();
+            values.pop();
+            
+            // decrease currindx
+            currIdx --; 
+        }    
+    }
+
+}
+
+var myHt = new Hashtable();
+myHt.put(1, "one");
+myHt.put(2, "two");
+myHt.put(3, "three");
+myHt.put(10, "teni");
+myHt.put(10, "ten");
+myHt.put(4, "four");
+
+myHt.remove(10);
+
+console.log(myHt.keys);
+console.log(myHt.values);
+
+</SCRIPT>

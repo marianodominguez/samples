@@ -1,0 +1,23 @@
+var VolcanoType = Backbone.Model.extend({
+    sealed: 'no'
+});
+
+var volcano = new VolcanoType();
+
+volcano.on('disaster:eruption', function() {
+    console.log('duck and cover');
+});
+
+volcano.on('change', function() {
+    console.log('sealed :' + this.sealed);
+});
+
+
+volcano.trigger('disaster:eruption');
+
+//volcano.set('sealed', 'yes');
+volcano.sealed = 'yes';​
+
+
+http://jsfiddle.net/qLyHe/
+
