@@ -1,8 +1,8 @@
-assert = require('assert');
+var assert = require('assert');
 
 function cyberline(s) {
 
-	if (s == null) {
+	if (s === null) {
 		return s;
 	};
 

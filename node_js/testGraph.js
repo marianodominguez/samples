@@ -1,4 +1,4 @@
-Graph = require('./Graph.js').Graph;
+var Graph = require('./Graph.js').Graph;
 
 var g = new Graph();
 
