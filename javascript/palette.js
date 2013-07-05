@@ -1,6 +1,8 @@
 var canvas = null;
 var ctx = null;
 var currentImage = null;
+var dropZone = null;
+var newImage = null;
 
 function init() {
 	//load images into palette
@@ -12,11 +14,11 @@ function init() {
 		var image = new Image();
 		image.src = 'icons/' + icons[i];
         image.addEventListener('dragstart', function() {
-            currentImage = this;
-            console.log("DragStart " + this);
+          newImage = this;
         });
         container.appendChild(image);
 	}
+  dropZone = document.getElementById('dropZone');
 }
 
 function drawGrid() {
@@ -65,12 +67,37 @@ function cancel(event) {
 }
 
 function drawImage(event) {
-    var x = event.clientX - canvas.offsetLeft - currentImage.clientWidth /2;
-    var y = event.clientY - canvas.offsetTop - currentImage.clientHeight /2 ;
-
-    if (currentImage != null) {
-        ctx.drawImage(currentImage,x,y);
+    if (newImage != null) {
+      var x = event.clientX;
+      var y = event.clientY;
+ 
+      console.log("Copied image:" + x +"," + y);
+      var copyImage = new Image();
+      copyImage.src= newImage.src;
+      dropZone.appendChild(copyImage);
+      copyImage.style.position = 'absolute';
+      copyImage.style.left = x + 'px';
+      copyImage.style.top = y + 'px';
+      copyImage.addEventListener('dragstart', moveStart);
+      copyImage.addEventListener('dragend', moveEnd);        
     }
+}
+
+function moveStart() {  
+  currentImage = this;
+  newImage = null;
+}
+
+function moveEnd(event){
+    if (currentImage != null) {
+      var x = event.clientX;
+      var y = event.clientY;
+      console.log("Moved image " + x +"," + y);
+      currentImage.style.position = 'absolute';
+      currentImage.style.left = x + 'px';
+      currentImage.style.top = y + 'px';
+    }
+    cancel(event);
 }
 
 console.log("init");
