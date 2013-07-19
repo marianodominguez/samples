@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby -wKU
+
 coins = [1, 2, 5, 7, 10]
 
 def min(amount, coins)
