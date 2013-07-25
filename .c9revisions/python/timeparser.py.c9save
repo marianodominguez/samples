@@ -1,1 +1,0 @@
-{"ts":1371832747489,"silentsave":true,"restoring":false,"patch":[[{"diffs":[[1,"import date\nimport time\n\nt1 = datetime.datetime()\nt1.hour\ntime.strptime(\"17:45:52,186\", \"%hh:%mm:%ss\")\n\n#datetime(year, month, day[, hour[, minute[, second[, microsecond[, tzinfo]]]]])\n"]],"start1":0,"start2":0,"length1":0,"length2":185}]],"length":185}
