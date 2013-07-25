@@ -51,5 +51,5 @@ function other(){
 	console.log("created " + inner);
 	
 }
-//undefined
+//
 console.log(named);
