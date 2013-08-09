@@ -3,65 +3,72 @@ var assert = require('assert');
 process.stdin.resume();
 process.stdin.setEncoding("ascii");
 
-var recordParent = function(map, child, parent) {
-	if (!map[child]) {
-		map[child] = [];
-	}
-	map[child].push(parent);
-}
-
-var dfs = function(tree, a, depth) {
-	var stack = [];
-	var visited = {};
-	var paths = [];
-	var count = 0;
-	var parentMap = {};
-
-	stack.push(a);
-	while (stack.length > 0) {
-		var current = stack.pop();
-		var children = tree[current];
-		for (var i in children) {
-			var next = children[i];
-			if (!visited[next]) {
-				stack.push(next);
-				recordParent(parentMap, next, current);
-				visited[current] = 1;
-			}
-		}
-	}
-	console.log(parentMap);
-	return count;
-}
+var array = [];
+var n = 0;
 
 process.stdin.on("data", function(input) {
-	var data = input.split('\n');
-	var n = data[0];
-	var array = data[1].split(' ')
-		.map(function(x) {
-		return parseInt(x, 10)
-	});
-	console.log(n);
-	console.log(array);
-	var path = {};
-	var result = 0;
+	var lines = input.split('\n');
 
-	for (var i = 0; i < n; i++) {
-		var element = array[i];
-		var last = element;
-		path[element] = [];
-		for (var j = i + 1; j < n; j++) {
-			next = array[j];
-			if (next > element && path[element].indexOf(next) < 0) {
-				path[element].push(next);
-				last = next;
+	assert(lines.length > 0, "input error, at least on line is required");
+
+	if (lines[0].indexOf(' ') < 0) {
+		n = parseInt(lines[0], 10);
+	}
+
+	for (var i = 0; i < lines.length; i++) {
+		if (lines[i].indexOf(' ') > 0) {
+			array = array.concat(lines[i].split(' '))
+				.map(function(x) {
+				return parseInt(x, 10)
+			});
+		}
+	}
+});
+
+
+process.stdin.on("end", function() {
+
+	assert(n >= 3, "not enough elements");
+	assert(array.length === n, "array not matching size");
+
+	var sequences = {};
+	//console.log(array.length);
+	var repeated = [];
+	var triplets = {};
+	for (var i = 0; i < array.length - 1; i++) {
+		var current = array[i];
+		if (!repeated[i]) {
+			repeated[i] = {};
+		}
+		for (var j = i; j < array.length; j++) {
+			var child = array[j];
+			if (child > current && !repeated[i][j]) {
+				sequences[i] ? "" : sequences[i] = [];
+				sequences[i].push(j);
+				repeated[i][j] = 1;
 			}
 		}
 	}
 
-	console.log(path);
+	console.log(sequences);
 
-	result = dfs(path, array[0], 3);
+	// use greedy algorithm to create triplets map
 
-	assert.ok(result === 28, "error in algorithm : " + result);
+	for (var first in []) {
+		var children = sequences[first];
+		for (var j = 0; j < children.length; j++) {
+			var second = children[j];
+			var endOptions = sequences[second];
+			if (endOptions && endOptions.length >= 1) {
+				endOptions.forEach(function(third, idx) {
+					triplets[first + "," + second + "," + third] = 1;
+				});
+			}
+		}
+	}
+	console.log(triplets);
+
+	var result = 0;
+
+
 });
