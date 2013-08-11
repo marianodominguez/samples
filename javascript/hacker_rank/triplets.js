@@ -35,40 +35,48 @@ process.stdin.on("end", function() {
 	//console.log(array.length);
 	var repeated = [];
 	var triplets = {};
-	for (var i = 0; i < array.length - 1; i++) {
+	var firsts = {};
+	for (var i = 0; i < n; i++) {
 		var current = array[i];
 		if (!repeated[i]) {
 			repeated[i] = {};
 		}
-		for (var j = i; j < array.length; j++) {
-			var child = array[j];
-			if (child > current && !repeated[i][j]) {
-				sequences[i] ? "" : sequences[i] = [];
-				sequences[i].push(j);
-				repeated[i][j] = 1;
+		if (true || !firsts[current]) {
+			for (var j = i; j < n; j++) {
+				var child = array[j];
+				if (child > current && !repeated[i][child]) {
+					sequences[i] ? "" : sequences[i] = [];
+					sequences[i].push(j);
+					repeated[i][child] = 1;
+				}
 			}
+			firsts[current] = 1;
 		}
 	}
 
-	console.log(sequences);
+	//console.log(sequences);
 
 	// use greedy algorithm to create triplets map
 
-	for (var first in []) {
+	for (var first in sequences) {
 		var children = sequences[first];
 		for (var j = 0; j < children.length; j++) {
 			var second = children[j];
 			var endOptions = sequences[second];
 			if (endOptions && endOptions.length >= 1) {
 				endOptions.forEach(function(third, idx) {
-					triplets[first + "," + second + "," + third] = 1;
+					triplets[array[first] + "," + array[second] + "," + array[third]] = 1;
 				});
 			}
 		}
 	}
-	console.log(triplets);
+	//console.log(triplets);
 
 	var result = 0;
+	for (var seq in triplets) {
+		result++;
+	}
 
+	console.log(result);
 
 });
