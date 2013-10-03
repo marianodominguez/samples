@@ -5,9 +5,9 @@
 **/
 
 var Tree = function () {
-        this.node = null;
-        this.left = null;
-        this.right = null;
+    this.node = null;
+    this.left = null;
+    this.right = null;
 };
 
 module.exports = {
@@ -25,8 +25,7 @@ Tree.prototype =
         if (this.node === null) {
             this.node = newNode;
         }
-        else if (this.node.value <= v)
-        {
+        else if (this.node.value <= v) {
             if (this.left === null) {
                 this.left = new Tree();
                 this.left.node = newNode;

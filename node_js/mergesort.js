@@ -2,25 +2,22 @@ var assert = require('assert');
 
 function mergeArrays (a , b) {
     var result = [];
-    while(a.length > 0 && b.length > 0) 
-    {
-        if(a[0] < b[0]) 
-        {
-            result.push(a[0]);
-            a = a.slice(1);
-        }
+    while(a.length > 0 && b.length > 0) {
+	if(a[0] < b[0]) 
+	    {
+		result.push(a[0]);
+		a = a.slice(1);
+	    }
         else 
-        {
-            result.push(b[0]);
-            b = b.slice(1);
-        }
+	    {
+		result.push(b[0]);
+		b = b.slice(1);
+	    }
     }
-    if (a.length > 0) 
-    {
+    if (a.length > 0) {
         result = result.concat(a);
     }
-    if (b.length > 0) 
-    {
+    if (b.length > 0) {
         result = result.concat(b);
     }
     //console.log(result);
@@ -33,8 +30,7 @@ function mergeSort(a) {
     var len = a.length;
     if (len === 1) return a;
     if(len === 2) {
-        if (a[0] > a[1])
-        {
+        if (a[0] > a[1]) {
             return [a[1], a[0]];
         } else {
             return a;
