@@ -29,13 +29,19 @@ var mdmDraw = (function() {
 	    ctx.clearRect(0,0,w,h);
 	    switch(currentShape) {
 	    case 1:
-		diamond(20);
+		diamond(25);
 		break;
 	    case 2:
 		web();
 		break;
 	    case 3:
 		stitchOne();
+		break;
+	    case 4:
+		stitchTwo();
+		break;
+	    case 5:
+		weird(25);
 		break;
 	    default:
 		currentShape=0;
@@ -50,6 +56,21 @@ var mdmDraw = (function() {
 		y1 = 150 * Math.cos(th);
 		x2 = 300 * Math.cos(th);
 		y2 = 300 * Math.cos(th);
+		ctx.beginPath()
+		ctx.moveTo(x1 + w / 2, h / 2 - y1);
+		ctx.lineTo(x2 + w / 2, h / 2 - y2);
+		ctx.closePath();
+		ctx.stroke();
+	    }
+	}
+
+	function stitchTwo() {
+	    ctx.strokeStyle = 'blue';
+	    for (th = 0.0; th < 2 * Math.PI; th += Math.PI / 100) {
+		x1 = 200 * Math.sin(th);
+		y1 = 200 * Math.cos(th);
+		x2 = 300 * Math.cos(th);
+		y2 = 300 * Math.sin(th);
 		ctx.beginPath()
 		ctx.moveTo(x1 + w / 2, h / 2 - y1);
 		ctx.lineTo(x2 + w / 2, h / 2 - y2);
@@ -73,13 +94,31 @@ var mdmDraw = (function() {
 	    ctx.strokeStyle = 'black';
 	    var th = 2 * Math.PI / sides;
 	    for (var i = 0; i < sides; i++) {
+		x = 250 * Math.sin(th * i);
+		y = 250 * Math.cos(th * i);
+		
+		for (var j = 0; j < sides; j++) {		    
+		    x1 = 250 * Math.sin(th * j);
+		    y1 = 250 * Math.cos(th * j);
+		    ctx.beginPath();
+		    ctx.moveTo(x + w / 2, h / 2 - y);
+		    ctx.lineTo(x1 + w / 2, h / 2 - y1);
+		    ctx.closePath();
+		    ctx.stroke();
+		}
+	    }
+	}
+
+	function weird(sides) {
+	    ctx.strokeStyle = 'blue';
+	    var th = 2 * Math.PI / sides;
+	    for (var i = 0; i < sides; i++) {
 		x = 200 * Math.sin(th * i);
 		y = 200 * Math.cos(th * i);
 		
-		for (var j = 0; j < sides; j++) {
-		    
-		    x1 = 200 * Math.sin(th * j);
-		    y1 = 200 * Math.cos(th * j);
+		for (var j = 0; j < sides; j++) {		    
+		    x1 = 250 * Math.cos(th * j);
+		    y1 = 250 * Math.cos(th * j);
 		    ctx.beginPath();
 		    ctx.moveTo(x + w / 2, h / 2 - y);
 		    ctx.lineTo(x1 + w / 2, h / 2 - y1);
@@ -93,12 +132,10 @@ var mdmDraw = (function() {
 	    init: init,
 	    connect: connect
 	};
-
-	return public;
-    
+	return public;    
     })();
 
-window.onload = function (){    
+window.onload = function (){
     mdmDraw.init();
     mdmDraw.connect();
 }

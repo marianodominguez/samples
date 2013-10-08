@@ -4,4 +4,4 @@ function factorial(n) {
     else return n*factorial(n-1);
 }
 
-Console.log(factorial(100));
+console.log(factorial(100));
