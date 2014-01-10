@@ -30,12 +30,24 @@ func (l *LinkedList) Add(a *Node) {
 }
 
 func (l *LinkedList) Print() {
+	result := "["
 	current := l.head;
 	for current.next != nil {
-		fmt.Println(current.v, ", ")
+		result += current.v + ", "
 		current = current.next
 	}
-	fmt.Println(current.v, " ")
+	result+= current.v + "]"
+	fmt.Println(result)
+}
+
+func (l *LinkedList) Delete(n *Node) {
+	if n.next == nil {
+		n = nil
+	} else {
+		current := &n
+		*n = *n.next
+	}
+	
 }
 
 func main() {
@@ -50,4 +62,9 @@ func main() {
 	l.Add(c)
 	l.Add(d)
 	l.Print()
+	l.Delete(c)
+	l.Print()
+	l.Delete(d)
+	l.Print()
+	fmt.Printf("%v, %v", c, d)
 }

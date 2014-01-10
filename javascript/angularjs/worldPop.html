@@ -1,0 +1,16 @@
+<HTML>
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular.js" ></script>
+  </head>
+
+  <body ng-app ng-controller="WorldCtrl">
+    <li ng-repeat="country in countries">
+      {{country.name}} has population of {{country.population}}
+    </li>
+    <hr>
+    World's population: {{population}} millions
+  </body>
+
+  <!-- le javascript -->
+  <script src='WorldCtrl.js'></script>
+</HTML>
