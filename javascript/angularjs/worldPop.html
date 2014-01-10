@@ -3,7 +3,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular.js" ></script>
   </head>
 
-  <body ng-app ng-controller="WorldCtrl">
+  <body ng-app="world" ng-controller="WorldCtrl">
     <li ng-repeat="country in countries">
       {{country.name}} has population of {{country.population}}, {{percent(country.population)}} % of the World's
     </li>

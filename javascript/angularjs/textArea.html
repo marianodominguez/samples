@@ -1,0 +1,28 @@
+<HTML>
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular.js" ></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+
+  </head>
+
+  <body ng-app="twitt">
+    <div class="container" ng-controller="TextAreaWithLimitCtrl">
+      <span>Remaining: {{remaining()}}</span>
+      <div class="row">
+	<textarea class="form-control" ng-model="message">
+	  {{message}}
+	</textarea>
+	<div>
+      <div class="row">
+	<button class="btn btn-primary" ng-click="send()">Send</button>
+	<button class="btn btn-primary" ng-click="clear()">Clear</button>
+      </div>
+    </div>
+    
+    <hr>
+  </body>
+
+  <!-- le javascript -->
+  <script src='TextAreaCtrl.js'></script>
+</HTML>
