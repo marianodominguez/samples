@@ -1,0 +1,12 @@
+{
+  "name": "mock-transaction",
+  "version": "0.0.0",
+  "description": "Example for transaction appplication",
+  "main": "server.js",
+  "repository": "",
+  "author": "Mariano Dominguez <mariano.dm@gmail.com>",
+  "dependencies": {
+    "async": "~0.2.8",
+    "express": "~3.2.4",
+  }
+}

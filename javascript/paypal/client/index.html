@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Transfer application</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap-theme.min.css">
+    <style>
+    #content {
+       width: 100%;
+       height:200px;
+       float: left;
+       border: 1px;
+       position: fixed;
+       overflow: auto;
+       overflow-y: scroll;
+       overflow-x: none;
+    }
+    
+      body {
+        padding-top: 60px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+    
+      <div class="page col-sm-6" id="buttonPage">
+        <button class="btn btn-lg btn-success" id="transfer">Transfer Money</button>
+        <button class="btn btn-lg btn-success" id="viewTransactions">view transacions</button>
+      </div>
+        
+      <div class="page col-sm-6" id="transactionPage">
+        <h3>Transaction history</h3>
+        <div id="content">
+          <ul id="transactionList">
+          </ul>
+        </div>
+        <a class="btn" id="more">More transactions</a>
+            
+        <button class="btn" id="back">Back</button>
+      </div>
+
+      <div class="page col-sm-3" id="transferPage">
+        <form id="editProfileForm" class="form-horizontal span4">
+            
+          <div class="control-group">
+            <label>To: </label> 
+            <input id="destination"/>
+          </div>
+            
+          <div class="control-group">
+            <label>Amount: </label> 
+            <div class="btn-group">
+              <input id= "amount"/>
+              <select class="btn dropdown" id="currency"></select>
+            </div>
+          </div>
+            
+          <div class="control-group">
+            <label>Message (Optional): </label> 
+            <TextArea id="message"></Textarea>
+            <label>What is this payment for:</label>
+            <select>
+              <option>I'm sending money to family and friends</option>
+              <option>I'm paying for goods and services</option>
+            </select>
+          </div>
+            
+          <div class="control-group">
+            <button class="btn" id="clear">Clear</button>
+            <button class="btn" id="next" >Next</button>
+          </div>
+        </form>
+      </div>
+    </div>
+           
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+    <script src="controller.js"></script>
+    
+  </body>
+</html>
