@@ -10,4 +10,4 @@ bin
 node-modules/
 *.tar.gz
 *.zip
-
+node_modules/**/*
