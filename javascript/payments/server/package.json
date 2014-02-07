@@ -1,0 +1,10 @@
+{
+  "name": "mock-transaction",
+  "version": "0.0.1",
+  "description": "Example for transaction appplication",
+  "main": "server.js",
+  "author": "Mariano Dominguez <mariano.dm@gmail.com>",
+  "dependencies": {
+    "express": "3.x"
+  } 
+} 
