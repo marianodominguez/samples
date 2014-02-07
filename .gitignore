@@ -7,7 +7,7 @@ bin
 *.a
 .c9revisions
 *~
-node-modules
+node-modules/*
 *.tar.gz
 *.zip
 
