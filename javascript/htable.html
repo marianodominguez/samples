@@ -1,13 +1,13 @@
 <SCRIPT>
 
 function Hashtable() {
-    var keys = new Array();    
-    var values = new Array();    
+    var keys = new Array();
+    var values = new Array();
     var currIdx=0;
-    
+
     this.keys = keys;
     this.values = values;
-    
+
     this.put = function (k,v) {
         if(keys.indexOf(k) >=0 ) {
             var i = keys.indexOf(k);
@@ -18,27 +18,27 @@ function Hashtable() {
             keys[currIdx] = k;
             values[currIdx] = v;
             currIdx++;
-        }        
+        }
     }
-    
+
     this.remove = function(k) {
         if(keys.indexOf(k) >=0 ) {
             var i = keys.indexOf(k);
             keys[i]=null;
             values[i]=null;
             // shift next elements
-            
+
             for(var j=i; j < currIdx ; j++) {
                 keys[j]=keys[j+1];
-                values[j]=values[j+1];                
+                values[j]=values[j+1];
             }
-            
+
             keys.pop();
             values.pop();
-            
+
             // decrease currindx
-            currIdx --; 
-        }    
+            currIdx --;
+        }
     }
 
 }

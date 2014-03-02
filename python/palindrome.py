@@ -41,5 +41,5 @@ for n in xrange(1,1000):
             iter = -1
             break
     if iter >= 1:
-        print "iter(", n ,")=", iter, " x=", x 
+        print "iter(", n ,")=", iter, " x=", x
 

@@ -18,7 +18,7 @@ function Node(val) {
     this.value = val;
 };
 
-Tree.prototype = 
+Tree.prototype =
 {
     addNode : function (v) {
         var newNode = new Node(v);
@@ -29,7 +29,7 @@ Tree.prototype =
             if (this.left === null) {
                 this.left = new Tree();
                 this.left.node = newNode;
-            } 
+            }
             else {
                 this.left.addNode(v);
             }
@@ -47,7 +47,7 @@ Tree.prototype =
     dfsFind : function(val) {
         var stack= [this];
         var current = null;
-        
+
         while (stack.length > 0) {
             current = stack.pop();
             console.log("reviewing " + current.node.value );

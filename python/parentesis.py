@@ -13,9 +13,9 @@ def is_balanced(s) :
             else :
                 stack.pop()
     return stack.isEmpty()
- 
+
 assert not is_balanced("(((((")
-assert is_balanced("() ()") 
+assert is_balanced("() ()")
 assert is_balanced("() (x) (( () (abc) cde ))")
 assert not is_balanced("))))((((")
 

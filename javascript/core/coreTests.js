@@ -1,21 +1,21 @@
 var Animal = function(name){
-	this.id = Math.round(Math.random() * 1000 + 1);
-	this.name  = name;
+    this.id = Math.round(Math.random() * 1000 + 1);
+    this.name  = name;
 };
 
 var Dog = function (name) {
-	Animal.apply(this, arguments);
+    Animal.apply(this, arguments);
 };
 
 Animal.prototype.scanID = function() {
-	console.log(this.id);
+    console.log(this.id);
 };
 
 Dog.prototype = Object.create(Animal.prototype);
 Dog.prototype.constructor = Dog;
 
 Dog.prototype.bark = function() {
-	console.log(this.name + ' barked');
+    console.log(this.name + ' barked');
 };
 
 var myDog = new Dog('rover');
@@ -24,7 +24,7 @@ myDog.bark();
 myDog.scanID();
 
 for (x in myDog) {
-	console.log(x)
+    console.log(x)
 }
 
 // Function call
@@ -32,24 +32,24 @@ for (x in myDog) {
 // ASEF
 
 (function() {
-	var inner = "anonymous";
-	console.log("created " + inner);
+    var inner = "anonymous";
+    console.log("created " + inner);
 }());
 
 // named
 
 var named = (function() {
-	var inner = "named";
-	console.log("created " + inner);
-	return {inner: inner};
+    var inner = "named";
+    console.log("created " + inner);
+    return {inner: inner};
 })();
 
 // Not called but hoisted
 
 function other(){
-	var inner = "not called";
-	console.log("created " + inner);
-	
+    var inner = "not called";
+    console.log("created " + inner);
+
 }
 //
 console.log(named);

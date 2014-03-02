@@ -68,5 +68,3 @@ c = l.delete!(c)
 
 puts l
 
-
- 

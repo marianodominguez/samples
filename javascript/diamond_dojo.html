@@ -23,9 +23,9 @@ function diamond(sides) {
 
       x = r * Math.sin(th * i);
       y = r * Math.cos(th * i);
-      
+
       for(var j=0; j< sides ; j++) {
- 
+
           x1 = r * Math.sin(th * j);
           y1 = r * Math.cos(th * j);
 
@@ -33,7 +33,7 @@ function diamond(sides) {
             x1 : x + w/2,
             y1: h/2 - y,
             x2: x1 + w/2,
-            y2: h/2 - y1}).setStroke("blue"); 
+            y2: h/2 - y1}).setStroke("blue");
       }
    }
 }
@@ -41,7 +41,7 @@ function diamond(sides) {
 function polar(n) {
    surface.clear();
    th = 2 * Math.PI / 720;
-   
+
    for(var i=0; i< n ; i++) {
 
       x = r * (Math.sin(th * i) * Math.cos(th *2* i));
@@ -51,7 +51,7 @@ function polar(n) {
                             width:  1,
                             height: 1
                           }).setStroke("blue");
-        
+
    }
 }
 

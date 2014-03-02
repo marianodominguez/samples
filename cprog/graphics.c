@@ -92,7 +92,7 @@ void putPixelColor(int x, int y, int color) {
 }
 
 void putPixel(int x, int y) {
-        
+
         _drawPixel(screen,R,G,B,x,y,1);
 }
 

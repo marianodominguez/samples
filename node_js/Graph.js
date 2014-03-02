@@ -19,7 +19,7 @@ Graph.prototype = {
         }
         var V1 = this.V[idx1];
         var V2 = this.V[idx2];
-        
+
         if (!V1) {
             V1 = new Vertex();
             this.V[idx1] = V1;

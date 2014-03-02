@@ -12,7 +12,7 @@ class Graph:
 
         for i in range(size):
             self.adjMatrix[i] = [0] * size
-        
+
     def addVertex(self, v):
         self.vertexList.append(v)
     def addEdge(self, a, b):
@@ -24,7 +24,7 @@ class Graph:
         self.adjList[node2].append(node1)
         self.adjMatrix[node1][node2] = 1
         self.adjMatrix[node2][node1] = 1
-    
+
     def dfs_path(self, a, b):
         start = self.vertexList.index(a)
         end = self.vertexList.index(b)
@@ -60,14 +60,14 @@ class Graph:
         while queue:
             print queue, current
             current = queue[0]
-            path.append(current)                               
+            path.append(current)
 
             visited.append(current)
             queue.remove(current)
             if current == end:
                 return path
             nextNodes = self.adjList[current]
-            for n in nextNodes:                
+            for n in nextNodes:
                 if n not in visited:
                     visited.append(n)
                     queue.append(n)

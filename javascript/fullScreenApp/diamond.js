@@ -11,9 +11,9 @@ Diamond.draw = function (sides) {
 
       x = this.r * Math.sin(th * i);
       y = this.r * Math.cos(th * i);
-      
+
       for(var j=0; j< sides ; j++) {
- 
+
           x1 = this.r * Math.sin(th * j);
           y1 = this.r * Math.cos(th * j);
           this.ctx.beginPath();

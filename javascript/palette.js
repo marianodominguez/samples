@@ -1,109 +1,109 @@
 var palette = (function(){
-	var public = {};
+    var public = {};
 
-	var canvas = null;
-	var ctx = null;
-	var currentImage = null;
-	var dropZone = null;
-	var newImage = null;
+    var canvas = null;
+    var ctx = null;
+    var currentImage = null;
+    var dropZone = null;
+    var newImage = null;
 
-	public.init = function () {
-		//load images into palette
+    public.init = function () {
+        //load images into palette
 
-		var icons = ['arrow.png', 'money_exchange.png', 'exit.png'];
-		var container = document.getElementById('images');
-		container.style.backgroundColor="#f3f3f3";
-		for(i in icons) {
-			var image = new Image();
-			image.src = 'icons/' + icons[i];
-	        image.addEventListener('dragstart', function() {
-	          newImage = this;
-	        });
-	        container.appendChild(image);
-		}
-	  dropZone = document.getElementById('dropZone');
-	}
+        var icons = ['arrow.png', 'money_exchange.png', 'exit.png'];
+        var container = document.getElementById('images');
+        container.style.backgroundColor="#f3f3f3";
+        for(i in icons) {
+            var image = new Image();
+            image.src = 'icons/' + icons[i];
+            image.addEventListener('dragstart', function() {
+              newImage = this;
+            });
+            container.appendChild(image);
+        }
+      dropZone = document.getElementById('dropZone');
+    }
 
-	public.drawGrid = function () {
-		canvas= document.getElementById("drawpad");
-    
-	    if(canvas.getContext) {
-	      ctx = canvas.getContext("2d");
-	      ctx.strokeStyle = '#DDDDDD';
-	      ctx.lineWidth = 1;
-	    }
-	    else {
-	      alert("canvas unsupported in this browser");
-	      return;
-	    }
+    public.drawGrid = function () {
+        canvas= document.getElementById("drawpad");
 
-	    for (var y = 0; y < canvas.height ; y+= 10) {
-	    	ctx.beginPath();
+        if(canvas.getContext) {
+          ctx = canvas.getContext("2d");
+          ctx.strokeStyle = '#DDDDDD';
+          ctx.lineWidth = 1;
+        }
+        else {
+          alert("canvas unsupported in this browser");
+          return;
+        }
 
-	        ctx.moveTo(0, y);
-	      	ctx.lineTo(canvas.width - 1 , y);
-	      	ctx.closePath();
-	      	ctx.stroke();
-	    }
-	}
+        for (var y = 0; y < canvas.height ; y+= 10) {
+            ctx.beginPath();
 
-	public.activateEvents = function () {
-		canvas.addEventListener('dragover', cancel);
-		canvas.addEventListener( 'dragenter', cancel);
+            ctx.moveTo(0, y);
+            ctx.lineTo(canvas.width - 1 , y);
+            ctx.closePath();
+            ctx.stroke();
+        }
+    }
 
-	    canvas.addEventListener('drop', function (event) {
-	        // stops the browser from redirecting off to the text.
-	        if (event.preventDefault) {
-	            event.preventDefault(); 
-	        }
-	        console.log("dropped");
-	        //Draw the image in the grid
-	        drawImage(event);
-	    });
-	}
+    public.activateEvents = function () {
+        canvas.addEventListener('dragover', cancel);
+        canvas.addEventListener( 'dragenter', cancel);
 
-	function cancel(event) {
-	  if (event.preventDefault) {
-	    event.preventDefault();
-	  }
-	  return false;
-	}
+        canvas.addEventListener('drop', function (event) {
+            // stops the browser from redirecting off to the text.
+            if (event.preventDefault) {
+                event.preventDefault();
+            }
+            console.log("dropped");
+            //Draw the image in the grid
+            drawImage(event);
+        });
+    }
 
-	function drawImage(event) {
-	    if (newImage != null) {
-	      var x = event.clientX;
-	      var y = event.clientY;
- 
-	      console.log("Copied image:" + x +"," + y);
-	      var copyImage = new Image();
-	      copyImage.src= newImage.src;
-	      dropZone.appendChild(copyImage);
-	      copyImage.style.position = 'absolute';
-	      copyImage.style.left = x + 'px';
-	      copyImage.style.top = y + 'px';
-	      copyImage.addEventListener('dragstart', moveStart);
-	      copyImage.addEventListener('dragend', moveEnd);        
-	    }
-	}
+    function cancel(event) {
+      if (event.preventDefault) {
+        event.preventDefault();
+      }
+      return false;
+    }
 
-	function moveStart() {  
-	  currentImage = this;
-	  newImage = null;
-	}
+    function drawImage(event) {
+        if (newImage != null) {
+          var x = event.clientX;
+          var y = event.clientY;
 
-	function moveEnd(event){
-	    if (currentImage != null) {
-	      var x = event.clientX;
-	      var y = event.clientY;
-	      console.log("Moved image " + x +"," + y);
-	      currentImage.style.position = 'absolute';
-	      currentImage.style.left = x + 'px';
-	      currentImage.style.top = y + 'px';
-	    }
-	    cancel(event);
-	}
+          console.log("Copied image:" + x +"," + y);
+          var copyImage = new Image();
+          copyImage.src= newImage.src;
+          dropZone.appendChild(copyImage);
+          copyImage.style.position = 'absolute';
+          copyImage.style.left = x + 'px';
+          copyImage.style.top = y + 'px';
+          copyImage.addEventListener('dragstart', moveStart);
+          copyImage.addEventListener('dragend', moveEnd);
+        }
+    }
 
-	return public;
+    function moveStart() {
+      currentImage = this;
+      newImage = null;
+    }
+
+    function moveEnd(event){
+        if (currentImage != null) {
+          var x = event.clientX;
+          var y = event.clientY;
+          console.log("Moved image " + x +"," + y);
+          currentImage.style.position = 'absolute';
+          currentImage.style.left = x + 'px';
+          currentImage.style.top = y + 'px';
+        }
+        cancel(event);
+    }
+
+    return public;
 })();
 
 console.log("init");

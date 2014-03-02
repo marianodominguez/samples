@@ -8,7 +8,7 @@ random.shuffle(list)
 print list
 
 for i in list:
-    mytree.put(i)    
+    mytree.put(i)
 
 
 print "inorder: ", mytree.inorder(mytree.root);

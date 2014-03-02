@@ -15,12 +15,12 @@
 
    # Returns the top item on the stack without removing it .
   def  peek( self ):
-   assert not  self.isEmpty(), "Cannot peek at an empty stack" 
+   assert not  self.isEmpty(), "Cannot peek at an empty stack"
    return  self._top.item
 
    # Removes and returns the top item on the stack .
   def pop( self ):
-   assert not  self.isEmpty(), "Cannot pop from an empty stack" 
+   assert not  self.isEmpty(), "Cannot pop from an empty stack"
    node = self._top
    self.top = self._top.next
    self._size -= 1

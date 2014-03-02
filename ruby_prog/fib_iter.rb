@@ -3,10 +3,10 @@ def fib(n)
     v = 1
     x = v
     for i in 0 ... n
-	x = v + u
-	u = v
-	v = x
-	print v, " "
+    x = v + u
+    u = v
+    v = x
+    print v, " "
     end
     return v
 end

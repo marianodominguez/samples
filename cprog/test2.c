@@ -2,15 +2,15 @@
 
 void foo(void)
 {
-	int a=3;
-	++a;
-	printf("%d\n", a);
+    int a=3;
+    ++a;
+    printf("%d\n", a);
 }
 
 int main(void)
 {
-	foo();
-	foo();
-	foo();
+    foo();
+    foo();
+    foo();
 }
 

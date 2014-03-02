@@ -1,11 +1,11 @@
 
 $(document).ready(function () {
-    
+
     var Todo = Backbone.Model.extend({
         defaults: {
             title:'',
             completed: false
-        }    
+        }
     });
 
     var TodoListType = Backbone.Collection.extend({
@@ -26,7 +26,7 @@ $(document).ready(function () {
             var template = _.template( $("#todo_template").html(),
                 model );
             this.$el.html(template);
-        }  
+        }
     });
 
     var start_disabled = function() {
@@ -38,7 +38,6 @@ $(document).ready(function () {
 
     var createModel = function() {
         todoList = new TodoListType;
-
         todoList.fetch();
 
         if (todoList.length === 0) {
