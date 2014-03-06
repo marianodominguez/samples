@@ -18,6 +18,11 @@ class ByteImages
         return x^y
     end
 
+    def fn(x,y)
+        valfloat = 127 * Math.cos(x.to_f/5) + 127 * Math.sin(y.to_f/5)
+        return valfloat.to_i
+    end
+
     def gradient(x,y)
         return (x+y)/4
     end
@@ -45,7 +50,7 @@ class ByteImages
         for x in (0...@w) do
             v[x] = Array.new(@h)
             for y in (0...@h) do
-                v[x][y] = waves4(x, y) % 256
+                v[x][y] = fn(x, y) % 256
             end
         end
         return v
@@ -68,10 +73,10 @@ class ByteImages
         while not exit do
             @queue.each do |event|
                 case event
-                    when Rubygame::ActiveEvent
-                        @screen.update
-                    when Rubygame::QuitEvent
-                        exit = true
+                when Rubygame::ActiveEvent
+                    @screen.update
+                when Rubygame::QuitEvent
+                    exit = true
                 end
             end
         end #while
