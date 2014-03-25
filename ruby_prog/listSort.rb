@@ -1,4 +1,6 @@
-l = [100,34,1,5,6,56,7,9]
+l = (0..100).to_a.shuffle
+
+puts "to sort", l.inspect
 
 def simpleSort(list)
   sorted = []
@@ -9,13 +11,13 @@ def simpleSort(list)
     end
     if (i< sorted.size)
       sorted.insert(i, item)
-      #puts sorted
+      puts "sublist :", sorted.inspect
     else
       sorted.push item
     end
   end
-  return sorted
+  return sorted.inspect
 end
 
 
-puts simpleSort(l)
+puts "sorted: " , simpleSort(l).inspect
