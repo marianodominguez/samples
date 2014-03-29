@@ -9,13 +9,12 @@ class SineCurve
   def initialize(w=800, h=600)
     @w,@h = w,h
     @curves = [:sine, :cone, :polar]
-    @screen = Rubygame::Screen.new [w,h], 0,
+    @screen = Rubygame::Screen.new [w,h], 0, 
     [Rubygame::HWSURFACE, Rubygame::DOUBLEBUF]
     @screen.title = "Sine curve"
     @queue = Rubygame::EventQueue.new
     @queue.ignore = [ActiveEvent,MouseMotionEvent,MouseDownEvent]
   end
-
   def draw_line(p1, p2, color)
     x1 = p1[0] + @w/2
     y1 = @h/2 - p1[1]
