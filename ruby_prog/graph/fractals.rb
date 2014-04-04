@@ -8,7 +8,7 @@ include Rubygame
 class Fractals
   def initialize(w=1200, h=600)
     @w,@h = w,h
-    @shapes = [:sierpinski, :chaos]
+    @shapes = [:sierpinski, :snow]
     @screen = Rubygame::Screen.new [w,h], 0, 
     [Rubygame::HWSURFACE, Rubygame::DOUBLEBUF]
     @screen.title = "Sine curve"
@@ -68,7 +68,33 @@ class Fractals
     end
   end
 
+  def snow_curve startp ,endp, level
+    if level == 0 
+      @screen.draw_line startp, endp, [255, 128, 255]
+    else
+      l = (endp[0] - startp[0])/3
+      angle = 60 * (Math::PI/180)
+      
+      start_s1 = startp
+      end_s1 = [(startp[0] + endp[0])/3, endp[1]]
+      snow_curve(start_s1, end_s1, level-1)
+
+      start_s2 = end_s1
+      end_s2 = [start_s2[0] + l/2, start_s2[1] - l/2 * Math.tan(angle)]
+      snow_curve(start_s2, end_s2, level-1)
+
+      start_s3 = end_s2
+      end_s3 = [start_s3[0] + l/2, start_s3[1] + l/2 * Math.tan(angle)]
+      snow_curve(start_s3, end_s3, level-1)
+
+      start_s4 = end_s3
+      end_s4 = endp
+      snow_curve(start_s4, end_s4, level-1)
+    end
+  end
+
   def snow
+    snow_curve([0, @h/2], [@w , @h/2], 2)
   end
 
   def dragon
