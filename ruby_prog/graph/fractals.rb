@@ -2,26 +2,29 @@
 
 require 'rubygems'
 require 'rubygame'
-
 include Rubygame
 
 class Fractals
+
   def initialize(w=1200, h=600)
     @w,@h = w,h
-    @shapes = [:sierpinski, :chaos]
+    @cx,@cy = 0,0
+    @color = [255,255,255]
+    @angle=0
+    @shapes = [:snow]
     @screen = Rubygame::Screen.new [w,h], 0, 
     [Rubygame::HWSURFACE, Rubygame::DOUBLEBUF]
-    @screen.title = "Sine curve"
+    @screen.title = "Fractals"
     @queue = Rubygame::EventQueue.new
     @queue.ignore = [ActiveEvent,MouseMotionEvent,MouseDownEvent]
   end
 
-  def draw_line(p1, p2, color)
+  def line(p1, p2, color)
     x1 = p1[0] + @w/2
     y1 = @h/2 - p1[1]
     x2 = p2[0] + @w/2
     y2 = @h/2 - p2[1]
-    @screen.draw_line [x1, y1], [x2, y2], color
+    @screen.draw_line [x1, y1], [x2, y2], @color
   end
 
   def sierpinski
@@ -68,16 +71,50 @@ class Fractals
     end
   end
 
-  def snow
+  def rt t
+    @angle += t
+  end
+
+  def lt t
+    @angle -= t
+  end
+
+  def fd size
+      endx, endy = @cx + Math.sin(@angle * Math::PI / 180.0)*size, @cy + Math.cos(@angle*Math::PI / 180.0)*size
+      line [@cx, @cy], [endx, endy], @color
+      @cx,@cy=endx,endy
+  end
+
+
+  def snow level, size
+    if level == 1
+      fd size
+    else
+      snow level-1, size/3.0
+      lt 60
+      snow level-1, size/3.0
+      rt 180-60
+      snow level-1, size/3.0
+      lt 60
+      snow level-1, size/3.0
+    end
   end
 
   def dragon
   end
 
   def run
-    @shapes.each do |c|
+    l=1
+    7.times do
+      @cx,@cy=-250,150
+      @angle= 0
+      rt 90
       @screen.fill [26, 20, 140], [0,0, @w, @h] 
-      self.send(c)
+      3.times do
+        snow l,500
+        rt 120
+      end
+      l+=1
       @screen.update
       @queue.wait
     end
