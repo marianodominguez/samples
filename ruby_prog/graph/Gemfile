@@ -1,0 +1,6 @@
+source 'https://rubygems.org'
+
+gem 'rubygame'
+gem 'rubygems'
+gem 'rubygems-update'
+
