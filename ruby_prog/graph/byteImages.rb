@@ -19,7 +19,7 @@ class ByteImages
   end
 
   def fn(x,y)
-    valfloat = 127 * Math.cos(x.to_f/5) + 127 * Math.sin(y.to_f/5)
+    valfloat = 127 * Math.cos(x.to_f * 0.05) + 127 * Math.sin(y.to_f * 0.05)
     return valfloat.to_i
   end
 
