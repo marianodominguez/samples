@@ -11,12 +11,25 @@ class Fractals
     @color = [0,255,100]
     @angle=0
     @scale = Math.sqrt(2)/2
-
+    @rule = rule90
     @screen = Rubygame::Screen.new [w,h], 0,
     [Rubygame::HWSURFACE, Rubygame::DOUBLEBUF]
     @screen.title = "Fractals"
     @queue = Rubygame::EventQueue.new
     @queue.ignore = [ActiveEvent,MouseMotionEvent,MouseDownEvent]
+  end
+
+  def rule90
+    return {
+      "000" => 0,
+      "001" => 1,
+      "010" => 0,
+      "011" => 1,
+      "100" => 1,
+      "101" => 0,
+      "110" => 1,
+      "111" => 0
+    }
   end
 
   def line(p1, p2, color)
@@ -29,7 +42,7 @@ class Fractals
 
   def sierpinski
     px,py = @w/2,0
-    line = [1]
+    line = [0,1,0]
 
     while py<@h do
       next_line = [0]
@@ -38,7 +51,8 @@ class Fractals
         right_elem   = 0
         left_elem    = line[i-1] if i>0
         right_elem   = line[i+1] if i<line.size-1
-        new_value    = (left_elem + right_elem)%2
+        new_value    = @rule["#{left_elem}#{v}#{right_elem}"]
+        #puts "#{left_elem}#{v}#{right_elem} = ", new_value
         next_line << new_value
       end
       next_line << 0
