@@ -3,8 +3,7 @@ class Player
   
   def initialize
       @action=0
-      @plan = [ :bind, :left, :bind, :right, :detonate, :detonate,
-      :rest, :rest, :forward, :left, :forward, :rest, :right, :right]
+      @plan = [ :forward, :detonate, :detonate, :detonate, :forward, :forward]
   end
   
   def play_turn(warrior)
