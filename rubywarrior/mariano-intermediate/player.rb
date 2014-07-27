@@ -14,9 +14,11 @@ class Player
     units = warrior.listen
     @ticking = []
     @captives = []
+    @enemies = []
     units.each do |u|
       @ticking <<u if u.ticking?
-      @captives << u if u.captive? and !@captive_enemies.include? u.location 
+      @captives << u if u.captive? and !@captive_enemies.include? u.location
+      @enemies << u if u.enemy?
     end
   end
 
@@ -31,6 +33,14 @@ class Player
     n = []
     [:left, :right, :forward, :backward].each do |i|
       n << i if (warrior.feel i).enemy?
+    end
+    n
+  end
+
+  def escape warrior
+    n = []
+    [:left, :right, :forward, :backward].each do |i|
+      n << i if (warrior.feel i).empty?
     end
     n
   end
@@ -61,8 +71,14 @@ class Player
       return nil
     end
 
-    if warrior.health <=5 and enemies(warrior).size ==0
+    if warrior.health <=5 and enemies(warrior).size ==0 and not @enemies.empty?
       warrior.rest!
+      return nil
+    end
+
+    if warrior.health <=3 and enemies(warrior).size >0 and not @enemies.empty?
+      escape = escape warrior
+      warrior.walk! escape[0]
       return nil
     end
 
@@ -74,7 +90,16 @@ class Player
     if space.captive? and !@captive_enemies.include? space.location
       puts "rescue", space.location
       warrior.rescue! current_dir
-    end
+    elsif space.captive? and @captive_enemies.include? space.location
+       enemies = enemies warrior
+       warrior.attack! enemies[0] unless enemies.empty?
+       if enemies.empty?
+          exit = warrior.direction_of_stairs
+          escape = escape warrior
+          exit =  escape.last unless (warrior.feel exit).empty? 
+          warrior.walk! exit 
+        end
+    end     
     warrior.walk! current_dir if space.empty? or space.stairs?
     @action +=1
   end
@@ -93,7 +118,7 @@ class Player
     elsif !@ticking.empty?
       action = :flee 
     end     
-
+    puts action
     warrior.attack! current_dir if action == :attack
     warrior.bind! enemies[0] if action == :bind
     warrior.detonate! current_dir if action == :boom
