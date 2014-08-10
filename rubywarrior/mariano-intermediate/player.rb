@@ -40,7 +40,8 @@ class Player
   def escape warrior
     n = []
     [:left, :right, :forward, :backward].each do |i|
-      n << i if (warrior.feel i).empty?
+      sp = warrior.feel i
+      n << i if sp.empty? and !sp.stairs?
     end
     n
   end
@@ -59,26 +60,32 @@ class Player
 
   def play_turn(warrior)
     @plan = make_path warrior
+
     current_dir = @plan[@action]
     current_dir = warrior.direction_of_stairs if current_dir.nil? 
     current_dir = warrior.direction_of @captives[0] unless @captives.empty?
     current_dir = warrior.direction_of @ticking[0] unless @ticking.empty?
 
+    #avoid skipping level if captives
+    step = warrior.feel current_dir
+    avoid = escape warrior
+    current_dir=avoid.first if step.stairs? and !@captives.empty?
+
     find_ticking warrior
 
-    if warrior.health <=6 and enemies(warrior).size ==0 and @ticking.empty?
+    if warrior.health <=6 and enemies(warrior).size ==0 and @ticking.empty? and !@enemies.empty?
       warrior.rest!
       return nil
     end
 
-    if warrior.health <=5 and enemies(warrior).size ==0 and not @enemies.empty?
+    if warrior.health <=5 and enemies(warrior).size ==0 and !@enemies.empty?
       warrior.rest!
       return nil
     end
 
-    if warrior.health <=3 and enemies(warrior).size >0 and not @enemies.empty?
+    if warrior.health <=3 and enemies(warrior).size >0
       escape = escape warrior
-      warrior.walk! escape[0]
+      warrior.walk! escape.first
       return nil
     end
 
@@ -92,12 +99,14 @@ class Player
       warrior.rescue! current_dir
     elsif space.captive? and @captive_enemies.include? space.location
        enemies = enemies warrior
-       warrior.attack! enemies[0] unless enemies.empty?
+       warrior.attack! enemies.first unless enemies.empty?
        if enemies.empty?
-          exit = warrior.direction_of_stairs
+          ex = warrior.direction_of_stairs
+          ex = warrior.direction_of @captives[0] unless @captives.empty?
           escape = escape warrior
-          exit =  escape.last unless (warrior.feel exit).empty? 
-          warrior.walk! exit 
+          ex = escape.sample unless (warrior.feel ex).empty?
+          puts escape
+          warrior.walk! ex
         end
     end     
     warrior.walk! current_dir if space.empty? or space.stairs?
