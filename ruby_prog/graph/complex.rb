@@ -5,8 +5,9 @@ require 'rubygame'
 
 include Rubygame
 
-class ByteImages
-  def initialize(w=800, h=800)
+
+class ComplexPlane
+  def initialize(w=800, h=800, xmax=1.0, ymax=1.0)
     @screen = Rubygame::Screen.new [w,h]
     @w,@h = w,h
     @screen.title = "byte function"
@@ -21,34 +22,6 @@ class ByteImages
   def fn(x,y)
     valfloat = 127 * Math.cos(x.to_f * 0.05) + 127 * Math.sin(y.to_f * 0.05)
     return valfloat.to_i
-  end
-
-  def gradient(x,y)
-    return (x+y)/4
-  end
-
-  def waves(x,y)
-    return x*y
-  end
-
-  def waves2(x,y)
-    return ((x-255)**2 + (y-255)**2) / 10
-  end
-
-  def waves3(x,y)
-    return ((x-255)**2 - (y-255)**2)
-  end
-
-  def waves4(xp,yp)
-    x = xp - 255.0
-    y = yp - 255.0
-    return x**2 + y**2 - x*y
-  end
-
-  def sigmoid(xp,yp)
-    x = xp - 255
-    y = yp - 255
-    return 255.0 / ( 1 + Math.exp(-x.to_f/50*y.to_f/50) )
   end
 
   def draw_function
@@ -89,5 +62,5 @@ class ByteImages
   end #run
 end #class
 
-app = ByteImages.new 512,512
+app = ComplexPlane.new 512,512
 app.run
