@@ -1,5 +1,5 @@
-var http=require('http')
-var bl = require('bl')
+var http=require('http');
+var bl = require('bl');
 
 var urls=[];
 
