@@ -89,5 +89,5 @@ class ByteImages
   end #run
 end #class
 
-app = ByteImages.new 512,512
+app = ByteImages.new 1024,1024
 app.run
