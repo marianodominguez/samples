@@ -7,7 +7,7 @@ include Rubygame
 
 class SineCurve
   
-  def initialize(w=800, h=600)
+  def initialize(w=1200, h=800)
     @w,@h = w,h
     @curves = [:sine, :cone, :polar]
     @screen = Rubygame::Screen.new [w,h], 0, [Rubygame::HWSURFACE, Rubygame::DOUBLEBUF]

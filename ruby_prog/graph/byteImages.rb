@@ -19,7 +19,7 @@ class ByteImages
   end
 
   def fn(x,y)
-    valfloat = 127 * Math.cos(x.to_f * 0.05) + 127 * Math.sin(y.to_f * 0.05)
+    valfloat = 64 * (1.0 - Math.cos(x.to_f * 0.01)) + 64 * (1.0 - Math.sin(y.to_f * 0.01))
     return valfloat.to_i
   end
 
@@ -56,7 +56,7 @@ class ByteImages
     for x in (0...@w) do
       v[x] = Array.new(@h)
       for y in (0...@h) do
-        v[x][y] = xor(x, y) % 256
+        v[x][y] = fn(x, y) % 256
       end
     end
     return v

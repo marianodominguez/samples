@@ -37,7 +37,7 @@ class Fractals
     y1 = @h/2 - p1[1]
     x2 = p2[0] + @w/2
     y2 = @h/2 - p2[1]
-    @screen.draw_line [x1, y1], [x2, y2], @color
+    @screen.draw_line_a [x1, y1], [x2, y2], @color
   end
 
   def sierpinski
@@ -77,7 +77,7 @@ class Fractals
     v = [ [xa, 0], [xa - @h* Math.tan(angle), @h ], [xa + @h*Math.tan(angle) , @h]]
 
     x,y = rnd.rand(@w),rnd.rand(@h)
-    for i in (0..50000) do
+    for i in (0..90000) do
       vertex = v[rnd.rand(3)]
       mp = [ (vertex[0] + x ) /2, (vertex[1] + y)/2 ]
       @screen.set_at(mp, [255,255,255]) if 0<mp[0] and mp[0]<@w and 0<mp[1] and mp[1]<@h-1
@@ -166,7 +166,7 @@ class Fractals
       @angle=0
       rt 90
       @screen.fill [26, 20, 140], [0,0, @w, @h]
-      dragon l,200,1
+      dragon l,250,1
       l+=1
       @screen.update
       @queue.wait
