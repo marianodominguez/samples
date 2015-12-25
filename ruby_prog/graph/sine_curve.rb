@@ -7,10 +7,10 @@ include Rubygame
 
 class SineCurve
   
-  def initialize(w=1200, h=800)
+  def initialize(w=1920, h=1080)
     @w,@h = w,h
-    @curves = [:sine, :cone, :polar]
-    @screen = Rubygame::Screen.new [w,h], 0, [Rubygame::HWSURFACE, Rubygame::DOUBLEBUF]
+    @curves = [:circles, :cone, :polar, :sine]
+    @screen = Rubygame::Screen.new [w,h], 0, [Rubygame::HWSURFACE, Rubygame::DOUBLEBUF,Rubygame::FULLSCREEN]
     @screen.title = "Sine curve"
     @queue = Rubygame::EventQueue.new
     @queue.ignore = [ActiveEvent,MouseMotionEvent,MouseDownEvent]
@@ -24,7 +24,7 @@ class SineCurve
     if @screen.respond_to?(:draw_line_a) then
       @screen.draw_line_a [x1, y1], [x2, y2], color
     else
-      @screen.draw_line_a [x1, y1], [x2, y2], color
+      @screen.draw_line [x1, y1], [x2, y2], color
     end
   end
 
@@ -32,14 +32,14 @@ class SineCurve
     px,py = nil,nil
     th=0.0
     while th<8*Math::PI do
-      x = 200 * Math.cos(th)
-      y = 200 * Math.sin(th)
+      x = 300 * Math.cos(th)
+      y = 300 * Math.sin(th)
 
-      x1 = 300 * Math.cos(th)
-      y1 = 300 * Math.cos(th)
+      x1 = 500 * Math.cos(th)
+      y1 = 500 * Math.cos(th)
 
       draw_line [x1,y1] , [x,y], [224,124,242]
-      th += Math::PI / 100
+      th += Math::PI / 200
     end
   end
 
@@ -56,6 +56,21 @@ class SineCurve
       i += Math::PI / 180
     end
   end
+
+   def circles
+    i = 0.0
+    while i<2*Math::PI do
+      x = 500 * Math.sin(i)
+      y = 500 * Math.cos(i)
+
+      x1 = 200 * Math.cos(i)
+      y1 = 200 * Math.sin(i)
+
+      draw_line [x1, y1] , [x,y], [200, 100, 255]
+      i += Math::PI / 180
+    end
+  end
+
 
   def sine
     (-@w/2..@w/2).each do |x|
