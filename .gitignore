@@ -9,4 +9,4 @@ bin
 *~
 *.tar.gz
 *.zip
-node-modules
+node_modules
