@@ -1,4 +1,4 @@
 source 'https://rubygems.org'
 
-gem 'rubygame'
+gem 'rubygame', '2.6.4'
 
