@@ -5,15 +5,15 @@ require 'rubygame'
 include Rubygame
 
 class Fractals
-  def initialize(w=1200, h=600)
+  def initialize(w=1920, h=1080)
     @w,@h = w,h
     @cx,@cy = 0,0
-    @color = [0,255,100]
+    @color = [239,245,125]
     @angle=0
     @scale = Math.sqrt(2)/2
     @rule = rule90
-    @screen = Rubygame::Screen.new [w,h], 0,
-    [Rubygame::HWSURFACE, Rubygame::DOUBLEBUF]
+    @screen = Rubygame::Screen.new [w,h], 0, 
+		[Rubygame::HWSURFACE, Rubygame::DOUBLEBUF,Rubygame::FULLSCREEN]
     @screen.title = "Fractals"
     @queue = Rubygame::EventQueue.new
     @queue.ignore = [ActiveEvent,MouseMotionEvent,MouseDownEvent]
@@ -94,7 +94,9 @@ class Fractals
   end
 
   def fd size
-      endx, endy = @cx + Math.sin(@angle * Math::PI / 180.0)*size, @cy + Math.cos(@angle*Math::PI / 180.0)*size
+      endx, endy = 
+		@cx + Math.sin(@angle * Math::PI / 180.0)*size, 
+		@cy + Math.cos(@angle * Math::PI / 180.0)*size
       line [@cx, @cy], [endx, endy], @color
       @cx,@cy=endx,endy
   end
@@ -127,7 +129,7 @@ class Fractals
     end
   end
 
-  def run
+  def run2
     @screen.fill [26, 20, 140], [0,0, @w, @h]
     sierpinski
     @screen.update
@@ -141,16 +143,21 @@ class Fractals
     run_snow
     run_dragon
   end
+  
+  def run
+    run_snow
+    run_dragon
+  end
 
   def run_snow
     l=1
-    7.times do
-      @cx,@cy=-250,150
+    8.times do
+      @cx,@cy=-400,200
       @angle= 0
       rt 90
       @screen.fill [26, 20, 140], [0,0, @w, @h]
       3.times do
-        snow l,500
+        snow l,800
         rt 120
       end
       l+=1
@@ -161,12 +168,12 @@ class Fractals
 
   def run_dragon
     l=1
-    16.times do
-      @cx,@cy=-100,100
-      @angle=0
+    17.times do
+      @cx,@cy=300,300
+      @angle=90
       rt 90
       @screen.fill [26, 20, 140], [0,0, @w, @h]
-      dragon l,250,1
+      dragon l,600,1
       l+=1
       @screen.update
       @queue.wait
