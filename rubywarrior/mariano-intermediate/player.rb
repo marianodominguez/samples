@@ -62,7 +62,8 @@ class Player
     @plan = make_path warrior
 
     current_dir = @plan[@action]
-    current_dir = warrior.direction_of_stairs if current_dir.nil? 
+    current_dir = warrior.direction_of_stairs if current_dir.nil?
+    current_dir = warrior.direction_of @enemies[0] unless @enemies.empty? 
     current_dir = warrior.direction_of @captives[0] unless @captives.empty?
     current_dir = warrior.direction_of @ticking[0] unless @ticking.empty?
 
@@ -98,18 +99,18 @@ class Player
       puts "rescue", space.location
       warrior.rescue! current_dir
     elsif space.captive? and @captive_enemies.include? space.location
-       enemies = enemies warrior
-       warrior.attack! enemies.first unless enemies.empty?
+       enemies = enemies(warrior)
+       warrior.attack! enemies.sample unless enemies.empty?
        if enemies.empty?
           ex = warrior.direction_of_stairs
           ex = warrior.direction_of @captives[0] unless @captives.empty?
-          escape = escape warrior
-          ex = escape.sample unless (warrior.feel ex).empty?
-          puts escape
-          warrior.walk! ex
+          escape = escape(warrior)
+          ex = escape.sample 
+          puts "escape is #{escape}"
+          warrior.walk! ex 
         end
     end     
-    warrior.walk! current_dir if space.empty? or space.stairs?
+    warrior.walk! current_dir if space.empty? or (space.stairs? and enemies.empty?)
     @action +=1
   end
 
@@ -117,7 +118,7 @@ class Player
     action = :attack
     enemies = enemies(warrior)
     look = warrior.look.select {|x| x.enemy?}
-    if enemies.size >1 and warrior.health > 7
+    if enemies.size >=3 and warrior.health > 7
       action = :bind
       @captive_enemies << (warrior.feel enemies[0]).location
       puts "captives: ", @captive_enemies.inspect
@@ -126,8 +127,9 @@ class Player
       action = :boom
     elsif !@ticking.empty?
       action = :flee 
-    end     
-    puts action
+    end
+    puts "action is: #{action}"
+    puts "there are #{enemies.size} enemies"
     warrior.attack! current_dir if action == :attack
     warrior.bind! enemies[0] if action == :bind
     warrior.detonate! current_dir if action == :boom
