@@ -1,22 +1,16 @@
 #!/usr/bin/env ruby
 
-require 'rubygems'
-require 'rubygame'
+require 'gosu' 
 
-include Rubygame
+include Gosu
 
-class SineCurve
+class SineCurve << < Gosu::Window
   
   def initialize(w=1920, h=1080)
     @w,@h = w,h
     @curves = [:circles, :cone, :polar, :sine]
-    @screen = Rubygame::Screen.new [w,h], 0, 
-		[Rubygame::HWSURFACE, Rubygame::DOUBLEBUF,Rubygame::FULLSCREEN]
-    @screen.title = "Sine curve"
-    @queue = Rubygame::EventQueue.new
-    @queue.ignore = [ActiveEvent,MouseMotionEvent,MouseDownEvent]
-    @aalias = false
-    @aalias = true if @screen.respond_to?(:draw_line_a) 
+    super(w,h, :fullscreen => true)
+    self.caption = "Sine curve"
   end
 
   def draw_line(p1, p2, color)
@@ -24,10 +18,7 @@ class SineCurve
     y1 = @h/2 - p1[1]
     x2 = p2[0] + @w/2
     y2 = @h/2 - p2[1]
-    if @aalias then
-      @screen.draw_line_a [x1, y1], [x2, y2], color
-    else
-      @screen.draw_line [x1, y1], [x2, y2], color
+    draw_line (x1, y1, color, x2, y2, color, 1)
     end
   end
 
@@ -40,8 +31,8 @@ class SineCurve
 
       x1 = 500 * Math.cos(th)
       y1 = 500 * Math.cos(th)
-
-      draw_line [x1,y1] , [x,y], [224,124,242]
+      color = Color.rgba(224,124,242,255)
+      draw_line( x1,y1, color, x,y, color, 1)
       th += Math::PI / 200
     end
   end
@@ -54,8 +45,8 @@ class SineCurve
 
       x1 = 100 * Math.sin(i)
       y1 = 100 * Math.cos(i)
-
-      draw_line [x1, y1] , [x,y], [255, 255, 255]
+      color = Color.rgba(255,255,255,255)
+      draw_line (x1, y1, color, x, y, color, 1)
       i += Math::PI / 180
     end
   end
@@ -68,26 +59,24 @@ class SineCurve
 
       x1 = 200 * Math.cos(i)
       y1 = 200 * Math.sin(i)
-
-      draw_line [x1, y1] , [x,y], [200, 100, 255]
+      color = Color.rgba(200, 100, 255, 255)
+      draw_line (x1, y1,color, x,y,color,1) 
       i += Math::PI / 180
     end
   end
 
 
   def sine
+    color = Color.rgba(157,9,186, 255)
     (-@w/2..@w/2).each do |x|
-      draw_line [0, @h/2], [x, Math.sin(x.to_f/35)*100],
-      [157,9,186]
+      draw_line(0, @h/2,color,x , Math.sin(x.to_f/35)*100], color,1)
     end
   end
 
-  def run
+  def draw
     @curves.each do |c|
       @screen.fill [26, 20, 140], [0,0, @w, @h]
       self.send(c)
-      @screen.update
-      @queue.wait
     end
   end
 end
