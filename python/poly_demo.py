@@ -10,22 +10,25 @@ window.bgcolor(backgroundcolor)
 t = turtle.Turtle()
 t.pensize(2)
 
-def star(n,l):
-  angle=720/n
+def poly(n,size):
+  angle=360/n
   for i in range(n):
-    t.fd(l)
+    t.fd(size)
     t.rt(angle)
-
+colors=["SeaGreen1","orange","cyan","plum","yellow","green","gold"
+	, "black"  ]
 t.pu()
+t.fd(90)
 t.rt(90)
-t.fd(200)
+t.fd(120)
 t.lt(90)
 t.pd()
 
 for i in range(10):
-  star(i+5,100-5*i)
+  t.pencolor(colors[i % len(colors)])
+  poly(i+3, 70-5*i)
   t.pu()
-  t.bk(100)
+  t.bk(120)
   t.rt(36)
   t.pd()
 

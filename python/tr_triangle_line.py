@@ -2,21 +2,27 @@ import turtle
 
 backgroundcolor = "#18546A"
 
-def square(size):
-	for i in range(4):
-		t.fd(100)
-		t.rt(90)
-		
 window = turtle.Screen()
 t = turtle.Turtle()
 window.bgcolor(backgroundcolor)
 t.pensize(2)
 
-for i in range(10):
-	square(60)
-	t.rt(36)
-	t.fd(100)
+t.right(90)
 
+size = 100
+
+for i in range(10):
+	t.forward(size)
+	t.right(90)
+	t.penup()
+	t.forward(10)
+	t.left(90)
+	t.back(size)
+	t.pendown()
+	size=size-10
+
+t.pu()	
+t.home()
 window.exitonclick()
 
 
