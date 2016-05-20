@@ -186,7 +186,7 @@ void draw_curves(SDL_Surface *screen) {
 }
 
 
-main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
     Uint8 *keys;    
     SDL_Event event;
@@ -214,4 +214,6 @@ main(int argc, char *argv[])
                 
     }
     atexit(SDL_Quit);
+
+    return 0;
 }
