@@ -1,17 +1,32 @@
-CXX = gcc
-SDL = -lSDL
-# If your compiler is a bit older you may need to change -std=c++11 to -std=c++0x
-CXXFLAGS = -Wall -c 
-LDFLAGS = $(SDL) -v -I/usr/local/include/SDL -D_GNU_SOURCE=1 -D_THREAD_SAFE -L/usr/local/lib -lSDLmain -Wl,-framework,Cocoa
-EXE = bin/graph
+############
+MACHINE= $(shell uname -s)
 
-all: $(EXE)
+ifeq ($(MACHINE),Darwin)
+	OPENGL_INC= -FOpenGL
+	OPENGL_LIB= -framework OpenGL
+	SDL_INC= `sdl-config --cflags`
+	SDL_LIB= `sdl-config --libs`
+else
+	OPENGL_INC= -I/usr/X11R6/include
+	OPENGL_LIB= -I/usr/lib64 -lGL -lGLU
+	SDL_INC= `sdl-config --cflags`
+	SDL_LIB= `sdl-config --libs`
+endif
 
-$(EXE): main.o
-	$(CXX) $(LDFLAGS) $< -o $@
+# object files have corresponding source files
+OBJS= main.o
+CXX=g++
+COMPILER_FLAGS= -g
+INCLUDE= $(SDL_INC) $(OPENGL_INC)
+LIBS= $(SDL_LIB) $(OPENGL_LIB)
+
+EXEC= bin/graph
+
+$(EXEC): $(OBJS)
+	$(CXX) $(COMPILER_FLAGS) -o $(EXEC) $(OBJS) $(LIBS)
 
 main.o: sdlTest.c
-	$(CXX) $(CXXFLAGS) $< -o $@
+	$(CXX) -c $(COMPILER_FLAGS) -o $@ $< $(INCLUDE)
 
 clean:
-	rm *.o && rm $(EXE)
+	rm -f $(EXEC) $(OBJS)
