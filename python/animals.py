@@ -1,21 +1,33 @@
-animals = [ ('has spots?', 1 ,  2), ('is a feline?' , 3 , 4), 
-	('is small?',5,6), ('leopard',,), ('panda',,), ('ant'), ('elephant')]
+animals = [ ('has spots?', 1, 2), ('is a feline?' , 3 , 4), ('is small?',5,6), 
+	('leopard', None, None), ('panda', None, None), ('ant', None, None), ('elephant', None, None)]
 idx = 0 
 
-def mainloop
+def mainloop():
+	#load_animal_data
+	animal =None
 	print "I'll guess your animal"
-	while answer!='y' || animal != '':
+	answer = ''
+	while answer!="yes" and animal != "":
 		animal = get_animal()
-		print "Is your animal a ", animal
-		input answer
-		if answer=="yes" print "I knew it !"
+		print "Is your animal a ?", animal
+		answer = raw_input()
+		if answer=="yes": 
+			print "I knew it !"
+		else:
+			print "I don't know your animal."
+			animal=""
+			#learn_animal()
 
-def get_animal
-	while true:
+def get_animal():
+	global idx
+	while True:
 		data, yes, no = animals[idx]
-		if yes==None and no==None return data
+		if yes==None and no==None: return data
 		print data
-		input answer
-		if answer== 'yes' idx = yes
-		if answer== 'no' idx = no
+		answer = raw_input()
+		if answer == "yes": 
+			idx = yes
+		else :
+			idx = no
 
+mainloop()
