@@ -9,3 +9,15 @@ for i in (r-l..n) do
 end
 
 puts o
+
+# notes for optimization
+#r=58
+#l=24
+
+#n-r = 93-58 = 35
+#range = l, r/2
+#n=93
+#
+#93 = 35,58, 36,57 37,56 ...43,50 44,49 45,48 46,47
+#r = 46-35 = 11
+#
