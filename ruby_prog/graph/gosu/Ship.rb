@@ -6,7 +6,7 @@ class GameWindow < Gosu::Window
     super 800, 600, false
     self.caption = "Gosu simple game"
 
-     @background_image = Gosu::Image.new(self, "resources/Space.png", true)
+     @background_image = Gosu::Image.new(self, "resources/space.png", true)
 
      @player = Player.new(self)
      @player.warp(320, 240)
