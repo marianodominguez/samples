@@ -1,3 +1,5 @@
+#/usr/bin/env ruby
+
 def pow(a,b)
   x = a
   pow = b
