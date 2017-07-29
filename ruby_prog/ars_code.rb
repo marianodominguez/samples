@@ -17,20 +17,30 @@ codes = [
 
 #test  weather as key
 
-msg = codes[1][:codes].split(' ')
-key = codes[1][:weather]
+puts "a = #{'a'.ord}"
+puts "z = #{'z'.ord}"
+
+msg = codes[0][:codes].split(' ')
+key = codes[0][:weather]
 i=0
+keystring = []
+final = []
+msgstring = []
 
 for c in msg do
   char = '|'
   unless c== '|' then
     offset =  key.chars.to_a[i % key.size ]
-    print offset.ord, ','
-    decoded = c.to_i 
-    char = decoded
-  end 
-  #print char,' '
-  i+=1
+    keystring << offset
+    decoded = (c.to_i + offset.ord)
+    char = decoded % 'z'.ord
+    char += 'a'.ord-1 if char <= 'a'.ord
+    final << char.chr
+    i+=1
+  end
+  i=0 if c=='|'
+  msgstring << c.to_i
 end
-
-puts
+puts msgstring.join(',')
+puts keystring.join(',')
+puts final.join(',')
