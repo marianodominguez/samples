@@ -8,9 +8,10 @@ w,h=800,600
 pygame.init()
 screen = pygame.display.set_mode((800,600))
 
-red = pygame.color.Color('red')
-yellow = pygame.color.Color('yellow')
-cyan = pygame.color.Color('cyan')
+red = pygame.Color('red')
+yellow = pygame.Color('yellow')
+cyan = pygame.Color('cyan')
+black = pygame.Color('black')
 
 x=0
 y=0
@@ -45,12 +46,24 @@ def spyro(R,r,l, color):
 
 pygame.display.set_caption('Spyrographs !')
 
-spyro(300.0, 53.0, 0.9, red)
-spyro(156.0, 56.0, 0.4, yellow)
-spyro(200.0, 45.0, 0.9, cyan)
+args = [ 
+      (300.0, 53.0, 0.9, red),
+      (156.0, 56.0, 0.4, yellow),
+      (200.0, 48.0, 0.9, cyan),
+      (300.0, 45.0, 0.5, pygame.Color('cadetblue')),
+      (100.0, 15.0, 0.9, pygame.Color('gray')),
+      (250.0, 11.0, 0.9, pygame.Color('magenta'))
+      ]
+i=0
 
 while 1:
   for event in pygame.event.get():
     if event.type == pygame.QUIT:
         sys.exit()
+    if event.type == pygame.KEYDOWN:
+        screen.fill(black)
+        spyro(*args[i])
+        i+=1
+        if i>=len(args):
+          sys.exit() 
   pygame.display.update()
