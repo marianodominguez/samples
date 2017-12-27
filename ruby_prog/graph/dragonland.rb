@@ -5,7 +5,7 @@ require 'rubygame'
 include Rubygame
 
 class Fractals
-  def initialize(w=1920, h=1080)
+  def initialize(w=800, h=600)
     @w,@h = w,h
     @cx,@cy = 0,0
     @color = [239,245,125]
