@@ -1,0 +1,45 @@
+(lp0
+(S'does it have spots?'
+p1
+I1
+I2
+tp2
+a(S'is it a feline?'
+p3
+I3
+I4
+tp4
+a(S'is it small?'
+p5
+I5
+I8
+tp6
+a(S'leopard'
+p7
+NNtp8
+a(S'panda'
+p9
+NNtp10
+a(S'ant'
+p11
+NNtp12
+a(S'elephant'
+p13
+NNtp14
+a(S'cow'
+p15
+NNtp16
+a(S'does it have horns?'
+p17
+I7
+I10
+tp18
+a(S'rhino'
+p19
+NNtp20
+a(S'does it have a single horn?'
+p21
+I9
+I7
+tp22
+a.

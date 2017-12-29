@@ -1,4 +1,5 @@
 import pickle
+import os.path
 
 class AnimalGame:
 	animals = []
@@ -9,15 +10,18 @@ class AnimalGame:
 		idx = 0 
 
 	def load_animal_data(self):
-		with open('animal_data.pkl', 'rb') as input:
-			self.animals = pickle.load(input)
+		if os.path.exists('animal_data.pkl'):
+			with open('animal_data.pkl', 'rb') as input:
+				self.animals = pickle.load(input)
+		#print "data loaded", len(self.animals) 
 		
 	def save_animal_data(self):
-		with open('animal_data.pkl', 'wb') as output:
-			pickle.dump(self.animals, output, pickle.HIGHEST_PROTOCOL)
+		with open('animal_data.pkl', 'wb+') as output:
+			pickle.dump(self.animals, output)
+		#print "data saved", len(self.animals) 
 
 	def play(self):
-		self.load_animal_data
+		self.load_animal_data()
 		idx=0
 		question_idx=0
 		animal =None
@@ -35,7 +39,7 @@ class AnimalGame:
 				self.learn_animal(idx,question_idx)
 				idx=0
 				print self.animals
-				self.save_animal_data
+				self.save_animal_data()
 				print "I'll ask again "
 
 	def get_animal(self):
@@ -53,13 +57,13 @@ class AnimalGame:
 				idx = no
 
 	def learn_animal(self,idx,question_idx):
-		print "I'll learn your animal"
+		print "\n I'll learn your animal \n"
 		print "What's your animal ?"
 		new_animal = raw_input()
 		print "please enter a question to distinguish "
-		print "between a ", self.animals[idx][0] , " and a " , new_animal
+		print "between a", self.animals[idx][0] , "and a" , new_animal
 		question = raw_input()
-		print "for a", new_animal , "the answer is? yes/no"
+		print "for a", new_animal,"the answer is? yes/no"
 		answer=raw_input()
 		self.animals.append((new_animal,None,None))
 		new_idx=len(self.animals)
