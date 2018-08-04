@@ -10,3 +10,4 @@ bin
 *.tar.gz
 *.zip
 node_modules
+datasets
