@@ -1,6 +1,6 @@
 function solve(map, miner, exit) {
-  var xmax = map.length-1;
-  var ymax = map[0].length-1;
+  var ymax = map.length-1;
+  var xmax = map[0].length-1;
 
   var samePos = function (a,b) {
     return (a.x===b.x && a.y===b.y);
@@ -16,7 +16,7 @@ function solve(map, miner, exit) {
     if (dir==='right' && pos.x<xmax) pos.x+=1;
     if (samePos(pos,current)) return null;
 
-    if (map[pos.x][pos.y]) return pos;
+    if (map[pos.y][pos.x]) return pos;
     return null;
   };
 
@@ -39,6 +39,7 @@ function solve(map, miner, exit) {
         return result;
       }
       if (next && !visited[next.x+"_"+next.y]) {
+        console.log(next)
         stack.push(next);
         result.push(dirs[i]);
         current=next;
@@ -63,11 +64,11 @@ map = [[true, true, true, false, true],
 
 console.log(solve(map, {x:0,y:0}, {x:4,y:4}));
 
-  map = [[true, true, true, false, true],
-    [false, false, true, false, true],
-    [true, true, true, true, true],
-    [true, false, true, false, false],
-    [false, true, true, true, true]];
+  map = [ [true,  true, true, false, true],
+          [false, false,true, false, true],
+          [true,  true, true, true,  true],
+          [true,  false,true, false, false],
+          [false, true, true, true,  true]];
 
 console.log(solve(map, {x:0,y:0}, {x:4,y:4}));
 
