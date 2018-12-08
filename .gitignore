@@ -11,3 +11,4 @@ bin
 *.zip
 node_modules
 datasets
+.ipynb_checkpoints
