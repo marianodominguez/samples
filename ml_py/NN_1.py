@@ -1,9 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[17]:
-
-
 d = r"/home/mariano/samples/ml_py/diabetes.csv.gz"
 import torch
 from torch.autograd import Variable
@@ -44,11 +41,3 @@ for epoch in range(1000):
     loss.backward()
     optimizer.step()
     
-    
-
-
-# In[ ]:
-
-
-
-
