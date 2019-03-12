@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import turtle
 
 backgroundcolor = "#18546A"
@@ -19,7 +20,7 @@ def treeTop(size):
 		t.back(size+5)
 		t.pendown()
 		size=size+10
-		
+
 def trunk():
 	t.pu()
 	t.fd(60)
@@ -46,8 +47,6 @@ def forest():
 		t.pd()
 
 forest()
-t.pu()	
+t.pu()
 t.home()
 window.exitonclick()
-
-

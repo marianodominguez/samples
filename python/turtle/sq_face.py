@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import turtle
 
 backgroundcolor = "#18546A"
@@ -44,7 +45,7 @@ def antenna():
 	t.fd(50)
 	square(10)
 	t.bk(50)
-		
+
 window = turtle.Screen()
 t = turtle.Turtle()
 window.bgcolor(backgroundcolor)
@@ -81,5 +82,3 @@ t.pd()
 t.circle(120)
 
 window.exitonclick()
-
-

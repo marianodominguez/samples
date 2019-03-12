@@ -19,29 +19,28 @@ def orbit(x,y):
     return abs(z)
 
 def color(v):
-    return (int(255*v/100) % 255 , int(255*v/100) % 255, 155)
+    return (int(255*v/100) % 255 , int(255*v/100) % 255, 170)
+
+def gradient(v):
+    return (int(255*v/100) % 255 , int(255*v/100) % 255, 170)
 
 #xmin=-2.5
 #xmax=1.0
 #ymin=-1.0
 #ymax=1.0
 
-xmin=-1.5
-xmax=-0.5
+xmin = -2.5
+xmax =  1.0
 
-ymin=-0.4
-ymax=0.4
-
-#print orbit(0.5,0.3)
+ymin = -1.5
+ymax =  1.5
 
 for xs in range(w):
     for ys in range(h):
         x=xs*(xmax-xmin)/w+xmin
         y=ys*(ymax-ymin)/h+ymin
         o=orbit(x,y)
-        #print x,y
         if o>=4:
-            print x,y,o
             screen.set_at((xs,ys),color(o))
     pygame.display.update()
 

@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import turtle
 
 backgroundcolor = "#18546A"
@@ -18,8 +19,6 @@ for i in range(10):
 	t.back(100)
 	t.pendown()
 
-t.pu()	
+t.pu()
 t.home()
 window.exitonclick()
-
-
