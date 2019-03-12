@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import pygame,sys
 
-w,h=1280,720
+w,h=800,600
 
 black = pygame.Color('black')
 white = pygame.Color('white')
