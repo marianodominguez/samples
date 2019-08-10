@@ -1,43 +1,50 @@
 from collections import deque
 
+
 def makeSafe(node):
-    if node == None: return ""
-    else: return node.content
+    if node == None:
+        return ""
+    else:
+        return node.content
+
 
 class Node:
     def __init__(self, x):
         self.content = x
         self.left = None
         self.right = None
+
     def __str__(self):
         return "/" + self.content + "/"
-    
+
+
 class Tree:
     def __init__(self):
         self.root = None
-        
+
     def add(self, node, pivot):
         if pivot == None:
             self.root = node
         else:
             if pivot.content < node.content:
                 if pivot.right == None:
-                    pivot.right = node 
+                    pivot.right = node
                 else:
                     self.add(node, pivot.right)
             else:
                 if pivot.left == None:
-                    pivot.left = node 
+                    pivot.left = node
                 else:
                     self.add(node, pivot.left)
-     
+
     def put(self, x):
         n = Node(x)
         self.add(n, self.root)
-    
+
     def inorder(self, node):
-        if node == None: return [];
-        if node.left == None and node.right == None: 
+        if node == None:
+            return []
+        if node.left == None and node.right == None:
             return [node.content]
         else:
             result = []
@@ -47,8 +54,9 @@ class Tree:
             return result
 
     def postorder(self, node):
-        if node == None: return [];
-        if node.left == None and node.right == None: 
+        if node == None:
+            return []
+        if node.left == None and node.right == None:
             return [node.content]
         else:
             result = []
@@ -57,9 +65,10 @@ class Tree:
             result.extend([node.content])
             return result
 
-    def preorder(self, node ):
-        if node == None: return [];
-        if node.left == None and node.right == None: 
+    def preorder(self, node):
+        if node == None:
+            return []
+        if node.left == None and node.right == None:
             return [node.content]
         else:
             result = []
@@ -67,53 +76,60 @@ class Tree:
             result.extend(self.preorder(node.left))
             result.extend(self.preorder(node.right))
             return result
-        
+
     def bfs(self, nodeToSearch):
-        visited = []        
+        visited = []
         queue = deque([self.root])
         current = self.root
-        path = [];
-        
+        path = []
+
         while True:
-            if queue == [] : return []
+            if queue == []:
+                return []
             if current.content == nodeToSearch:
-                return [(x.content,makeSafe(x.left),makeSafe(x.right)) for x in path]            
-            
+                return [(x.content, makeSafe(x.left), makeSafe(x.right)) for x in path]
+
             if current not in visited:
                 for next in [current.left, current.right]:
-                    if next!= None: queue.append(next)
+                    if next != None:
+                        queue.append(next)
                 visited.append(current)
             current = queue.popleft()
-            path.append(current);
-            
+            path.append(current)
+
     def dfs(self, nodeToSearch):
-        visited=[]
+        visited = []
         stack = [self.root]
         current = self.root
         path = []
-        
+
         while True:
-            if stack == [] : return []
+            if stack == []:
+                return []
             if current.content == nodeToSearch:
-                return [(x.content,makeSafe(x.left),makeSafe(x.right)) for x in path]            
+                return [(x.content, makeSafe(x.left), makeSafe(x.right)) for x in path]
             if current not in visited:
                 for next in [current.left, current.right]:
-                    if next!= None: stack.append(next)
+                    if next != None:
+                        stack.append(next)
                 visited.append(current)
             current = stack.pop()
             path.append(current)
-            
+
     def binarySearch(self, nodeToSearch):
-        current = self.root;
+        current = self.root
         path = [self.root]
         while True:
             if current.content == nodeToSearch:
-                return [(x.content,makeSafe(x.left),makeSafe(x.right)) for x in path]
+                return [(x.content, makeSafe(x.left), makeSafe(x.right)) for x in path]
             next = None
             if nodeToSearch < current.content:
-                if current.left != None: next = current.left
+                if current.left != None:
+                    next = current.left
             else:
-                if current.right != None: next = current.right
-            if next==None: return []
+                if current.right != None:
+                    next = current.right
+            if next == None:
+                return []
             path.append(next)
-            current = next;
+            current = next
