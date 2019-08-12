@@ -19,7 +19,7 @@ state = "california"
 result = filter(lambda e: e["properties"]["type"]=="earthquake" 
 	and state.lower() in e["properties"]["place"].lower() , earthquakes)
 
-result = sorted(result, key=lambda e: e["properties"]["type"])
+result = sorted(result, key=lambda e: e["properties"]["mag"], reverse=True)
 
 for e in result:
 	print  e["properties"]["title"] , format_time(e["properties"]["time"]), e["properties"]["mag"] 
