@@ -1,0 +1,6 @@
+here is a file content
+
+it has new lines
+
+and it's weird "quotes"
+
