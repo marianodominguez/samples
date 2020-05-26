@@ -3,20 +3,20 @@ ALL := hello hello_dbg getreg_rcx getreg_cr0
 CC=gcc
 CFLAGS_DBG=-g -ggdb -gdwarf-4 -O0 -Wall -Wextra
 CFLAGS=-Wall -Wextra
-
+BIN=bin
 all: ${ALL}
 CB_FILES := *.[ch]
 
 hello: hello.c
-	${CC} ${CFLAGS} hello.c -o hello
+	${CC} ${CFLAGS} hello.c -o ${BIN}/hello
 hello_dbg: hello.c
-	${CC} ${CFLAGS_DBG} hello.c -o hello_dbg
-	objdump --source ./hello_dbg > hello_dbg_objdump.txt
+	${CC} ${CFLAGS_DBG} hello.c -o ${BIN}/hello_dbg
+	objdump --source ./hello_dbg > ${BIN}/hello_dbg_objdump.txt
 
 getreg_rcx: getreg_rcx.c
-	${CC} ${CFLAGS} getreg_rcx.c -o getreg_rcx
+	${CC} ${CFLAGS} getreg_rcx.c -o ${BIN}/getreg_rcx
 getreg_cr0: getreg_cr0.c
-	${CC} ${CFLAGS_DBG} getreg_cr0.c -o getreg_cr0
+	${CC} ${CFLAGS_DBG} getreg_cr0.c -o ${BIN}/getreg_cr0
 
 # indent- "beautifies" C code into the "Linux kernel style".
 # (cb = C Beautifier :) )
@@ -26,4 +26,4 @@ cb: ${CB_FILES}
 	indent -linux ${CB_FILES}
 
 clean:
-	rm -vf ${ALL} core* *.o *~
+	rm -vf ${ALL} ${BIN}/core* ${BIN}/*.o *~
