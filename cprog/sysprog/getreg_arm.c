@@ -6,7 +6,7 @@ typedef unsigned long u64;
 
     static u64 get_rcx() {
     __asm__ __volatile__(
-            "mov r0, #5\n\t" 
+            "mov r0, #10\n\t" 
             "bx lr"); 
             /* at&t syntax: movq <src_reg>, <dest_reg> */  
     }
