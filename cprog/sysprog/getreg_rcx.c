@@ -4,7 +4,7 @@
 
 typedef unsigned long u64;
 
-    static u64 get_rcx() {
+static u64 get_rcx() {
     __asm__ __volatile__(
             "push %rcx\n\t" 
             "movq $5, %rcx\n\t" 

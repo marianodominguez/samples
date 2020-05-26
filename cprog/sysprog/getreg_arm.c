@@ -4,7 +4,7 @@
 
 typedef unsigned long u64;
 
-    static u64 get_rcx() {
+static u64 get_rcx() {
     __asm__ __volatile__(
             "mov r0, #10\n\t" 
             "bx lr"); 

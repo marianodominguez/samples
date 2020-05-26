@@ -11,7 +11,7 @@ hello: hello.c
 	${CC} ${CFLAGS} hello.c -o ${BIN}/hello
 hello_dbg: hello.c
 	${CC} ${CFLAGS_DBG} hello.c -o ${BIN}/hello_dbg
-	objdump --source ./hello_dbg > ${BIN}/hello_dbg_objdump.txt
+	objdump --source ${BIN}/hello_dbg > ${BIN}/hello_dbg_objdump.txt
 
 getreg_rcx: getreg_rcx.c
 	${CC} ${CFLAGS} getreg_rcx.c -o ${BIN}/getreg_rcx
