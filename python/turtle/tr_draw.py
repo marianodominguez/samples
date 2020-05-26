@@ -12,7 +12,7 @@ t.pensize(2)
 
 def star(n,l):
   angle=720/n
-  for i in range(n):
+  for i in xrange(n):
     t.fd(l)
     t.rt(angle)
 
