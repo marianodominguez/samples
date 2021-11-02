@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 def qsort1(list):
-    if list == []:
+    if len(list)==0:
         return []
     else:
         pivot = list[0]
