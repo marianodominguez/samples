@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from BinaryTree import Tree
 import random
 

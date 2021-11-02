@@ -1,4 +1,4 @@
-import sys
+#!/usr/bin/env python3
 
 def find_max_sum(a):
     sum_element=0

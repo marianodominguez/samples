@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 # Implementation of the Stack ADT using a singly linked list .
 class Stack :
 

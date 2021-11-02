@@ -1,5 +1,6 @@
-from stack import Stack
+#!/usr/bin/env python
 
+from stack import Stack
 
 def is_balanced(s):
     stack = Stack()

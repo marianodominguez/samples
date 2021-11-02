@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 
 # palindrome conjecture
 
@@ -8,44 +8,37 @@
 # 295 neither
 # 394
 # 493
+# 689
 
 # ex. with 341 341+143=484
-
+def mirror(n):
+    num=n
+    mirror=0
+    while num>0:
+        digit=num % 10
+        mirror=mirror*10+digit
+        num=num // 10
+    return mirror
 
 def isPalindrome(n):
-    digits = str(n)
-    for i in xrange(len(digits)/2):
-        digit = digits[i]
-        mirror = digits[-(i+1)]
-        if digit != mirror:
-            return False
+    if n != mirror(n):
+        return False
     return True
 
-
 def construct(n):
-    mirror = ''
-    digits = str(n)
-    mirror = digits[::-1]
+    return n + mirror(n)
 
-    result = int(digits) + int(mirror)
-    #print digits, "+", mirror, " = ", result
-    return result
+MAX_ITER = 200000
 
-#inputString = input("give a number: ")
-#n = int(inputString)
-
-
-MAX_ITER = 20000
-
-for n in xrange(1, 1000):
+for n in range(10, 1000):
     iter = 0
     x = n
     while not isPalindrome(x):
         x = construct(x)
         iter += 1
         if iter > MAX_ITER:
-            print "iter(", n, ")= unknown"
+            print("iter(", n, ")= possible Lychrel")
             iter = -1
             break
     if iter >= 1:
-        print "iter(", n, ")=", iter, " x=", x
+        print("iter(", n, ")=", iter, " x=", x)

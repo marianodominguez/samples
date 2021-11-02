@@ -1,3 +1,4 @@
+
 def qsort1(list):
     if list == []:
         return []

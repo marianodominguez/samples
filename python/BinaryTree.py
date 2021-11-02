@@ -1,12 +1,10 @@
 from collections import deque
 
-
 def makeSafe(node):
     if node == None:
         return ""
     else:
         return node.content
-
 
 class Node:
     def __init__(self, x):
@@ -16,7 +14,6 @@ class Node:
 
     def __str__(self):
         return "/" + self.content + "/"
-
 
 class Tree:
     def __init__(self):
