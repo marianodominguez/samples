@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 l = [ 1, -2, 3, 4, -5, 6 ]
 
@@ -15,5 +15,5 @@ def sub(l):
   return maxsum
 
 
-print sub(l)
+print(sub(l))
 

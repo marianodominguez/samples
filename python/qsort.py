@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 
 def qsort1(list):
     if list == []:
@@ -8,4 +9,4 @@ def qsort1(list):
         greater = qsort1([x for x in list[1:] if x >= pivot])
         return lesser + [pivot] + greater
 
-print qsort1([45, 9, 7, 5, 3, 2, 13, 10, 13, 4, 1, 6, 11])
+print(qsort1( [45, 9, 7, 5, 3, 2, 13, 10, 13, 4, 1, 6, 11] ))

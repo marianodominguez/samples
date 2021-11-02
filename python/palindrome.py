@@ -36,7 +36,7 @@ for n in range(10, 1000):
     while not isPalindrome(x):
         x = construct(x)
         iter += 1
-        if iter > MAX_ITER:
+        if iter > MAX_ITER or n==196:
             print("iter(", n, ")= possible Lychrel")
             iter = -1
             break
