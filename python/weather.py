@@ -4,7 +4,7 @@ min_spread=9999
 mday=0
 
 for l in request.urlopen("http://codekata.com/data/04/weather.dat"):
-     line=l.decode('utf-8').strip()
+     line=l.decode().strip()
 
      columns=re.split('[\s]+', line)
      day=str(columns[0])

@@ -28,9 +28,9 @@ def isPalindrome(n):
 def construct(n):
     return n + mirror(n)
 
-MAX_ITER = 200000
+MAX_ITER = 2000
 
-for n in range(10, 1000):
+for n in range(10, 100000):
     iter = 0
     x = n
     while not isPalindrome(x):
