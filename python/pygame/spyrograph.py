@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import pygame,sys
 import math
@@ -35,7 +35,7 @@ def spyro(R,r,l, color):
     t=0
     k=r/R
 
-    for i in xrange(0,n):
+    for i in range(0,n):
         t+=math.radians(1)
         #x=r*math.sin(t)
         #y=r*math.cos(t)

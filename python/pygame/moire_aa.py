@@ -22,6 +22,7 @@ for x in range(0,w,2):
             pygame.draw.aaline(screen,white,(w/2,h/2),(w,y+1))
         y+=2
         pygame.display.update()
+        pygame.event.get()
 
 while 1:
   for event in pygame.event.get():

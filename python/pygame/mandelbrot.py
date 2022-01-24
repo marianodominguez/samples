@@ -43,6 +43,7 @@ for xs in range(w):
         if o>=4:
             screen.set_at((xs,ys),color(o))
     pygame.display.update()
+    pygame.event.get()
 
 while 1:
   for event in pygame.event.get():

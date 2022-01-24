@@ -9,15 +9,16 @@ use num::complex::Complex;
 use sdl2::rect::Point;
 use sdl2::render::WindowCanvas;
 
-
 fn draw_pixel(canvas: &mut WindowCanvas,x:u32,y:u32, v:f32 ) {
     if v<0.5 { 
         canvas.set_draw_color(Color::RGB(v as u8 * 200  , 100, 100));
-        canvas.draw_point(Point::new(x as i32,y as i32));
-    }
+        let result = canvas.draw_point(Point::new(x as i32,y as i32));
 
-    //canvas.present();
-    
+        match result {
+            Ok(_v) => {},
+            Err(e) => println!("error drawing: {:?}", e),
+        }
+    }
 }
 
 pub fn main() {
@@ -46,15 +47,13 @@ pub fn main() {
     let mut y=ymin;
     let dx=(xmax-xmin) / w as f32;
     let dy=(ymax-ymin) / h as f32;
-    let mut z=Complex::new(0.0, 0.0);
-    let mut c=Complex::new(0.0, 0.0);
     let mut k;
 
     for i in 0..w {
         for j in 0..h {
             k=0;
-            z=Complex::new(0.0, 0.0);
-            c=Complex::new(x, y);
+            let mut z=Complex::new(0.0, 0.0);
+            let c=Complex::new(x, y);
             let mut v=0.0;
             while k<iterations && v<4.0 {
                 z=z*z+c;
@@ -63,8 +62,6 @@ pub fn main() {
             }
             y=y+dy;
             draw_pixel(&mut canvas,i,j,v);
-            //println!("{},{} = {}",x,y,v)
-            // process event
         }
         x=x+dx;
         y=ymin;

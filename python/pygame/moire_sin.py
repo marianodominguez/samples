@@ -18,6 +18,7 @@ for i in range(0,w,2):
         pygame.draw.line(screen,white,(0,0),(x,y))
         pygame.draw.line(screen,white,(x,y),(w,h))
         pygame.display.update()
+        pygame.event.get()
 
 while 1:
   for event in pygame.event.get():

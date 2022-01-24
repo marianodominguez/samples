@@ -24,7 +24,6 @@ for i in range(320000):
     z=z+d*(x*y-b*z)
     x=xx
     y=yy
-while 1:
-  for event in pygame.event.get():
-    if event.type == pygame.QUIT:
-        sys.exit()
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            sys.exit()
