@@ -10,7 +10,7 @@ screen.fill(pygame.Color('blue'))
 
 r,s,b,d=10,28,8/3,0.002
 
-x,y,z=0.1,0,0
+x,y,z=1.2,0,0
 scale=5
 
 for i in range(320000):
