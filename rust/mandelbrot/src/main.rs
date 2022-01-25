@@ -10,8 +10,8 @@ use sdl2::rect::Point;
 use sdl2::render::WindowCanvas;
 
 fn draw_pixel(canvas: &mut WindowCanvas,x:u32,y:u32, v:f32 ) {
-    if v<0.5 { 
-        canvas.set_draw_color(Color::RGB(v as u8 * 200  , 100, 100));
+    if v>1.0 { 
+        canvas.set_draw_color(Color::RGB(v as u8 * 11  , v as u8 * 11 , 100));
         let result = canvas.draw_point(Point::new(x as i32,y as i32));
 
         match result {
@@ -22,12 +22,18 @@ fn draw_pixel(canvas: &mut WindowCanvas,x:u32,y:u32, v:f32 ) {
 }
 
 pub fn main() {
-    let xmax=1.0;
-    let ymax=1.5;
-    let xmin=-2.5;
-    let ymin=-1.5;
-    let w=800;
-    let h=600;
+    // let xmax=1.0;
+    // let ymax=1.5;
+    // let xmin=-2.5;
+    // let ymin=-1.5;
+
+    let xmax=0.5;
+    let ymax=-0.3;
+    let xmin=-0.5;
+    let ymin=-1.3;
+
+    let w=2560;
+    let h=1440;
 
     let sdl_context = sdl2::init().unwrap();
     let video_subsystem = sdl_context.video().unwrap();
@@ -65,6 +71,7 @@ pub fn main() {
         }
         x=x+dx;
         y=ymin;
+        sdl_context.event_pump().unwrap().pump_events();
         canvas.present();
     }
     
