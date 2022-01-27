@@ -4,41 +4,57 @@ extern crate num;
 use sdl2::pixels::Color;
 use sdl2::event::Event;
 use sdl2::keyboard::Keycode;
-use std::time::Duration;
 use num::complex::Complex;
 use sdl2::rect::Point;
 use sdl2::render::WindowCanvas;
+use sdl2::Sdl;
+use std::process;
+use std::time::Duration;
 
-fn draw_pixel(canvas: &mut WindowCanvas,x:u32,y:u32, v:f32 ) {
-    if v>1.0 { 
-        canvas.set_draw_color(Color::RGB(v as u8 * 11  , v as u8 * 11 , 100));
-        let result = canvas.draw_point(Point::new(x as i32,y as i32));
+fn draw_pixel(canvas: &mut WindowCanvas,x:u32,y:u32, k:u32 , i:u32) {
+    let color = 255-(k * 255/i );
+    //println!("{}", i-k );
+    canvas.set_draw_color(Color::RGB( 0 ,  color as u8, color as u8 ) );
+    let result = canvas.draw_point(Point::new(x as i32,y as i32));
 
-        match result {
-            Ok(_v) => {},
-            Err(e) => println!("error drawing: {:?}", e),
+    match result {
+        Ok(_v) => {},
+        Err(e) => println!("error drawing: {:?}", e),
+    }
+    
+}
+
+fn process_input(sdl_context: &Sdl) {
+    let mut event_pump = sdl_context.event_pump().unwrap();
+    for event in event_pump.poll_iter() {
+        match event {
+            Event::Quit {..} |
+            Event::KeyDown { keycode: Some(Keycode::Escape), .. } => {
+                process::exit(1);
+            },
+            _ => {}
         }
     }
 }
 
-pub fn main() {
-    // let xmax=1.0;
-    // let ymax=1.5;
-    // let xmin=-2.5;
-    // let ymin=-1.5;
+fn main() {
+    let xmax=1.0;
+    let ymax=1.5;
+    let xmin=-2.5;
+    let ymin=-1.5;
 
-    let xmax=0.5;
-    let ymax=-0.3;
-    let xmin=-0.5;
-    let ymin=-1.3;
+    // let xmax=0.5;
+    // let ymax=-0.3;
+    // let xmin=-0.5;
+    // let ymin=-1.3;
 
-    let w=2560;
-    let h=1440;
+    const W:u32=1440;
+    const H:u32=1200;
 
     let sdl_context = sdl2::init().unwrap();
     let video_subsystem = sdl_context.video().unwrap();
 
-    let window = video_subsystem.window("Mandelbrot set", w, h)
+    let window = video_subsystem.window("Mandelbrot set", W, H)
         .position_centered()
         .build()
         .unwrap();
@@ -48,47 +64,40 @@ pub fn main() {
     canvas.clear();
     canvas.present();
 
-    let iterations=1000;
+    const ITERATIONS:u32=80;
     let mut x=xmin;
     let mut y=ymin;
-    let dx=(xmax-xmin) / w as f32;
-    let dy=(ymax-ymin) / h as f32;
-    let mut k;
+    let dx=(xmax-xmin) / W as f32;
+    let dy=(ymax-ymin) / H as f32;
+    let mut k:u32;
+    let mut z:Complex<f32>;
+    let mut c:Complex<f32>;
+    let mut v:f32;
 
-    for i in 0..w {
-        for j in 0..h {
+    for i in 0..W {
+        for j in 0..H {
             k=0;
-            let mut z=Complex::new(0.0, 0.0);
-            let c=Complex::new(x, y);
-            let mut v=0.0;
-            while k<iterations && v<4.0 {
+            z=Complex::new(0.0, 0.0);
+            c=Complex::new(x, y);
+            v=0.0;
+            while k<ITERATIONS && v<4.0 {
                 z=z*z+c;
                 v=z.norm();
                 k+=1;
             }
             y=y+dy;
-            draw_pixel(&mut canvas,i,j,v);
+            draw_pixel(&mut canvas,i,j,k, ITERATIONS);
         }
         x=x+dx;
         y=ymin;
-        sdl_context.event_pump().unwrap().pump_events();
+        process_input( &sdl_context);
         canvas.present();
     }
-    
-    let mut event_pump = sdl_context.event_pump().unwrap();
-    'running: loop {
-        for event in event_pump.poll_iter() {
-            match event {
-                Event::Quit {..} |
-                Event::KeyDown { keycode: Some(Keycode::Escape), .. } => {
-                    break 'running
-                },
-                _ => {}
-            }
-        }
-        // The rest of the game loop goes here...
 
-        canvas.present();
+// wait until user exits
+
+    loop {
+        process_input( &sdl_context);
         ::std::thread::sleep(Duration::new(0, 1_000_000_000u32 / 60));
     }
 
