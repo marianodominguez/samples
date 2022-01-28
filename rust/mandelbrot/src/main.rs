@@ -12,9 +12,12 @@ use std::process;
 use std::time::Duration;
 
 fn draw_pixel(canvas: &mut WindowCanvas,x:u32,y:u32, k:u32 , i:u32) {
-    let color = 255-(k * 255/i );
+    let r = 136-(k * 136/i );
+    let g = 100-(k * 100/i );
+    let b = 246-(k * 246/i );
     //println!("{}", i-k );
-    canvas.set_draw_color(Color::RGB( 0 ,  color as u8, color as u8 ) );
+
+    canvas.set_draw_color(Color::RGB( r as u8 ,  g as u8, b as u8 ) );
     let result = canvas.draw_point(Point::new(x as i32,y as i32));
 
     match result {
@@ -90,8 +93,8 @@ fn main() {
         }
         x=x+dx;
         y=ymin;
-        process_input( &sdl_context);
         canvas.present();
+        //process_input( &sdl_context);
     }
 
 // wait until user exits
