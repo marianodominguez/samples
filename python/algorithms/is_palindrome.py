@@ -16,5 +16,5 @@ def n_digits(number):
 def digit(number, i):
     return int(number//pow(10,i)  - (number//pow(10, i+1))*10)
 
-print isPalindrome(33423423432)
-print isPalindrome(45345654354)
+print(isPalindrome(33423423432))
+print(isPalindrome(45345654354))
