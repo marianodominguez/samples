@@ -1,14 +1,12 @@
 from gettext import find
 
-
 def read_data():
     result=[]
-    f = open("nav_code_tst.txt","r")
+    f = open("nav_code.txt","r")
     for line in f:
         row=line.strip()
         result.append(row)
     return result
-
 
 def find_corrupted(line):
     matches = { '(':')','{':'}','<':'>','[':']' }
@@ -37,10 +35,38 @@ def part1(d):
     print(cl)
     print(sum( [scores[x] for x in cl] ))
 
+def autocomplete(s):
+    matches = { '(':')','{':'}','<':'>','[':']' }
+    stack=[]
+    result=[]
+    for ch in line:
+        if ch in ['(','{','<','[']: 
+            stack.append(ch)
+        if ch in [')','}','>',']']:
+            stack.pop()
+    while stack:
+        i = stack.pop()
+        result.append(matches[i])
+    return result
+
+def score(line):
+    score = 0
+    table=')]}>'
+    for ch in line:
+        score = score*5+table.find(ch)+1
+    return score
+
 d = read_data()
 incomplete=[]
 for line in d:
     if not find_corrupted(line):
         incomplete.append(line)
+scores=[]
+for line in incomplete:
+    print(line)
+    a =autocomplete(line)
+    print("".join(a))
+    scores.append(score(a))
 
-print(incomplete)
+mid = len(scores)//2
+print(sorted(scores)[mid])
