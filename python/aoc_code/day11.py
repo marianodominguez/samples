@@ -16,15 +16,14 @@ def flash(grid,i,j):
         current=stack.pop()
         if current not in visited: 
             visited.append(current)
-        i=current[0]
-        j=current[1]
-        for x in [-1,0,1]:
-            for y in [-1,0,1]:
-                if x+i<n and x+i>=0 and y+j<m and y+j>=0:
-                    if not (i==0 and y==0): 
-                        grid[i+x][j+y]+=1
-                        if grid[i+x][j+y]>9:
-                            if (i+x,j+y) not in visited: 
+            i=current[0]
+            j=current[1]
+            for x in [-1,0,1]:
+                for y in [-1,0,1]:
+                    if x+i<n and x+i>=0 and y+j<m and y+j>=0:
+                        if not (i==0 and y==0): 
+                            grid[i+x][j+y]+=1
+                            if grid[i+x][j+y]>9 and (i+x,j+y) not in visited:
                                 stack.append((i+x,j+y))
     return visited
 
