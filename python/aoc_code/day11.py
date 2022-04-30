@@ -6,11 +6,10 @@ def read_data():
         result.append(row)
     return result
 
-def flash(grid,i,j):
+def flash(grid,i,j, visited):
     n=len(grid[0])
     m=len(grid)
     stack=[(i,j)]
-    visited=[]
     while stack:
         #print(stack)
         current=stack.pop()
@@ -21,7 +20,7 @@ def flash(grid,i,j):
         for x in [-1,0,1]:
             for y in [-1,0,1]:
                 if x+i<n and x+i>=0 and y+j<m and y+j>=0:
-                    if not (i==0 and y==0): 
+                    if not (x==0 and y==0): 
                         grid[i+x][j+y]+=1
                         if grid[i+x][j+y]>9:
                             if (i+x,j+y) not in visited: 
@@ -38,8 +37,8 @@ def step(grid):
     for i in range(m):
         for j in range(n):
             if grid[i][j] >9 and (i,j) not in flashes: 
-                f = flash(grid,i,j)
-                flashes.extend(f)
+                f = flash(grid,i,j,flashes)
+                flashes.extend([v for v in f if v not in flashes ])
                 print(flashes)
     for v in flashes: 
         if grid[v[0]][v[1]]>9:
