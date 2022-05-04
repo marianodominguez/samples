@@ -39,29 +39,38 @@ def counter(p):
     return count
 
 def part1():
-    nsteps=10
+    nsteps=5
     d=read_data()
     polymer=d['template']
     rules=d['rules']
 
     for step in range(nsteps):
-        print(step,len(polymer))
+        print(step,polymer)
         polymer=apply_rules(rules,polymer)
-    
+        print(count_triplets(polymer))
+
     count=counter(polymer)        
-    print(count)
+    #print(count)
+    
     r = max(count.values())-min(count.values())
     print(r)
    
+def count_triplets(p):
+    l=[]
+    for i in range(len(p)-1):
+        l.append(p[i]+p[i+1])
+    return counter(l)
+
 def addpair(e,d,prev):
-    if e in prev:
-        d[e]=prev[e]*2
+    pv=prev[e] if e in prev else 1
+    if e in d:
+        d[e]+=pv
     else:
-        d[e]=1
+        d[e]=pv
     return d        
    
 def part2():
-    nsteps=10
+    nsteps=5
     d=read_data()
     polymer=d['template']
     rules=d['rules']
@@ -79,7 +88,7 @@ def part2():
             if p in rules:
                 new1=p[0]+rules[p]
                 new2=rules[p]+p[1]
-                next = addpair(new1,next,npairs)
+                next = addpair(new1,next, npairs)
                 next = addpair(new2,next, npairs)
         print(npairs)
         npairs=next
@@ -100,7 +109,10 @@ def count_letters(npairs):
              result[c2]=npairs[p]   
     return result
 
+part1()
+print('----')
 npairs=part2()
 print(npairs)
 result = count_letters(npairs)
 print(result)
+
