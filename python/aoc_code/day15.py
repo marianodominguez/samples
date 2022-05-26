@@ -2,7 +2,7 @@ from heapq import heappush,heappop
 
 def read_data():
     result=[]
-    f = open("chitons_tst.txt","r")
+    f = open("chitons.txt","r")
     for line in f:
         row=[ int(c) for c in line.strip() ]
         result.append(row)
@@ -43,7 +43,7 @@ def get_path(start, end, visited):
     heappush(queue, (1, [start]) )
     path=[]
     while queue:
-        #print(".", end="")
+        print(".", end="")
         # get the path with min risk
         path=heappop(queue)[1]
         current = path[-1]
@@ -57,12 +57,7 @@ def get_path(start, end, visited):
 cave=read_data()
 cave=expand_map(cave)
 
-i=0
-for row in cave:
-    if i%10==0: print("")
-    i+=1
-    print("".join([ str(x) for x in row]))
-    
+i=0 
 print(len(cave), len(cave[0]))
 start=(0,0)
 m=len(cave)

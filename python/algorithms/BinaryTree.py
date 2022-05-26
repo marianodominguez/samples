@@ -130,3 +130,24 @@ class Tree:
                 return []
             path.append(next)
             current = next
+    
+    def height(self, root):
+        stack=[[root]]
+        path=[]
+        visited=[]
+        maxlen=1
+        while stack:
+            path=stack.pop()
+            #print([n.data for n in path])
+            current=path[-1]
+            visited.append(current)
+            if current.right and current.right not in visited:
+                newpath=path.copy()
+                newpath.append(current.right)
+                stack.append(newpath)
+            if current.left and current.left not in visited:
+                newpath=path.copy()
+                newpath.append(current.left)
+                stack.append(newpath)
+            if len(path)>maxlen: maxlen=len(path)
+        return maxlen
