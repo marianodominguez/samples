@@ -10,10 +10,15 @@ def format(text, size):
     while i<len(words):
         n=len(words[i])
         #word is bigger
-        if n>=size: 
-            row.append(words[i])
-            col=size
+        if n>=size:
+            word=words[i]
+            row.append(word[:size-2]+"-")
+            result.append(word[:size-2]+"-")
+            row=[]
+            row.append(word[size-2:])
+            col=n-size+3
             i+=1
+            if i<len(words): n=len(words[i])
         while col+n < size and i<len(words):
             row.append(words[i])
             col+=n+1
