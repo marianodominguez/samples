@@ -12,9 +12,9 @@ x=1020
 y=380
 h=0
 v=5
-s[1]=14
-s[2]=1
-p=3
+s[0]=14
+s[1]=1
+p=2
 
 def dragon():
     global p,n,s,a,x,y,h,v,u,w,t
