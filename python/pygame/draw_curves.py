@@ -1,5 +1,6 @@
 #!/bin/python 
 
+from email.quoprimime import header_check
 import os, sys
 import pygame
 import math
@@ -15,16 +16,16 @@ sqrt_2 = math.sqrt(2)
 
 def cone():
   for th in range(0,360, 2):
-    x1=200 * math.sin(math.radians(th))
-    y1=200 * math.cos(math.radians(th))
-    pygame.draw.aaline(screen, pygame.Color('mistyrose1') , adjxy(-250 , -200), adjxy(x1,y1) )
+    x1=height/3 * math.sin(math.radians(th))
+    y1=height/3 * math.cos(math.radians(th))
+    pygame.draw.aaline(screen, pygame.Color('mistyrose1') , adjxy(-height/2 , height/2-10), adjxy(x1,y1) )
 
 def triangle():
   for x in range(int(-width/2),int(width/2),5):
     pygame.draw.aaline(screen, pygame.Color('coral') , adjxy(0,0), adjxy(x,height/2) )
     
 def diamond():
-    r = 300
+    r = height/2
     for i in range(0, 360, 15):
         x=r * math.sin(math.radians(i))
         y=r * math.cos(math.radians(i))
@@ -34,7 +35,7 @@ def diamond():
             pygame.draw.aaline(screen, pygame.Color('plum') , adjxy(x,y), adjxy(x1,y1) )
     
 def curve():
-    r = 250
+    r = 4/10*height
     for th in range(0,360):
         x = r * math.sin(math.radians(th))
         y = r * math.cos(math.radians(th))
@@ -43,12 +44,12 @@ def curve():
         pygame.draw.aaline(screen, pygame.Color('yellow2') , adjxy(x ,y), adjxy(x1,y1) )
 
 def curve2():
-    r = 200
+    r = height/4
     for th in range(0,360):
         x = r * math.sin(math.radians(th))
         y = r * math.cos(math.radians(th))
-        x1= (r+60) * math.cos(math.radians(th))
-        y1= (r+60) * math.cos(math.radians(th))
+        x1= (r+height/5) * math.cos(math.radians(th))
+        y1= (r+height/5) * math.cos(math.radians(th))
         pygame.draw.aaline(screen, pygame.Color('yellow') , adjxy(x,y), adjxy(x1,y1) )
         #screen.set_at(adjxy(x,y), (0,255,255))
         #screen.set_at(adjxy(x1,y1), (255,255,0))        
@@ -96,10 +97,10 @@ def dragon(level, l, i=1):
         alpha += math.radians(45)
              
 def adjxy(x,y):
-    return (x + width/2, height/2 -y)
+    return (int(x + width/2), int(height/2 -y))
 
 def adjpt(point):
-    return adjxy(point[0], point[1])
+    return adjxy(int(point[0]), int(point[1]))
 
 def side(x):
     return x/2 * sqrt_2 
@@ -137,8 +138,8 @@ while 1:
       if event.key == pygame.K_4:
           curve()
       if event.key == pygame.K_5:
-          sierpinski(l, width /2, 0 , 800)
-          if l<8: l = l+1
+          sierpinski(l, width /2, 0 , width)
+          if l<9: l = l+1
           else : l=0
       if event.key == pygame.K_6:
           alpha=0
