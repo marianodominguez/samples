@@ -33,20 +33,20 @@ def fedora(x,y):
     z=np.sin(d/10)
     return x, y, z
 
-# u = np.linspace(0, 2 * np.pi, 100)
-# v = np.linspace(0, 2* np.pi, 100)
+u = np.linspace(0, 2 * np.pi, 100)
+v = np.linspace(0, 2* np.pi, 100)
 
-u = np.linspace(-10, 10, 100)
-v = np.linspace(-10, 10, 100)
+#u = np.linspace(-10, 10, 100)
+#v = np.linspace(-10, 10, 100)
 
 u, v = np.meshgrid(u, v)
-x,y,z= fedora(u, v)
+x,y,z= klein_bottle(u, v)
 
 fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
 
 ax.plot_surface(x, y, z,
                  rstride=1, cstride=1,
-                 cmap=plt.get_cmap('jet'),
+                 cmap=plt.get_cmap(''),
                  linewidth=0, antialiased=False)
 
 plt.show()

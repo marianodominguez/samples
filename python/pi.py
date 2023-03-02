@@ -9,4 +9,4 @@ def leibniz_pi():
             q,r,t,k,n,l = (q*k,(2*q+r)*l,t*l,k+1,(q*(7*k+2)+r*l)//(t*l),l+2)
 
 pi = leibniz_pi()
-print([next(pi) for _ in range(18)])
+print([next(pi) for _ in range(1000)])
