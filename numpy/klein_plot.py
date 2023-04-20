@@ -16,11 +16,31 @@ def torus(u,v):
     z = (r*np.sin(u))
     return x, y, z
 
-u = np.linspace(0, 2 * np.pi, 100)
-v = np.linspace(0, 2* np.pi, 100)
+def saddle(x,y):
+    z = np.power(x,2)-np.power(y,2)
+    return x, y, z
+
+def bowl(x,y):
+    z = np.power(x,2)+np.power(y,2)
+    return x, y, z
+
+def wave(x,y):
+    z = np.cos(x)+np.sin(y)
+    return x, y, z
+
+def fedora(x,y):
+    d = np.power(x,2)+np.power(y,2)
+    z=np.sin(d/10)
+    return x, y, z
+
+# u = np.linspace(0, 2 * np.pi, 100)
+# v = np.linspace(0, 2* np.pi, 100)
+
+u = np.linspace(-10, 10, 100)
+v = np.linspace(-10, 10, 100)
 
 u, v = np.meshgrid(u, v)
-x,y,z= klein_bottle(u, v)
+x,y,z= fedora(u, v)
 
 fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
 
