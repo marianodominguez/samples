@@ -2,7 +2,7 @@
 import pygame,sys
 import math
 
-w,h=800,600
+w,h=1440,960
 
 black = pygame.Color('black')
 white = pygame.Color('white')

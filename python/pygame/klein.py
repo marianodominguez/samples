@@ -8,7 +8,7 @@ def adjxy(x,y):
 v=0
 u=0
 pygame.init()
-screen = pygame.display.set_mode((w,h))
+screen = pygame.display.set_mode((w,h), pygame.RESIZABLE)
 screen.fill(pygame.Color('black'))
 
 LUT_SIZE=720
@@ -33,11 +33,11 @@ while v<2*math.pi:
             if idx<LUT_SIZE : sbuf[idx]=sinu
         else:
             sinu=sbuf[idx]
-        c7u=cosu*cosu*cosu*cosu*cosu*cosu*cosu
-        c6u=cosu*cosu*cosu*cosu*cosu*cosu
-        c5u=cosu*cosu*cosu*cosu*cosu
-        c4u=cosu*cosu*cosu*cosu
-        c3u=cosu*cosu*cosu
+        c7u=cosu**7
+        c6u=cosu**6
+        c5u=cosu**5
+        c4u=cosu**4
+        c3u=cosu**3
 
         x=(-2/15)*cosu*(3*cosv-30*sinu+90*c4u*sinu-60*c6u*sinu+5*cosu*cosv*sinu)
         t1=3*cosv-3*cosu*cosu*cosv-48*c4u*cosv+48*c6u*cosv-60

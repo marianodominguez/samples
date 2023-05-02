@@ -7,12 +7,10 @@ import math
 import random
 from pygame.locals import *
 
-
 if not pygame.font: print('Warning, fonts disabled')
 if not pygame.mixer: print('Warning, sound disabled')
 
 sqrt_2 = math.sqrt(2)
-
 
 def cone():
   for th in range(0,360, 2):
@@ -109,7 +107,7 @@ mode = width,height = 1440,960
 
 pygame.init()
 
-screen = pygame.display.set_mode(mode)
+screen = pygame.display.set_mode(mode,pygame.RESIZABLE)
 
 basicfont = pygame.font.SysFont(None, 48)
 text = basicfont.render('Press number keys 1-8', True, pygame.Color('red'), pygame.Color('black'))

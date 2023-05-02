@@ -3,10 +3,10 @@
 import pygame,sys
 import math
 
-w,h=800,600
+w,h=1440,960
 
 pygame.init()
-screen = pygame.display.set_mode((800,600))
+screen = pygame.display.set_mode((w,h))
 
 red = pygame.Color('red')
 yellow = pygame.Color('yellow')
