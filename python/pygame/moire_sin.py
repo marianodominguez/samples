@@ -13,7 +13,6 @@ def draw():
         pygame.draw.line(screen,white,(w/2,0),(x,y))
         #pygame.draw.line(screen,white,(x,y),(w,h))
         pygame.display.update()
-        pygame.event.get()
 
 black = pygame.Color('black')
 white = pygame.Color('white')
@@ -29,5 +28,4 @@ while 1:
         sys.exit()
     if event.type == pygame.VIDEORESIZE:
         w,h = event.w,event.h
-        screen = pygame.display.set_mode((event.w, event.h),pygame.RESIZABLE)
         draw()

@@ -1,4 +1,4 @@
-#!/bin/python 
+#!/bin/python
 
 from email.quoprimime import header_check
 import os, sys
@@ -34,7 +34,7 @@ def triangle():
   for x in range(int(-width/2),int(width/2),5):
     pygame.draw.aaline(screen, pygame.Color('coral') , adjxy(0,0), adjxy(x,height/2) )
     pygame.display.update()
-    
+
 def diamond():
     r = height/2
     for i in range(0, 360, 15):
@@ -45,7 +45,7 @@ def diamond():
             y1=r * math.cos(math.radians(j))
             pygame.draw.aaline(screen, pygame.Color('plum') , adjxy(x,y), adjxy(x1,y1) )
             pygame.display.update()
-    
+
 def curve():
     r = 4/10*height
     for th in range(0,360):
@@ -66,8 +66,8 @@ def curve2():
         pygame.draw.aaline(screen, pygame.Color('yellow') , adjxy(x,y), adjxy(x1,y1) )
         pygame.display.update()
         #screen.set_at(adjxy(x,y), (0,255,255))
-        #screen.set_at(adjxy(x1,y1), (255,255,0))        
-        
+        #screen.set_at(adjxy(x1,y1), (255,255,0))
+
 
 def sierpinski_chaos():
     vertex = [(0, height/2), (-width/2, -height/2), (width/2, -height/2)]
@@ -82,7 +82,7 @@ def sierpinski_chaos():
 def sierpinski(level,vx,vy,l):
     if level==0:
         if (l<=1):
-            screen.set_at((vx,vy), pygame.Color('cyan3'))            
+            screen.set_at((vx,vy), pygame.Color('cyan3'))
         p1 = (vx, vy)
         p2 = (vx - l/2, vy + l/2)
         p3 = (vx + l/2, vy + l/2)
@@ -90,7 +90,7 @@ def sierpinski(level,vx,vy,l):
     else:
         sierpinski(level-1 , vx,vy , l/2)
         sierpinski(level-1 , vx - l/4 ,vy + l/4 , l/2)
-        sierpinski(level-1 , vx + l/4 ,vy + l/4 , l/2)        
+        sierpinski(level-1 , vx + l/4 ,vy + l/4 , l/2)
 
 def FD(l):
     global xpos,ypos,alpha
@@ -107,10 +107,10 @@ def dragon(level, l, i=1):
     else:
         alpha -= math.radians(45)
         dragon(level - 1, side(l), 1)
-        alpha += math.radians(90 * i)        
+        alpha += math.radians(90 * i)
         dragon(level - 1, side(l), -1)
         alpha += math.radians(45)
-             
+
 def adjxy(x,y):
     return (int(x + width/2), int(height/2 -y))
 
@@ -118,7 +118,7 @@ def adjpt(point):
     return adjxy(int(point[0]), int(point[1]))
 
 def side(x):
-    return x/2 * sqrt_2 
+    return x/2 * sqrt_2
 
 mode = width,height = 1440,960
 
@@ -128,7 +128,7 @@ screen = pygame.display.set_mode(mode,pygame.RESIZABLE)
 
 print_msg()
 
-l = 0    
+l = 0
 ld =0
 
 while 1:
@@ -137,7 +137,6 @@ while 1:
         sys.exit()
     if event.type == VIDEORESIZE:
         mode = width,height = event.w,event.h
-        screen = pygame.display.set_mode(mode,pygame.RESIZABLE)
         print_msg()
     elif event.type == KEYDOWN:
       screen.fill(pygame.Color('black'))
@@ -155,7 +154,7 @@ while 1:
           else : l=0
       if event.key == pygame.K_6:
           alpha=0
-          xpos, ypos = width/3,height/4          
+          xpos, ypos = width/3,height/4
           dragon(ld, height/2)
           if ld<16: ld +=1
           else : ld=0
@@ -164,4 +163,4 @@ while 1:
       if event.key == pygame.K_8:
           sierpinski_chaos()
   pygame.display.update()
-  
+

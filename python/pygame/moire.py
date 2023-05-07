@@ -34,5 +34,4 @@ while 1:
         sys.exit()
     if event.type == pygame.VIDEORESIZE:
         w,h = event.w,event.h
-        screen = pygame.display.set_mode((event.w, event.h),pygame.RESIZABLE)
         draw_moire()

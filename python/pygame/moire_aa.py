@@ -20,11 +20,10 @@ def draw_moire():
         pygame.draw.aaline(screen,white,(w/2,h/2),(w,y+1))
     y+=2
     pygame.display.update()
-    pygame.event.get()
 
 
 pygame.init()
-screen = pygame.display.set_mode((w,h),pygame.RESIZABLE)
+screen = pygame.display.set_mode((w,h),pygame.RESIZABLE )
 screen.fill(black)
 draw_moire()
 
@@ -34,5 +33,5 @@ while 1:
         sys.exit()
     if event.type == pygame.VIDEORESIZE:
         w,h = event.w,event.h
-        screen = pygame.display.set_mode((event.w, event.h),pygame.RESIZABLE)
+        screen.fill(black)
         draw_moire()
