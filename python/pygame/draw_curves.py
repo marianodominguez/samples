@@ -28,10 +28,12 @@ def cone():
     x1=height/3 * math.sin(math.radians(th))
     y1=height/3 * math.cos(math.radians(th))
     pygame.draw.aaline(screen, pygame.Color('mistyrose1') , adjxy(-height/2 , height/2-10), adjxy(x1,y1) )
+    pygame.display.update()
 
 def triangle():
   for x in range(int(-width/2),int(width/2),5):
     pygame.draw.aaline(screen, pygame.Color('coral') , adjxy(0,0), adjxy(x,height/2) )
+    pygame.display.update()
     
 def diamond():
     r = height/2
@@ -42,6 +44,7 @@ def diamond():
             x1=r * math.sin(math.radians(j))
             y1=r * math.cos(math.radians(j))
             pygame.draw.aaline(screen, pygame.Color('plum') , adjxy(x,y), adjxy(x1,y1) )
+            pygame.display.update()
     
 def curve():
     r = 4/10*height
@@ -51,6 +54,7 @@ def curve():
         x1= r * math.cos(math.radians(th)*2)
         y1= r * math.cos(math.radians(th)*2)
         pygame.draw.aaline(screen, pygame.Color('yellow2') , adjxy(x ,y), adjxy(x1,y1) )
+        pygame.display.update()
 
 def curve2():
     r = height/4
@@ -60,6 +64,7 @@ def curve2():
         x1= (r+height/5) * math.cos(math.radians(th))
         y1= (r+height/5) * math.cos(math.radians(th))
         pygame.draw.aaline(screen, pygame.Color('yellow') , adjxy(x,y), adjxy(x1,y1) )
+        pygame.display.update()
         #screen.set_at(adjxy(x,y), (0,255,255))
         #screen.set_at(adjxy(x1,y1), (255,255,0))        
         
@@ -72,6 +77,7 @@ def sierpinski_chaos():
         midpoint = (( randomVertex[0] + point[0] )/2, ( randomVertex[1] + point[1] )/2)
         screen.set_at(adjpt(midpoint), pygame.Color('papayawhip'))
         point = midpoint
+        if i % 500 == 0: pygame.display.update()
 
 def sierpinski(level,vx,vy,l):
     if level==0:
