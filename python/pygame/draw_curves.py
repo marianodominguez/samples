@@ -12,6 +12,17 @@ if not pygame.mixer: print('Warning, sound disabled')
 
 sqrt_2 = math.sqrt(2)
 
+def print_msg():
+    basicfont = pygame.font.SysFont(None, 48*width//1000)
+    text = basicfont.render('Press number keys 1-8', True, pygame.Color('red'), pygame.Color('black'))
+    textrect = text.get_rect()
+    textrect.centerx = screen.get_rect().centerx
+    textrect.centery = screen.get_rect().centery
+    screen.fill((0,0,0))
+    screen.blit(text, textrect)
+    pygame.display.update()
+
+
 def cone():
   for th in range(0,360, 2):
     x1=height/3 * math.sin(math.radians(th))
@@ -109,14 +120,7 @@ pygame.init()
 
 screen = pygame.display.set_mode(mode,pygame.RESIZABLE)
 
-basicfont = pygame.font.SysFont(None, 48)
-text = basicfont.render('Press number keys 1-8', True, pygame.Color('red'), pygame.Color('black'))
-textrect = text.get_rect()
-textrect.centerx = screen.get_rect().centerx
-textrect.centery = screen.get_rect().centery
-screen.fill((0,0,0))
-screen.blit(text, textrect)
-pygame.display.update()
+print_msg()
 
 l = 0    
 ld =0
@@ -125,6 +129,10 @@ while 1:
   for event in pygame.event.get():
     if event.type == QUIT:
         sys.exit()
+    if event.type == VIDEORESIZE:
+        mode = width,height = event.w,event.h
+        screen = pygame.display.set_mode(mode,pygame.RESIZABLE)
+        print_msg()
     elif event.type == KEYDOWN:
       screen.fill(pygame.Color('black'))
       if event.key == pygame.K_1:

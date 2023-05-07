@@ -5,6 +5,7 @@ w,h=1440,960
 
 def adjxy(x,y):
     return (int(x + w/2), int(h/2 -y))
+
 v=0
 u=0
 pygame.init()
@@ -33,6 +34,7 @@ while v<2*math.pi:
             if idx<LUT_SIZE : sbuf[idx]=sinu
         else:
             sinu=sbuf[idx]
+            
         c7u=cosu**7
         c6u=cosu**6
         c5u=cosu**5
@@ -62,6 +64,16 @@ while v<2*math.pi:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit()
+        if event.type == pygame.VIDEORESIZE:
+            w=event.w
+            h=event.h
+            # There's some code to add back window content here.
+            screen = pygame.display.set_mode((event.w, event.h),
+                                              pygame.RESIZABLE)
+            screen.fill(pygame.Color('black'))
+            u=0
+            v=0
+
     v=v+math.pi/100
     u=0
     idx=0
