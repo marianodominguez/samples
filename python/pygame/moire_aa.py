@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+
 import pygame,sys
 
 w,h=1440,960

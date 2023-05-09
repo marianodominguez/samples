@@ -1,4 +1,4 @@
-#!/bin/python
+#!/usr/bin/env python3
 
 from email.quoprimime import header_check
 import os, sys
