@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -46,7 +48,7 @@ fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
 
 ax.plot_surface(x, y, z,
                  rstride=1, cstride=1,
-                 cmap=plt.get_cmap(''),
+                 cmap=plt.get_cmap('cool'),
                  linewidth=0, antialiased=False)
 
 plt.show()
