@@ -11,9 +11,9 @@ pygame.init()
 screen = pygame.display.set_mode((w,h), pygame.RESIZABLE)
 screen.fill(pygame.Color('black'))
 
-LUT_SIZE=720
-buf=[-99]*LUT_SIZE
-sbuf=[-99]*LUT_SIZE
+LUT_SIZE=70
+buf=[-99]*(LUT_SIZE+1)
+sbuf=[-99]*(LUT_SIZE+1)
 
 p1=math.cos(math.pi/6)
 p2=math.cos(math.pi/2-p1)
@@ -27,12 +27,12 @@ def draw_klein():
         sinv=math.sin(v)
         pygame.display.update()
         while u<math.pi:
-            if buf[idx]==-99 or idx>LUT_SIZE:
+            if idx>LUT_SIZE or buf[idx]==-99 :
                 cosu=math.cos(u)
                 if idx<LUT_SIZE :buf[idx]=cosu
             else:
                 cosu=buf[idx]
-            if sbuf[idx]==-99 or idx>LUT_SIZE:
+            if idx>LUT_SIZE or sbuf[idx]==-99:
                 sinu=math.sin(u)
                 if idx<LUT_SIZE : sbuf[idx]=sinu
             else:
@@ -61,7 +61,7 @@ def draw_klein():
                 pygame.draw.aaline(screen, pygame.Color('plum') , adjxy(xp,yp), adjxy(x1,y1) )
                 x1=xp
                 y1=yp
-            u=u+math.pi/100
+            u=u+math.pi/LUT_SIZE
             idx=idx+1
 
         for event in pygame.event.get():
@@ -75,10 +75,10 @@ def draw_klein():
                 v=0
                 idx=0
 
-        v=v+math.pi/100
+        v=v+math.pi/LUT_SIZE
         u=0
         idx=0
-
+    
 draw_klein()
 
 while True:
