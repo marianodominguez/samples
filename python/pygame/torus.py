@@ -11,7 +11,7 @@ screen.fill(pygame.Color('blue'))
 
 s=math.pi/40
 r=300
-p1=math.cos(math.pi/6)
+p1=math.cos(math.pi/7)
 p2=math.cos(math.pi/2-p1)
 
 def draw():
