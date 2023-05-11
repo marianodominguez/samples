@@ -12,16 +12,16 @@ screen.fill(pygame.Color('blue'))
 s=math.pi/40
 r=300
 p1=math.cos(math.pi/7)
-p2=math.cos(math.pi/2-p1)
+p2=math.cos(math.pi/7-p1)
 
 def draw():
     global w,h
     x1,y1=-1,-1
     th=0
-    while th<2*math.pi:
+    while th<=2*math.pi:
         ph=0
-        x1=-1
-        while ph<2*math.pi:
+        x1=-99
+        while ph<=2*math.pi:
             th1=th-ph*0.5
 
             x=(10*math.cos(th)+50)*math.cos(ph)
@@ -30,9 +30,9 @@ def draw():
 
             xp=-p1*x+p1*y 
             yp=-p2*x-p2*y+z
-            xp=int( xp*w/300 +w/2 )
-            yp=int( yp*h/300 + h/2 )
-            if x1<0:
+            xp=int( xp*w/200 +w/2 )
+            yp=int( yp*h/200 + h/2 )
+            if x1==-99:
                 screen.set_at((xp,yp),pygame.Color('white'))
             else:
                 pygame.draw.aaline(screen, pygame.Color('plum') , (x1,y1), (xp,yp) )
