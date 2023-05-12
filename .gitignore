@@ -14,3 +14,4 @@ datasets
 .ipynb_checkpoints
 .vscode
 target
+.venv
