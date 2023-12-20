@@ -48,11 +48,11 @@ int CUBE[]={
 };
 
 
-void put_pixel(unsigned int x, unsigned char y) {
+void put_pixel(unsigned int x, unsigned int y) {
    al_draw_pixel(x, y,al_map_rgb(255, 255, 255)) ;
 }
 
-void line(unsigned int x, unsigned char y, unsigned int x1, unsigned char y1) {
+void line(unsigned int x, unsigned int y, unsigned int x1, unsigned int y1) {
     int x0=x;
     int y0=y;
     int dx=abs(x1-x0);
@@ -88,7 +88,7 @@ void line(unsigned int x, unsigned char y, unsigned int x1, unsigned char y1) {
     }
 }
 
-void bline(unsigned int x, unsigned char y, unsigned int u, unsigned char v) {
+void bline(unsigned int x, unsigned int y, unsigned int u, unsigned int v) {
     int x0=x;
     int y0=y;
     int x1=u;
@@ -135,44 +135,37 @@ int cube(void) {
     int sqrt2=1414;
     int sqrt6=2449;
     unsigned int r = 80;
+	idx=0;
+	al_clear_to_color(al_map_rgb(0, 0, 0));
+	
+	for(i=0;i<nfaces-1;i++) {
+		for(j=0; j<nvert; j++) {
+			x=CUBE[idx++]*100;
+			y=CUBE[idx++]*100;
+			z=CUBE[idx++]*100;
 
- 
-        idx=0;
-        al_clear_to_color(al_map_rgb(0, 0, 0));
-        for(i=0;i<nfaces-1;i++) {
-            for(j=0; j<nvert; j++) {
-                x=CUBE[idx++]*100;
-                y=CUBE[idx++]*100;
-                z=CUBE[idx++]*100;
+			//rotation
+			yr =  ((long) y*cos(th)  - (long) z*sin(th));
+			zr =  ((long) y*sin(th)  + (long) z*cos(th));
+			
 
-               //scale
-                x/=2;
-                y/=2;
-                z/=2;
+			xp = (long) 1000*(x-zr)/sqrt2;
+			yp = (long) 1000*(x+2*yr+zr)/sqrt6;
 
+			xs = xp + 800/2;
+			ys = yp+ 600/2;
 
-                //rotation
-                yr =  ((long) y*cos(th)  - (long) z*sin(th));
-                zr =  ((long) y*sin(th)  + (long) z*cos(th));
-                
- 
-                xp = (long) 1000*(x-zr)/sqrt2;
-                yp = (long) 1000*(x+2*yr+zr)/sqrt6;
-
-                xs = xp + 400/2;
-                ys = yp+300/2;
-
-                if (j==0) {
-                    x0=xs;
-                    y0=ys;
-                }
-                else {
-                    bline(x1,y1,xs,ys);
-                }
-                x1=xs;
-                y1=ys;
-            }
-        }
+			if (j==0) {
+				x0=xs;
+				y0=ys;
+			}
+			else {
+				bline(x1,y1,xs,ys);
+			}
+			x1=xs;
+			y1=ys;
+		}
+     }
     return EXIT_SUCCESS;
 }
 
@@ -183,7 +176,7 @@ int main()
 
     ALLEGRO_TIMER* timer = al_create_timer(1.0 / 30.0);
     ALLEGRO_EVENT_QUEUE* queue = al_create_event_queue();
-    ALLEGRO_DISPLAY* disp = al_create_display(500, 600);
+    ALLEGRO_DISPLAY* disp = al_create_display(800, 600);
     ALLEGRO_FONT* font = al_create_builtin_font();
 
     al_register_event_source(queue, al_get_keyboard_event_source());
