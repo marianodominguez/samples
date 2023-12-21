@@ -6,7 +6,7 @@ OBJS= main.o
 CXX=gcc
 COMPILER_FLAGS= -g
 INCLUDE= -I/usr/include/aarch64-linux-gnu 
-LIBS= -lallegro_font -lallegro -lm
+LIBS= -lallegro_font -lallegro -lm -lallegro_primitives
 
 EXEC= bin/cube
 

@@ -1,6 +1,7 @@
 
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_font.h>
+#include <allegro5/allegro_primitives.h>
 #include <stdbool.h>
 
 #include <stdio.h>
@@ -160,7 +161,8 @@ int cube(void) {
 				y0=ys;
 			}
 			else {
-				bline(x1,y1,xs,ys);
+				//bline(x1,y1,xs,ys);
+                al_draw_line(x1,y1,xs,ys, al_map_rgb(255, 255, 255),0.0);
 			}
 			x1=xs;
 			y1=ys;
@@ -173,8 +175,9 @@ int main()
 {
     al_init();
     al_install_keyboard();
+    al_init_primitives_addon();
 
-    ALLEGRO_TIMER* timer = al_create_timer(1.0 / 30.0);
+    ALLEGRO_TIMER* timer = al_create_timer(1.0 / 10.0);
     ALLEGRO_EVENT_QUEUE* queue = al_create_event_queue();
     ALLEGRO_DISPLAY* disp = al_create_display(800, 600);
     ALLEGRO_FONT* font = al_create_builtin_font();
@@ -189,14 +192,14 @@ int main()
     al_start_timer(timer);
     while(1)
     {
-		th=th+M_PI/20;
-		if(th==2*M_PI) th=0;
+		th= th + M_PI/20;
+		if(th>=2*M_PI) th=0;
 		
         al_wait_for_event(queue, &event);
 
         if(event.type == ALLEGRO_EVENT_TIMER)
             redraw = true;
-        else if((event.type == ALLEGRO_EVENT_KEY_DOWN) || (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE))
+        else if( (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE))
             break;
 
         if(redraw && al_is_event_queue_empty(queue))
