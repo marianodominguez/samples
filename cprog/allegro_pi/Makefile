@@ -5,7 +5,7 @@ MACHINE= $(shell uname -s)
 OBJS= main.o
 CXX=gcc
 COMPILER_FLAGS= -g
-INCLUDE= -I/usr/include/aarch64-linux-gnu 
+INCLUDE= -I/usr/include/aarch64-linux-gnu
 LIBS= -lallegro_font -lallegro -lm -lallegro_primitives
 
 EXEC= bin/cube
@@ -15,6 +15,9 @@ $(EXEC): $(OBJS)
 
 main.o: src/cube.c
 	$(CXX) -c $(COMPILER_FLAGS) -o $@ $< $(INCLUDE)
+
+polar: src/polar_curves.c
+	$(CXX) $(COMPILER_FLAGS) -o bin/$@ $< $(INCLUDE) $(LIBS)
 
 clean:
 	rm -f $(EXEC) $(OBJS)
