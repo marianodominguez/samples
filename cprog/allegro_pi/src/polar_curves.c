@@ -7,33 +7,30 @@
 #include <stdlib.h>
 #include <math.h>
 
-float r1=60,r2=-50,ph=0,th=0;
+float k=-0.5,r=200,l=0.2,th=0;
+float x,y,xp,yp;
+char buffer[32];
 
 void draw() {
-
-    float x,y,x1,y1;
-    for (int i=0; i<300; i++) {
-        x=r1*sin(th)+r2*sin(ph);
-        y=r1*cos(th)+r2*cos(ph);
-        if(i==0) {
-            x1=x;
-            y1=y;
-        } else {
-            al_draw_line(x+400,y+300,x1+400,y1+300, al_map_rgb(255, 120, 255), 0);
-            x1=x;
-            y1=y;
+    for (int i=0; i<500; i++) {
+        x=r*( (1-k)*cos(th) + l*k*cos((1-k)/k*th) );
+        y=r*((1-k)*sin(th) - l*k * sin((1-k)/k*th));
+        if(i>0) {
+            al_draw_line(x+400,y+300,xp+400,yp+300, al_map_rgb(255, 120, 255), 0);
         }
-        th+=M_PI/17;
-        ph+=M_PI/23;
+        xp=x;
+        yp=y;
+        th+=M_PI/20;
     }
 }
 
 int main() {
+
     al_init();
     al_install_keyboard();
     al_init_primitives_addon();
 
-    ALLEGRO_TIMER* timer = al_create_timer(1.0 / 10.0);
+    ALLEGRO_TIMER* timer = al_create_timer(1.0 / 2.0);
     ALLEGRO_EVENT_QUEUE* queue = al_create_event_queue();
     ALLEGRO_DISPLAY* disp = al_create_display(800, 600);
     ALLEGRO_FONT* font = al_create_builtin_font();
@@ -59,19 +56,15 @@ int main() {
         if(redraw && al_is_event_queue_empty(queue))
         {
             al_clear_to_color(al_map_rgb(0, 0, 0));
-            al_draw_text(font, al_map_rgb(255, 255, 255), 0, 0, 0, "2d shapes");
+            sprintf(buffer, "%s%f", "2d shapes k=", k);
+            al_draw_text(font, al_map_rgb(255, 255, 255), 0, 0, 0, buffer);
 
             draw();
-            ph=0;
             th=0;
-            r1+=1;
             //r2+=1;
 
-            if (r1>100) {
-                r1=0;
-                r2+=1;
-            }
-            if (r2>50) r2=-50;
+            k+=0.01;
+            if (k>1.0) k=-0.5;
 
             al_flip_display();
 
