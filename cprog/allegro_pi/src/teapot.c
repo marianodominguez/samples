@@ -13,7 +13,7 @@ const int nvert=4;
 const int nfaces=6;
 unsigned int idx;
 unsigned int screen,row,col;
-float th=0;
+float th=-2*M_PI;
 
 float Mx[N_VERTICES],My[N_VERTICES], Mz[N_VERTICES];
 
@@ -148,7 +148,7 @@ int main()
     while(1)
     {
 		th= th + M_PI/20;
-		if(th>=2*M_PI) th=0;
+		if(th>=2*M_PI) th=-2*M_PI;
 
         al_wait_for_event(queue, &event);
 
