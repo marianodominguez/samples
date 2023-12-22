@@ -115,12 +115,12 @@ int draw(void) {
 			}
 			else {
 				//bline(x1,y1,xs,ys);
-                al_draw_line(x1,y1,xs,ys, al_map_rgb(255, 255, 255),0.0);
+                line(x1,y1,xs,ys);
 			}
 			x1=xs;
 			y1=ys;
 		}
-        al_draw_line(x0,y0,xs,ys, al_map_rgb(255, 255, 255),0.0);
+        line(x0,y0,xs,ys);
      }
     return EXIT_SUCCESS;
 }

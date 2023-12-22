@@ -8,7 +8,6 @@
 #include <stdlib.h>
 #include <math.h>
 
-
 const int nvert=4;
 const int nfaces=6;
 unsigned char idx;
