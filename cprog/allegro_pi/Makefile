@@ -19,5 +19,8 @@ main.o: src/cube.c
 polar: src/polar_curves.c
 	$(CXX) $(COMPILER_FLAGS) -o bin/$@ $< $(INCLUDE) $(LIBS)
 
+teapot: src/teapot.c
+	$(CXX) $(COMPILER_FLAGS) -o bin/$@ $< $(INCLUDE) $(LIBS)
+
 clean:
 	rm -f $(EXEC) $(OBJS)
