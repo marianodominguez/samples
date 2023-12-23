@@ -11,6 +11,8 @@
 
 const int nvert=4;
 const int nfaces=6;
+const float sqrt2=1.414;
+const float sqrt6=2.449;
 unsigned int idx;
 unsigned int screen,row,col;
 float th=-2*M_PI;
@@ -83,11 +85,52 @@ void line(unsigned int x, unsigned int y, unsigned int x1, unsigned int y1) {
     }
 }
 
+float* isometric_projection(float x, float y, float z) {
+    static float result[3];
+
+    result[0] = (long) (x-z)/sqrt2;
+    result[1] = (long) (x+2*y+z)/sqrt6;
+    result[2] = 0;
+    return result;
+}
+
+float* camera_projection(float x, float y, float z, float d) {
+    static float r[3];
+    if (abs(z)<=0.001) {
+        r[0] = 0.0;
+        r[1] = 0.0;
+        r[2] = 0.0;
+    } else {
+        r[0] = (float) x*d/z;
+        r[1] = (float) y*d/z;
+        r[2] = 0.0;
+    }
+
+    printf("(%f,%f)",r[0],r[1]);
+
+    return r;
+}
+
+float* rotate_x(float x, float y, float z, float th) {
+    static float result[3];
+    result[0] = x;
+    result[1] = (y*cos(th) - z*sin(th));
+    result[2] = (y*sin(th) + z*cos(th));
+    return result;
+}
+
+void draw_triangle(float t[3][2]) {
+    line(t[0][0],t[0][1],t[1][0],t[1][1]);
+    line(t[1][0],t[1][1],t[2][0],t[2][1]);
+    line(t[2][0],t[2][1],t[0][0],t[0][1]);
+}
+
 int draw(void) {
-    float x,y,z,xp,yp,yr,zr;
-    unsigned int i,j,xs,ys,x1,y1,x0,y0;
-    float sqrt2=1.414;
-    float sqrt6=2.449;
+    float x,y,z;
+    unsigned int i,j,xs,ys;
+    float *pp;
+    float triangle[3][2];
+
     unsigned int r = 80;
 	idx=0;
 	al_clear_to_color(al_map_rgb(0, 0, 0));
@@ -99,28 +142,20 @@ int draw(void) {
 			z=Mz[idx]*100;
             idx++;
 			//rotation
-			yr =  ((long) y*cos(th)  - (long) z*sin(th));
-			zr =  ((long) y*sin(th)  + (long) z*cos(th));
-			xp = (long) (x-zr)/sqrt2;
-			yp = (long) (x+2*yr+zr)/sqrt6;
+            pp = rotate_x(x,y,z,th);
+			y = pp[1];
+			z = pp[2];
+            //pp = camera_projection(x,y,z,100.0);
+            pp = isometric_projection(x,y,z);
+			x = pp[0];
+			y = pp[1];
 
-			xs = xp + 800/2;
-			ys = yp + 600/2;
-
-			if (j==0) {
-				x0=xs;
-				y0=ys;
-                x1=xs;
-                y1=ys;
-			}
-			else {
-				//bline(x1,y1,xs,ys);
-                line(x1,y1,xs,ys);
-			}
-			x1=xs;
-			y1=ys;
+			xs = x + 800/2;
+			ys = y + 600/2;
+            triangle[j][0]=xs;
+            triangle[j][1]=ys;
 		}
-        line(x0,y0,xs,ys);
+        draw_triangle(triangle);
      }
     return EXIT_SUCCESS;
 }
