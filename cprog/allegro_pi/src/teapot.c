@@ -56,17 +56,13 @@ void line(unsigned int x, unsigned int y, unsigned int x1, unsigned int y1) {
     int dy=abs(y1-y0);
     int sx = -1;
     int sy = -1;
-    int rx=x1;
-    int ry=y1;
     int e2,error;
 
     if (x0<x1) {
         sx=1;
-        rx=x0;
     }
     if (y0<y1) {
         sy=1;
-        ry=y0;
     }
 
     error = dx - dy;
@@ -85,38 +81,29 @@ void line(unsigned int x, unsigned int y, unsigned int x1, unsigned int y1) {
     }
 }
 
-float* isometric_projection(float x, float y, float z) {
-    static float result[3];
-
-    result[0] = (long) (x-z)/sqrt2;
-    result[1] = (long) (x+2*y+z)/sqrt6;
+void isometric_projection(float x, float y, float z,float result[]) {
+    result[0] = (x-z)/sqrt2;
+    result[1] = (x+2*y+z)/sqrt6;
     result[2] = 0;
-    return result;
 }
 
-float* camera_projection(float x, float y, float z, float d) {
-    static float r[3];
+void camera_projection(float x, float y, float z, float d,float r[]) {
     if (abs(z)<=0.001) {
-        r[0] = 0.0;
-        r[1] = 0.0;
-        r[2] = 0.0;
+        r[0] = (long) x*d/0.001;
+        r[1] = (long) y*d/0.001;
+        r[2] = 0;
     } else {
-        r[0] = (float) x*d/z;
-        r[1] = (float) y*d/z;
-        r[2] = 0.0;
+        r[0] = (long) x*d/z;
+        r[1] = (long) y*d/z;
+        r[2] = 0;
     }
-
-    printf("(%f,%f)",r[0],r[1]);
-
-    return r;
+    //printf("(%f,%f)",r[0],r[1]);
 }
 
-float* rotate_x(float x, float y, float z, float th) {
-    static float result[3];
+void rotate_x(float x, float y, float z, float th, float result[]) {
     result[0] = x;
     result[1] = (y*cos(th) - z*sin(th));
     result[2] = (y*sin(th) + z*cos(th));
-    return result;
 }
 
 void draw_triangle(float t[3][2]) {
@@ -128,10 +115,9 @@ void draw_triangle(float t[3][2]) {
 int draw(void) {
     float x,y,z;
     unsigned int i,j,xs,ys;
-    float *pp;
+    float pp[3];
     float triangle[3][2];
 
-    unsigned int r = 80;
 	idx=0;
 	al_clear_to_color(al_map_rgb(0, 0, 0));
 
@@ -142,11 +128,11 @@ int draw(void) {
 			z=Mz[idx]*100;
             idx++;
 			//rotation
-            pp = rotate_x(x,y,z,th);
+            rotate_x(x,y,z,th,pp);
 			y = pp[1];
 			z = pp[2];
-            //pp = camera_projection(x,y,z,100.0);
-            pp = isometric_projection(x,y,z);
+            //camera_projection(x,y,z,150.0,pp);
+            isometric_projection(x,y,z,pp);
 			x = pp[0];
 			y = pp[1];
 
@@ -154,6 +140,8 @@ int draw(void) {
 			ys = y + 600/2;
             triangle[j][0]=xs;
             triangle[j][1]=ys;
+
+            //printf("(%d,%d)",xs,ys);
 		}
         draw_triangle(triangle);
      }
