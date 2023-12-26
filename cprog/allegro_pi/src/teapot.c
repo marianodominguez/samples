@@ -138,7 +138,7 @@ void draw_polygon(Point t[], int n) {
     line(t[n-1].x,t[n-1].y,t[0].x,t[0].y);
 }
 
-Point* bezier_patch(Point C[], float t0,float s0,float delta) {
+void* bezier_patch(Point C[], float t0,float s0,float delta) {
     static Point patch[4];
     float vx[] ={0,delta, delta, 0};
     float vy[] ={0,0,delta,delta};
@@ -147,10 +147,11 @@ Point* bezier_patch(Point C[], float t0,float s0,float delta) {
         t=t0+vx[i];
         s=s0+vy[i];
         u=(1-t);
-        patch[i].x=(C[1].x-C[0].x)*t;
-        patch[i].y=(C[2].y-C[1].y)*s;
-        patch[i].z=(C[1].z-C[0].z)*t + (C[2].z-C[0].z)*s;
-        //patch[i].z= u*u*C[0].z+ 2.0*u*t*C[1].z + t*t*C[2].z;
+        patch[i].x=C[0].x+(C[1].x-C[0].x)*t;
+        patch[i].y=C[1].y+(C[2].y-C[1].y)*s;
+        patch[i].z= C[0].z * (1 - patch[i].x) * (1 - patch[i].y) + C[1].z * patch[i].x * (1 - patch[i].y) + C[2].z * patch[i].x * patch[i].y;
+
+        //patch[i].z=(C[0].z+C[1].z+C[2].z)/3.0;
         //printf("s=%f,t=%f ", s, t);
         //printf("(%f,%f,%f)", patch[i].x, patch[i].y, patch[i].z);
     }
@@ -164,17 +165,15 @@ void interpolate_mesh(Point C[], float n) {
     Point poly[4];
     Point pp;
 
-    for(t=1/n; t<1; t+=1/n) {
+    for(t=0; t<1; t+=1/n) {
         for(s=0; s<1; s+=1/n ) {
             patch=bezier_patch(C,t,s,1/n);
-            //pp=camera_projection(x,y,z,0.2);
-
             for(int i=0; i<4 ; i++) {
                 pp=isometric_projection(patch[i].x,patch[i].y,patch[i].z);
 			    x = pp.x;
 			    y = pp.y;
-			    xs = 80*x + 800/2;
-			    ys = 80*y + 600/2;
+			    xs = 80*x + X_MAX/2;
+			    ys = 80*y + Y_MAX/2;
                 poly[i].x=xs;
                 poly[i].y=ys;
             }
@@ -186,7 +185,7 @@ void interpolate_mesh(Point C[], float n) {
 int draw(void) {
     float x,y,z;
     unsigned int i,j;
-    Point pp,tp={0.0,0.0,1.0};
+    Point pp,tp={0.0,-2.0,2.0};
     Point triangle[3];
 
 	idx=0;
