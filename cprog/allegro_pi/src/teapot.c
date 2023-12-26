@@ -13,30 +13,38 @@ const int nvert=4;
 const int nfaces=6;
 const float sqrt2=1.414;
 const float sqrt6=2.449;
+
 unsigned int idx;
 unsigned int screen,row,col;
-float th=-2*M_PI;
+
+float th=M_PI;
+int X_MAX=800,Y_MAX=600;
 
 float Mx[N_VERTICES],My[N_VERTICES], Mz[N_VERTICES];
 
+typedef struct {
+    float x, y, z;
+} Point;
+
 void read_model(char *fn) {
     char tmpx[12],tmpy[12],tmpz[12];
+    char *dummy;
     char nv[5], line[255];
     FILE* f=fopen(fn, "r");
     if (f==NULL) {
         printf("Unable to read model");
         exit(1);
     }
-    fgets(nv, sizeof(nv),f );
+    dummy=fgets(nv, sizeof(nv),f );
     if (atoi(nv)*3 != N_VERTICES) {
         printf("Invalid model, wrong number of vertices");
         exit(1);
     }
 
     for(int i=0;i<N_VERTICES; i++) {
-        fgets(line,sizeof(line),f);
+        dummy=fgets(line,sizeof(line),f);
         if (strlen(line) <= 10)
-            fgets(line,sizeof(line),f);
+            dummy=fgets(line,sizeof(line),f);
         sscanf(line,"%s %s %s",tmpx,tmpy,tmpz);
         Mx[i]=atof(tmpx);
         My[i]=atof(tmpy);
@@ -45,11 +53,14 @@ void read_model(char *fn) {
     }
 }
 
-void put_pixel(unsigned int x, unsigned int y) {
+void put_pixel(int x,int y) {
    al_draw_pixel(x, y,al_map_rgb(255, 255, 255)) ;
 }
 
-void line(unsigned int x, unsigned int y, unsigned int x1, unsigned int y1) {
+void line(int x, int y, int x1, int y1) {
+    if (x > X_MAX || y > Y_MAX || x<0 || y<0 ) return;
+    if (x1 > X_MAX || y1 > Y_MAX || x1<0 || y1<0) return;
+
     int x0=x;
     int y0=y;
     int dx=abs(x1-x0);
@@ -81,69 +92,128 @@ void line(unsigned int x, unsigned int y, unsigned int x1, unsigned int y1) {
     }
 }
 
-void isometric_projection(float x, float y, float z,float result[]) {
-    result[0] = (x-z)/sqrt2;
-    result[1] = (x+2*y+z)/sqrt6;
-    result[2] = 0;
+Point isometric_projection(float x, float y, float z) {
+    Point result;
+    result.x = (x-z)/sqrt2;
+    result.y = (x+2*y+z)/sqrt6;
+    result.z = 0;
+    return result;
 }
 
-void camera_projection(float x, float y, float z, float d,float r[]) {
-    if (abs(z)<=0.001) {
-        r[0] = (long) x*d/0.001;
-        r[1] = (long) y*d/0.001;
-        r[2] = 0;
+Point camera_projection(float x, float y, float z, float d) {
+    Point r;
+    if ( z>=-0.000001 && z<=0.000001) {
+        r.x = x*d/0.000001;
+        r.y = y*d/0.000001;
+        r.z = 0;
     } else {
-        r[0] = (long) x*d/z;
-        r[1] = (long) y*d/z;
-        r[2] = 0;
+        r.x = x*d/z;
+        r.y = y*d/z;
+        r.z = 0;
     }
-    //printf("(%f,%f)",r[0],r[1]);
+    //printf("(%f,%f)",r.x,r.y);
+    return r;
 }
 
-void rotate_x(float x, float y, float z, float th, float result[]) {
-    result[0] = x;
-    result[1] = (y*cos(th) - z*sin(th));
-    result[2] = (y*sin(th) + z*cos(th));
+Point translate(float x, float y, float z, Point d) {
+    Point result;
+    result.x = x+d.x;
+    result.y = y+d.y;
+    result.z = z+d.z;
+    return result;
 }
 
-void draw_triangle(float t[3][2]) {
-    line(t[0][0],t[0][1],t[1][0],t[1][1]);
-    line(t[1][0],t[1][1],t[2][0],t[2][1]);
-    line(t[2][0],t[2][1],t[0][0],t[0][1]);
+Point rotate_x(float x, float y, float z, float th) {
+    Point result;
+    result.x = x;
+    result.y = (y*cos(th) - z*sin(th));
+    result.z = (y*sin(th) + z*cos(th));
+    return result;
+}
+
+void draw_polygon(Point t[], int n) {
+    for(int i=0; i<n-1; i++) {
+        line(t[i].x,t[i].y,t[i+1].x,t[i+1].y);
+    }
+    line(t[n-1].x,t[n-1].y,t[0].x,t[0].y);
+}
+
+Point* bezier_patch(Point C[], float t0,float s0,float delta) {
+    static Point patch[4];
+    float vx[] ={0,delta, delta, 0};
+    float vy[] ={0,0,delta,delta};
+    float t,s,u;
+    for(int i=0; i<4; i++) {
+        t=t0+vx[i];
+        s=s0+vy[i];
+        u=(1-t);
+        patch[i].x=(C[1].x-C[0].x)*t;
+        patch[i].y=(C[2].y-C[1].y)*s;
+        patch[i].z=(C[1].z-C[0].z)*t + (C[2].z-C[0].z)*s;
+        //patch[i].z= u*u*C[0].z+ 2.0*u*t*C[1].z + t*t*C[2].z;
+        //printf("s=%f,t=%f ", s, t);
+        //printf("(%f,%f,%f)", patch[i].x, patch[i].y, patch[i].z);
+    }
+
+    return patch;
+}
+
+void interpolate_mesh(Point C[], float n) {
+    float t=0,s=0,xs,ys,x,y;
+    Point *patch;
+    Point poly[4];
+    Point pp;
+
+    for(t=1/n; t<1; t+=1/n) {
+        for(s=0; s<1; s+=1/n ) {
+            patch=bezier_patch(C,t,s,1/n);
+            //pp=camera_projection(x,y,z,0.2);
+
+            for(int i=0; i<4 ; i++) {
+                pp=isometric_projection(patch[i].x,patch[i].y,patch[i].z);
+			    x = pp.x;
+			    y = pp.y;
+			    xs = 80*x + 800/2;
+			    ys = 80*y + 600/2;
+                poly[i].x=xs;
+                poly[i].y=ys;
+            }
+            draw_polygon(poly, 4);
+        }
+    }
 }
 
 int draw(void) {
     float x,y,z;
-    unsigned int i,j,xs,ys;
-    float pp[3];
-    float triangle[3][2];
+    unsigned int i,j;
+    Point pp,tp={0.0,0.0,1.0};
+    Point triangle[3];
 
 	idx=0;
 	al_clear_to_color(al_map_rgb(0, 0, 0));
-
+    // N_VERTICES
 	for(i=0;i< N_VERTICES/3 ;i++) {
 		for(j=0; j<3; j++) {
-			x=Mx[idx]*100;
-			y=My[idx]*100;
-			z=Mz[idx]*100;
+			x=Mx[idx];
+			y=My[idx];
+			z=Mz[idx];
             idx++;
+            //translate to center
+            pp=translate(x,y,z,tp);
+			x = pp.x;
+            y = pp.y;
+			z = pp.z;
 			//rotation
-            rotate_x(x,y,z,th,pp);
-			y = pp[1];
-			z = pp[2];
-            //camera_projection(x,y,z,150.0,pp);
-            isometric_projection(x,y,z,pp);
-			x = pp[0];
-			y = pp[1];
+            pp=rotate_x(x,y,z,th);
+			x = pp.x;
+            y = pp.y;
+			z = pp.z;
 
-			xs = x + 800/2;
-			ys = y + 600/2;
-            triangle[j][0]=xs;
-            triangle[j][1]=ys;
-
-            //printf("(%d,%d)",xs,ys);
+            triangle[j].x=x;
+            triangle[j].y=y;
+            triangle[j].z=z;
 		}
-        draw_triangle(triangle);
+        interpolate_mesh(triangle,5);
      }
     return EXIT_SUCCESS;
 }
@@ -155,9 +225,9 @@ int main()
     al_init_primitives_addon();
     read_model("models/teapot.dta");
 
-    ALLEGRO_TIMER* timer = al_create_timer(1.0 / 10.0);
+    ALLEGRO_TIMER* timer = al_create_timer(1.0/2.0);
     ALLEGRO_EVENT_QUEUE* queue = al_create_event_queue();
-    ALLEGRO_DISPLAY* disp = al_create_display(800, 600);
+    ALLEGRO_DISPLAY* disp = al_create_display(X_MAX, Y_MAX);
     ALLEGRO_FONT* font = al_create_builtin_font();
 
     al_register_event_source(queue, al_get_keyboard_event_source());
@@ -174,7 +244,6 @@ int main()
 		if(th>=2*M_PI) th=-2*M_PI;
 
         al_wait_for_event(queue, &event);
-
         if(event.type == ALLEGRO_EVENT_TIMER)
             redraw = true;
         else if( (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE))
@@ -183,7 +252,7 @@ int main()
         if(redraw && al_is_event_queue_empty(queue))
         {
             al_clear_to_color(al_map_rgb(0, 0, 0));
-            al_draw_text(font, al_map_rgb(255, 255, 255), 0, 0, 0, "3D cube");
+            al_draw_text(font, al_map_rgb(255, 255, 255), 0, 0, 0, "I'm a teapot");
 
             draw();
             al_flip_display();
