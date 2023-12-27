@@ -19,6 +19,8 @@ unsigned int screen,row,col;
 
 float th=M_PI;
 int X_MAX=800,Y_MAX=600;
+const int vx[] ={0,0,2,2};
+const int vy[] ={1,2,0,1};
 
 float Mx[N_VERTICES],My[N_VERTICES], Mz[N_VERTICES];
 
@@ -138,22 +140,14 @@ void draw_polygon(Point t[], int n) {
     line(t[n-1].x,t[n-1].y,t[0].x,t[0].y);
 }
 
-void* bezier_patch(Point C[], float t0,float s0,float delta) {
+void* bezier_patch(Point C[], float t,float s,float delta) {
     static Point patch[4];
-    float vx[] ={0,delta, delta, 0};
-    float vy[] ={0,0,delta,delta};
-    float t,s,u;
+    float u;
     for(int i=0; i<4; i++) {
-        t=t0+vx[i];
-        s=s0+vy[i];
         u=(1-t);
-        patch[i].x=C[0].x+(C[1].x-C[0].x)*t;
-        patch[i].y=C[1].y+(C[2].y-C[1].y)*s;
-        patch[i].z= C[0].z * (1 - patch[i].x) * (1 - patch[i].y) + C[1].z * patch[i].x * (1 - patch[i].y) + C[2].z * patch[i].x * patch[i].y;
-
-        //patch[i].z=(C[0].z+C[1].z+C[2].z)/3.0;
-        //printf("s=%f,t=%f ", s, t);
-        //printf("(%f,%f,%f)", patch[i].x, patch[i].y, patch[i].z);
+        patch[i].x=u*C[vx[i]].x + t*C[vy[i]].x;
+        patch[i].y=u*C[vx[i]].y + t*C[vy[i]].y;
+        patch[i].z=u*C[vx[i]].z + t*C[vy[i]].z;
     }
 
     return patch;
