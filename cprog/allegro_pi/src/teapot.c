@@ -55,11 +55,11 @@ void read_model(char *fn) {
     }
 }
 
-void put_pixel(int x,int y) {
-   al_draw_pixel(x, y,al_map_rgb(255, 255, 255)) ;
+void put_pixel(int x,int y ,  ALLEGRO_COLOR color) {
+   al_draw_pixel(x, y, color) ;
 }
 
-void line(int x, int y, int x1, int y1) {
+void line(int x, int y, int x1, int y1,  ALLEGRO_COLOR color) {
     if (x > X_MAX || y > Y_MAX || x<0 || y<0 ) return;
     if (x1 > X_MAX || y1 > Y_MAX || x1<0 || y1<0) return;
 
@@ -81,7 +81,7 @@ void line(int x, int y, int x1, int y1) {
     error = dx - dy;
 
     while(x0!=x1 || y0!=y1) {
-        put_pixel(x0,y0);
+        put_pixel(x0,y0,color);
         e2=2*error;
         if(e2 > -dy) {
             error-= dy;
@@ -134,22 +134,25 @@ Point rotate_x(float x, float y, float z, float th) {
 }
 
 void draw_polygon(Point t[], int n) {
+    ALLEGRO_COLOR c = al_map_rgb(255, 255, 255);
     for(int i=0; i<n-1; i++) {
-        line(t[i].x,t[i].y,t[i+1].x,t[i+1].y);
+        c = al_map_rgb(64*(i+1),64*(i+1),64*(i+1));
+        line(t[i].x,t[i].y,t[i+1].x,t[i+1].y,c);
     }
-    line(t[n-1].x,t[n-1].y,t[0].x,t[0].y);
+    c = al_map_rgb(255, 255, 255);
+    line(t[n-1].x,t[n-1].y,t[0].x,t[0].y,c);
 }
 
-void* bezier_patch(Point C[], float t,float s,float delta) {
+void* bezier_patch(Point C[], float t,float s) {
     static Point patch[4];
     float u;
+    u=(1-t);
     for(int i=0; i<4; i++) {
-        u=(1-t);
         patch[i].x=u*C[vx[i]].x + t*C[vy[i]].x;
         patch[i].y=u*C[vx[i]].y + t*C[vy[i]].y;
         patch[i].z=u*C[vx[i]].z + t*C[vy[i]].z;
+        //patch[i].z=C[0].z*u*u + 2*C[1].z*u*t + C[2].z*t*t;
     }
-
     return patch;
 }
 
@@ -159,15 +162,15 @@ void interpolate_mesh(Point C[], float n) {
     Point poly[4];
     Point pp;
 
-    for(t=0; t<1; t+=1/n) {
-        for(s=0; s<1; s+=1/n ) {
-            patch=bezier_patch(C,t,s,1/n);
+    for(t=0; t<=1; t+=1/n) {
+        for(s=0; s<=1; s+=1/n ) {
+            patch=bezier_patch(C,t,s);
             for(int i=0; i<4 ; i++) {
                 pp=isometric_projection(patch[i].x,patch[i].y,patch[i].z);
 			    x = pp.x;
 			    y = pp.y;
-			    xs = 80*x + X_MAX/2;
-			    ys = 80*y + Y_MAX/2;
+			    xs = 120*x + X_MAX/2;
+			    ys = 120*y + Y_MAX/2;
                 poly[i].x=xs;
                 poly[i].y=ys;
             }
@@ -179,13 +182,16 @@ void interpolate_mesh(Point C[], float n) {
 int draw(void) {
     float x,y,z;
     unsigned int i,j;
-    Point pp,tp={0.0,-2.0,2.0};
+    Point pp,tp={0.0,-2.0,-2.0};
     Point triangle[3];
 
 	idx=0;
+    //idx=500*3;
 	al_clear_to_color(al_map_rgb(0, 0, 0));
     // N_VERTICES
+
 	for(i=0;i< N_VERTICES/3 ;i++) {
+    //for(i=0;i<1;i++) {
 		for(j=0; j<3; j++) {
 			x=Mx[idx];
 			y=My[idx];
@@ -218,7 +224,7 @@ int main()
     al_init_primitives_addon();
     read_model("models/teapot.dta");
 
-    ALLEGRO_TIMER* timer = al_create_timer(1.0/2.0);
+    ALLEGRO_TIMER* timer = al_create_timer(1.0);
     ALLEGRO_EVENT_QUEUE* queue = al_create_event_queue();
     ALLEGRO_DISPLAY* disp = al_create_display(X_MAX, Y_MAX);
     ALLEGRO_FONT* font = al_create_builtin_font();
