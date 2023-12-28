@@ -19,7 +19,7 @@ unsigned int screen,row,col;
 
 float th=M_PI;
 int X_MAX=800,Y_MAX=600;
-const int vx[] ={0,0,2,2};
+const int vx[] ={2,1,2,0};
 const int vy[] ={1,2,0,1};
 
 float Mx[N_VERTICES],My[N_VERTICES], Mz[N_VERTICES];
@@ -143,11 +143,13 @@ void draw_polygon(Point t[], int n) {
     line(t[n-1].x,t[n-1].y,t[0].x,t[0].y,c);
 }
 
-void* bezier_patch(Point C[], float t,float s) {
+void* bezier_patch(Point C[], float t0,float s0, float d) {
     static Point patch[4];
-    float u;
-    u=(1-t);
+    float u,s,t;
+    s=s0;
+    t=t0;
     for(int i=0; i<4; i++) {
+        u=(1-t);
         patch[i].x=u*C[vx[i]].x + t*C[vy[i]].x;
         patch[i].y=u*C[vx[i]].y + t*C[vy[i]].y;
         patch[i].z=u*C[vx[i]].z + t*C[vy[i]].z;
@@ -161,21 +163,18 @@ void interpolate_mesh(Point C[], float n) {
     Point *patch;
     Point poly[4];
     Point pp;
-
     for(t=0; t<=1; t+=1/n) {
-        for(s=0; s<=1; s+=1/n ) {
-            patch=bezier_patch(C,t,s);
-            for(int i=0; i<4 ; i++) {
-                pp=isometric_projection(patch[i].x,patch[i].y,patch[i].z);
-			    x = pp.x;
-			    y = pp.y;
-			    xs = 120*x + X_MAX/2;
-			    ys = 120*y + Y_MAX/2;
-                poly[i].x=xs;
-                poly[i].y=ys;
-            }
-            draw_polygon(poly, 4);
+        patch=bezier_patch(C,t,s, 1/n);
+        for(int i=0; i<4 ; i++) {
+            pp=isometric_projection(patch[i].x,patch[i].y,patch[i].z);
+            x = pp.x;
+            y = pp.y;
+            xs = 120*x + X_MAX/2;
+            ys = 120*y + Y_MAX/2;
+            poly[i].x=xs;
+            poly[i].y=ys;
         }
+        draw_polygon(poly, 4);
     }
 }
 
@@ -186,12 +185,12 @@ int draw(void) {
     Point triangle[3];
 
 	idx=0;
-    //idx=500*3;
+    idx=500*3;
 	al_clear_to_color(al_map_rgb(0, 0, 0));
     // N_VERTICES
 
-	for(i=0;i< N_VERTICES/3 ;i++) {
-    //for(i=0;i<1;i++) {
+	//for(i=0;i< N_VERTICES/3 ;i++) {
+    for(i=0;i<1;i++) {
 		for(j=0; j<3; j++) {
 			x=Mx[idx];
 			y=My[idx];
