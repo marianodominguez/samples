@@ -163,6 +163,7 @@ void interpolate_mesh(Point C[], float n) {
     Point *patch;
     Point poly[4];
     Point pp;
+    int cp=0;
     for(t=0; t<=1; t+=1/n) {
         patch=bezier_patch(C,t,s, 1/n);
         for(int i=0; i<4 ; i++) {
@@ -174,7 +175,10 @@ void interpolate_mesh(Point C[], float n) {
             poly[i].x=xs;
             poly[i].y=ys;
         }
-        draw_polygon(poly, 4);
+        if (cp == 4) {
+            draw_polygon(poly, 4);
+        }
+        cp++;
     }
 }
 
@@ -184,7 +188,7 @@ int draw(void) {
     Point pp,tp={0.0,-2.0,-2.0};
     Point triangle[3];
 
-	idx=0;
+	//idx=0;
     idx=500*3;
 	al_clear_to_color(al_map_rgb(0, 0, 0));
     // N_VERTICES
