@@ -139,26 +139,25 @@ void draw_polygon(Point t[], int n) {
     line(t[n-1].x,t[n-1].y,t[0].x,t[0].y,c);
 }
 
-void* bezier_patch(Point C[], float t0,float s0, float d) {
+Point bezier(Point C[],float t) {
+    Point patch;
+
+    float b0 = (1 - t) * (1 - t) * (1 - t);
+    float b1 = 3 * t * (1 - t) * (1 - t);
+    float b2 = 3 * t * t * (1 - t);
+    float b3 = t * t * t;
+
+    patch.x=b0*C[0].x + b1*C[1].x + b2*C[2].x + b3*C[3].x;
+    patch.y=b0*C[0].y + b1*C[1].y + b2*C[2].y + b3*C[3].y;
+    patch.z=b0*C[0].z + b1*C[1].z + b2*C[2].z + b3*C[3].z;
+
+    return patch;
+}
+
+Point* bezier_patch(Point C[],float t) {
     static Point patch[4];
-    float u,v,s,t;
-
-    for(int i=0; i<4; i++) {
-        s=s0;
-        t=t0;
-        if (i==1) s+=d;
-        if (i==2) {
-            s+=d;
-            t+=d;
-        }
-        if (i==3) t+=d;
-
-        u=1-t;
-        v=1-s;
-        patch[i].x=u*C[0].x + t*C[1].x + v*C[0].x + s*C[2].x;
-        patch[i].y=u*C[0].y + t*C[1].y + v*C[0].y + s*C[2].y;
-        patch[i].z=u*C[0].z + t*C[1].z + v*C[0].z + s*C[2].z;
-        //patch[i].z=C[0].z*u*u + 2*C[1].z*u*t + C[2].z*t*t;
+    for (int i = 0; i < 4; i++) {
+        patch[i] = bezier(C[4*i], y);
     }
     return patch;
 }
@@ -170,7 +169,7 @@ void interpolate_mesh(Point C[], float n) {
     Point pp;
     for(s=0; s<1.0; s+=1/n) {
         for(t=0; t<1.0; t+=1/n) {
-            patch=bezier_patch(C,t,s, 1.0/n);
+            patch=bezier_patch(C,t,1.0/n);
             for(int i=0; i<4 ; i++) {
                 pp=isometric_projection(patch[i].x,patch[i].y,patch[i].z);
                 x = pp.x;
@@ -188,16 +187,14 @@ int draw(void) {
     float x,y,z;
     unsigned int i,j;
     Point pp,tp={0.0,-2.0,-2.0};
-    Point triangle[3];
+    Point patch[16];
 
-	//idx=0;
-    idx=360*3;
+	idx=0;
 	al_clear_to_color(al_map_rgb(0, 0, 0));
     // N_VERTICES
 
-	//for(i=0;i< N_VERTICES/3 ;i++) {
-    for(i=0;i<3;i++) {
-		for(j=0; j<3; j++) {
+	for(i=0;i< N_VERTICES/16 ;i++) {
+		for(j=0; j<16; j++) {
 			x=Mx[idx];
 			y=My[idx];
 			z=Mz[idx];
@@ -213,11 +210,11 @@ int draw(void) {
             y = pp.y;
 			z = pp.z;
 
-            triangle[j].x=x;
-            triangle[j].y=y;
-            triangle[j].z=z;
+            patch[j].x=x;
+            patch[j].y=y;
+            patch[j].z=z;
 		}
-        interpolate_mesh(triangle,5);
+        interpolate_mesh(patch,5);
      }
     return EXIT_SUCCESS;
 }
