@@ -19,8 +19,6 @@ unsigned int screen,row,col;
 
 float th=M_PI;
 int X_MAX=800,Y_MAX=600;
-const int vx[] ={2,1,2,0};
-const int vy[] ={1,2,0,1};
 
 float Mx[N_VERTICES],My[N_VERTICES], Mz[N_VERTICES];
 
@@ -77,9 +75,7 @@ void line(int x, int y, int x1, int y1,  ALLEGRO_COLOR color) {
     if (y0<y1) {
         sy=1;
     }
-
     error = dx - dy;
-
     while(x0!=x1 || y0!=y1) {
         put_pixel(x0,y0,color);
         e2=2*error;
@@ -145,14 +141,23 @@ void draw_polygon(Point t[], int n) {
 
 void* bezier_patch(Point C[], float t0,float s0, float d) {
     static Point patch[4];
-    float u,s,t;
-    s=s0;
-    t=t0;
+    float u,v,s,t;
+
     for(int i=0; i<4; i++) {
-        u=(1-t);
-        patch[i].x=u*C[vx[i]].x + t*C[vy[i]].x;
-        patch[i].y=u*C[vx[i]].y + t*C[vy[i]].y;
-        patch[i].z=u*C[vx[i]].z + t*C[vy[i]].z;
+        s=s0;
+        t=t0;
+        if (i==1) s+=d;
+        if (i==2) {
+            s+=d;
+            t+=d;
+        }
+        if (i==3) t+=d;
+
+        u=1-t;
+        v=1-s;
+        patch[i].x=u*C[0].x + t*C[1].x + v*C[0].x + s*C[2].x;
+        patch[i].y=u*C[0].y + t*C[1].y + v*C[0].y + s*C[2].y;
+        patch[i].z=u*C[0].z + t*C[1].z + v*C[0].z + s*C[2].z;
         //patch[i].z=C[0].z*u*u + 2*C[1].z*u*t + C[2].z*t*t;
     }
     return patch;
@@ -163,25 +168,22 @@ void interpolate_mesh(Point C[], float n) {
     Point *patch;
     Point poly[4];
     Point pp;
-    int cp=0;
-    for(t=0; t<=1; t+=1/n) {
-        patch=bezier_patch(C,t,s, 1/n);
-        for(int i=0; i<4 ; i++) {
-            pp=isometric_projection(patch[i].x,patch[i].y,patch[i].z);
-            x = pp.x;
-            y = pp.y;
-            xs = 120*x + X_MAX/2;
-            ys = 120*y + Y_MAX/2;
-            poly[i].x=xs;
-            poly[i].y=ys;
-        }
-        if (cp == 4) {
+    for(s=0; s<1.0; s+=1/n) {
+        for(t=0; t<1.0; t+=1/n) {
+            patch=bezier_patch(C,t,s, 1.0/n);
+            for(int i=0; i<4 ; i++) {
+                pp=isometric_projection(patch[i].x,patch[i].y,patch[i].z);
+                x = pp.x;
+                y = pp.y;
+                xs = 100*x + X_MAX/2;
+                ys = 100*y + Y_MAX/2;
+                poly[i].x=xs;
+                poly[i].y=ys;
+            }
             draw_polygon(poly, 4);
         }
-        cp++;
     }
 }
-
 int draw(void) {
     float x,y,z;
     unsigned int i,j;
@@ -189,12 +191,12 @@ int draw(void) {
     Point triangle[3];
 
 	//idx=0;
-    idx=500*3;
+    idx=360*3;
 	al_clear_to_color(al_map_rgb(0, 0, 0));
     // N_VERTICES
 
 	//for(i=0;i< N_VERTICES/3 ;i++) {
-    for(i=0;i<1;i++) {
+    for(i=0;i<3;i++) {
 		for(j=0; j<3; j++) {
 			x=Mx[idx];
 			y=My[idx];
