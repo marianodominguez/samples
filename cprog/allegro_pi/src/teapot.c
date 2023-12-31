@@ -132,53 +132,83 @@ Point rotate_x(float x, float y, float z, float th) {
 void draw_polygon(Point t[], int n) {
     ALLEGRO_COLOR c = al_map_rgb(255, 255, 255);
     for(int i=0; i<n-1; i++) {
-        c = al_map_rgb(64*(i+1),64*(i+1),64*(i+1));
+        //c = al_map_rgb(64*(i+1),64*(i+1),64*(i+1));
         line(t[i].x,t[i].y,t[i+1].x,t[i+1].y,c);
     }
-    c = al_map_rgb(255, 255, 255);
+    //c = al_map_rgb(255, 255, 255);
     line(t[n-1].x,t[n-1].y,t[0].x,t[0].y,c);
 }
 
 Point bezier(Point C[],float t) {
-    Point patch;
+    Point p;
 
     float b0 = (1 - t) * (1 - t) * (1 - t);
     float b1 = 3 * t * (1 - t) * (1 - t);
     float b2 = 3 * t * t * (1 - t);
     float b3 = t * t * t;
 
-    patch.x=b0*C[0].x + b1*C[1].x + b2*C[2].x + b3*C[3].x;
-    patch.y=b0*C[0].y + b1*C[1].y + b2*C[2].y + b3*C[3].y;
-    patch.z=b0*C[0].z + b1*C[1].z + b2*C[2].z + b3*C[3].z;
+    p.x=b0*C[0].x + b1*C[1].x + b2*C[2].x + b3*C[3].x;
+    p.y=b0*C[0].y + b1*C[1].y + b2*C[2].y + b3*C[3].y;
+    p.z=b0*C[0].z + b1*C[1].z + b2*C[2].z + b3*C[3].z;
 
-    return patch;
+    return p;
 }
 
-Point* bezier_patch(Point C[],float t) {
-    static Point patch[4];
+Point bezier_patch_h(Point B[],float t, int k) {
+    static Point p;
+    Point C[4];
     for (int i = 0; i < 4; i++) {
-        patch[i] = bezier(C[4*i], y);
+        C[i] = B[i+4*k];
     }
-    return patch;
+
+    p = bezier(C, t);
+
+    return p;
+}
+
+Point bezier_patch_v(Point B[],float s, int k) {
+    static Point p;
+    Point C[4];
+    for (int i = 0; i < 4; i++) {
+        C[i] = B[i*4];
+    }
+
+    p = bezier(C, s);
+
+    return p;
+}
+
+Point* projection (Point p[]){
+    static Point poly[4];
+    float xs,ys,x,y;
+    Point pp;
+    for(int i=0; i<4 ; i++) {
+        pp=isometric_projection(p[i].x,p[i].y,p[i].z);
+        x = pp.x;
+        y = pp.y;
+        xs = 100*x + X_MAX/2;
+        ys = 100*y + Y_MAX/2;
+        poly[i].x=xs;
+        poly[i].y=ys;
+        //printf("%f,%f ",xs,ys);
+        }
+    return poly;
 }
 
 void interpolate_mesh(Point C[], float n) {
-    float t=0,s=0,xs,ys,x,y;
-    Point *patch;
-    Point poly[4];
-    Point pp;
+    float t=0,s=0;
+    Point *poly;
+    Point patch[4];
+
     for(s=0; s<1.0; s+=1/n) {
         for(t=0; t<1.0; t+=1/n) {
-            patch=bezier_patch(C,t,1.0/n);
-            for(int i=0; i<4 ; i++) {
-                pp=isometric_projection(patch[i].x,patch[i].y,patch[i].z);
-                x = pp.x;
-                y = pp.y;
-                xs = 100*x + X_MAX/2;
-                ys = 100*y + Y_MAX/2;
-                poly[i].x=xs;
-                poly[i].y=ys;
-            }
+            patch[0]=bezier_patch_h(C,t,0);
+            patch[1]=bezier_patch_h(C,t,1);
+            patch[2]=bezier_patch_v(C,s,0);
+            patch[3]=bezier_patch_v(C,s,1);
+            // TODO: move to the next curve
+
+            poly=projection(patch);
             draw_polygon(poly, 4);
         }
     }
