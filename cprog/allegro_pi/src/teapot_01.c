@@ -1,7 +1,14 @@
 /**
- * WIP version, using a naive interpolation, this works on wireframe, but it does not generate a grid.
+ * Graphics for scratch
  *
+ * Utah teapot. model only. read a triangulated model and project the vertices.
+ *
+ * Althoug allegro provides a line priomitive, it is implemented by
+ * Bresenham's line Algorithm.
 */
+
+
+
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_primitives.h>
@@ -22,6 +29,8 @@ unsigned int screen,row,col;
 
 float th=M_PI;
 int X_MAX=800,Y_MAX=600;
+const int vx[] ={0,0,2,2};
+const int vy[] ={1,2,0,1};
 
 float Mx[N_VERTICES],My[N_VERTICES], Mz[N_VERTICES];
 
@@ -78,7 +87,9 @@ void line(int x, int y, int x1, int y1,  ALLEGRO_COLOR color) {
     if (y0<y1) {
         sy=1;
     }
+
     error = dx - dy;
+
     while(x0!=x1 || y0!=y1) {
         put_pixel(x0,y0,color);
         e2=2*error;
@@ -135,99 +146,24 @@ Point rotate_x(float x, float y, float z, float th) {
 void draw_polygon(Point t[], int n) {
     ALLEGRO_COLOR c = al_map_rgb(255, 255, 255);
     for(int i=0; i<n-1; i++) {
-        //c = al_map_rgb(64*(i+1),64*(i+1),64*(i+1));
+        c = al_map_rgb(64*(i+1),64*(i+1),64*(i+1));
         line(t[i].x,t[i].y,t[i+1].x,t[i+1].y,c);
     }
-    //c = al_map_rgb(255, 255, 255);
+    c = al_map_rgb(255, 255, 255);
     line(t[n-1].x,t[n-1].y,t[0].x,t[0].y,c);
 }
 
-Point bezier(Point C[],float t) {
-    Point p;
-
-    float b0 = (1 - t) * (1 - t) * (1 - t);
-    float b1 = 3 * t * (1 - t) * (1 - t);
-    float b2 = 3 * t * t * (1 - t);
-    float b3 = t * t * t;
-
-    p.x=b0*C[0].x + b1*C[1].x + b2*C[2].x + b3*C[3].x;
-    p.y=b0*C[0].y + b1*C[1].y + b2*C[2].y + b3*C[3].y;
-    p.z=b0*C[0].z + b1*C[1].z + b2*C[2].z + b3*C[3].z;
-
-    return p;
-}
-
-Point bezier_patch_h(Point B[],float t, int k) {
-    static Point p;
-    Point C[4];
-    for (int i = 0; i < 4; i++) {
-        C[i] = B[i+4*k];
-    }
-
-    p = bezier(C, t);
-
-    return p;
-}
-
-Point bezier_patch_v(Point B[],float s, int k) {
-    static Point p;
-    Point C[4];
-    for (int i = 0; i < 4; i++) {
-        C[i] = B[i*4];
-    }
-
-    p = bezier(C, s);
-
-    return p;
-}
-
-Point* projection (Point p[]){
-    static Point poly[4];
-    float xs,ys,x,y;
-    Point pp;
-    for(int i=0; i<4 ; i++) {
-        pp=isometric_projection(p[i].x,p[i].y,p[i].z);
-        x = pp.x;
-        y = pp.y;
-        xs = 100*x + X_MAX/2;
-        ys = 100*y + Y_MAX/2;
-        poly[i].x=xs;
-        poly[i].y=ys;
-        //printf("%f,%f ",xs,ys);
-        }
-    return poly;
-}
-
-void interpolate_mesh(Point C[], float n) {
-    float t=0,s=0;
-    Point *poly;
-    Point patch[4];
-
-    for(s=0; s<1.0; s+=1/n) {
-        for(t=0; t<1.0; t+=1/n) {
-            patch[0]=bezier_patch_h(C,t,0);
-            patch[1]=bezier_patch_h(C,t,1);
-            patch[2]=bezier_patch_v(C,s,0);
-            patch[3]=bezier_patch_v(C,s,1);
-            // TODO: move to the next curve
-
-            poly=projection(patch);
-            draw_polygon(poly, 4);
-        }
-    }
-}
 int draw(void) {
-    float x,y,z;
+    float x,y,z,xs,ys;
     unsigned int i,j;
     Point pp,tp={0.0,-2.0,-2.0};
-    Point patch[16];
+    Point poly[3];
 
 	idx=0;
 	al_clear_to_color(al_map_rgb(0, 0, 0));
-    // N_VERTICES
 
-	for(i=0;i< N_VERTICES/16 ;i++) {
-		for(j=0; j<16; j++) {
+	for(i=0;i< N_VERTICES/3 ;i++) {
+		for(j=0; j<3; j++) {
 			x=Mx[idx];
 			y=My[idx];
 			z=Mz[idx];
@@ -242,12 +178,17 @@ int draw(void) {
 			x = pp.x;
             y = pp.y;
 			z = pp.z;
+            pp=isometric_projection(x,y,z);
+            x = pp.x;
+            y = pp.y;
 
-            patch[j].x=x;
-            patch[j].y=y;
-            patch[j].z=z;
+            xs = 120*x + X_MAX/2;
+            ys = 120*y + Y_MAX/2;
+
+            poly[j].x=xs;
+            poly[j].y=ys;
 		}
-        interpolate_mesh(patch,5);
+        draw_polygon(poly,3);
      }
     return EXIT_SUCCESS;
 }

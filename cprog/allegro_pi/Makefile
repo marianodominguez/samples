@@ -23,5 +23,8 @@ polar: src/polar_curves.c
 teapot: src/teapot.c
 	$(CXX) $(COMPILER_FLAGS) -o bin/$@ $< $(INCLUDE) $(LIBS)
 
+teapot_01: src/teapot_01.c
+	$(CXX) $(COMPILER_FLAGS) -o bin/$@ $< $(INCLUDE) $(LIBS)
+
 clean:
 	rm -f $(EXEC) $(OBJS)
