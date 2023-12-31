@@ -4,7 +4,7 @@
  * Utah teapot. model only. read a triangulated model and project the vertices.
  *
  * Althoug allegro provides a line priomitive, it is implemented by
- * Breshenhas Algorithm.
+ * Bresenham's line Algorithm.
 */
 
 
