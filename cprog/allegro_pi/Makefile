@@ -26,5 +26,8 @@ teapot: src/teapot.c
 teapot_01: src/teapot_01.c
 	$(CXX) $(COMPILER_FLAGS) -o bin/$@ $< $(INCLUDE) $(LIBS)
 
+teapot_02: src/teapot_02.c
+	$(CXX) $(COMPILER_FLAGS) -o bin/$@ $< $(INCLUDE) $(LIBS)
+
 clean:
 	rm -f $(EXEC) $(OBJS)
