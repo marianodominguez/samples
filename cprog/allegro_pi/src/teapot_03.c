@@ -1,3 +1,9 @@
+/**
+ * Utah teapot made form real bezier patches,
+ * it uses a different model than triangulated one
+*/
+
+
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_primitives.h>
@@ -24,31 +30,6 @@ float Mx[N_VERTICES],My[N_VERTICES], Mz[N_VERTICES];
 typedef struct {
     float x, y, z;
 } Point;
-
-Point normalize(Point v) {
-    Point r;
-    float length = sqrt( v.x*v.x + v.y*v.y + v.z*v.z );
-
-    r.x=v.x/length;
-    r.y=v.y/length;
-    r.z=v.z/length;
-
-    return r;
-}
-
-
-Point cross(Point a, Point b) {
-    Point r;
-    r.x=  (a.y*b.z - a.z*b.y);
-    r.y= -(a.x*b.z - a.z*b.x);
-    r.z=  (a.x*b.y - a.y*b.x);
-    return r;
-}
-
-float dot(Point a, Point b) {
-    return a.x*b.x+a.y*b.y+a.z*b.z;
-}
-
 
 void read_model(char *fn) {
     char tmpx[12],tmpy[12],tmpz[12];
@@ -124,11 +105,15 @@ Point isometric_projection(float x, float y, float z) {
 
 Point camera_projection(float x, float y, float z, float d) {
     Point r;
-
-    r.x = x*d/z;
-    r.y = y*d/z;
-    r.z = 0;
-
+    if ( z>=-0.000001 && z<=0.000001) {
+        r.x = x*d/0.000001;
+        r.y = y*d/0.000001;
+        r.z = 0;
+    } else {
+        r.x = x*d/z;
+        r.y = y*d/z;
+        r.z = 0;
+    }
     //printf("(%f,%f)",r.x,r.y);
     return r;
 }
@@ -183,22 +168,6 @@ Point bezier(Point C[4][4],float t, float s) {
     return p;
 }
 
-int visible(Point p[]) {
-    Point v1,v2,n;
-
-    v1.x=p[2].x-p[1].x;
-    v1.y=p[2].y-p[1].y;
-    v1.z=p[2].z-p[1].z;
-
-    v2.x=p[0].x-p[1].x;
-    v2.y=p[0].y-p[1].y;
-    v2.z=p[0].z-p[1].z;
-
-    n=normalize(cross(v1,v2));
-    if (-dot(p[0],n) >= 0) return 1;
-
-    return 0;
-}
 
 Point bezier_curve(Point B[],float t, float s) {
     static Point p;
@@ -216,7 +185,6 @@ Point* projection (Point p[]){
     float xs,ys,x,y;
     Point pp;
     for(int i=0; i<4 ; i++) {
-        //pp=camera_projection(p[i].x,p[i].y,p[i].z, -0.5);
         pp=isometric_projection(p[i].x,p[i].y,p[i].z);
         x = pp.x;
         y = pp.y;
@@ -240,11 +208,8 @@ void interpolate_mesh(Point C[], float n) {
             patch[1]=bezier_curve(C,t+(1/n),s);
             patch[2]=bezier_curve(C,t+(1/n),s+(1/n));
             patch[3]=bezier_curve(C,t,s+(1/n));
-
-            if(visible(patch)) {
-                poly=projection(patch);
-                draw_polygon(poly, 4);
-            }
+            poly=projection(patch);
+            draw_polygon(poly, 4);
         }
     }
 }
