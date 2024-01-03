@@ -25,6 +25,8 @@ typedef struct {
     float x, y, z;
 } Point;
 
+Point VIEWPOINT={0.0,-2.0,-2.0};
+
 Point normalize(Point v) {
     Point r;
     float length = sqrt( v.x*v.x + v.y*v.y + v.z*v.z );
@@ -35,7 +37,6 @@ Point normalize(Point v) {
 
     return r;
 }
-
 
 Point cross(Point a, Point b) {
     Point r;
@@ -48,7 +49,6 @@ Point cross(Point a, Point b) {
 float dot(Point a, Point b) {
     return a.x*b.x+a.y*b.y+a.z*b.z;
 }
-
 
 void read_model(char *fn) {
     char tmpx[12],tmpy[12],tmpz[12];
@@ -184,18 +184,22 @@ Point bezier(Point C[4][4],float t, float s) {
 }
 
 int visible(Point p[]) {
-    Point v1,v2,n;
+    Point c,v1,v2,n;
 
-    v1.x=p[2].x-p[1].x;
-    v1.y=p[2].y-p[1].y;
-    v1.z=p[2].z-p[1].z;
+    v1.x=p[1].x-p[0].x;
+    v1.y=p[1].y-p[0].y;
+    v1.z=p[1].z-p[0].z;
 
-    v2.x=p[0].x-p[1].x;
-    v2.y=p[0].y-p[1].y;
-    v2.z=p[0].z-p[1].z;
+    v2.x=p[2].x-p[0].x;
+    v2.y=p[2].y-p[0].y;
+    v2.z=p[2].z-p[0].z;
 
     n=normalize(cross(v1,v2));
-    if (-dot(p[0],n) >= 0) return 1;
+    c.x=-VIEWPOINT.x-p[0].x;
+    c.y=-VIEWPOINT.y-p[0].y;
+    c.z=-VIEWPOINT.z-p[0].z;
+
+    if (-dot(c,n) >= 0) return 1;
 
     return 0;
 }
@@ -251,7 +255,7 @@ void interpolate_mesh(Point C[], float n) {
 int draw(void) {
     float x,y,z;
     unsigned int i,j;
-    Point pp,tp={0.0,-2.0,-2.0};
+    Point pp;
     Point patch[16];
 
 	idx=0;
@@ -265,7 +269,7 @@ int draw(void) {
 			z=Mz[idx];
             idx++;
             //translate to center
-            pp=translate(x,y,z,tp);
+            pp=translate(x,y,z,VIEWPOINT);
 			x = pp.x;
             y = pp.y;
 			z = pp.z;

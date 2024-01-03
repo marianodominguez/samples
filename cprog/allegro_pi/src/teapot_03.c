@@ -244,7 +244,7 @@ int draw(void) {
             patch[j].y=y;
             patch[j].z=z;
 		}
-        interpolate_mesh(patch,12);
+        interpolate_mesh(patch,24);
      }
     return EXIT_SUCCESS;
 }
