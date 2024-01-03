@@ -29,5 +29,8 @@ teapot_01: src/teapot_01.c
 teapot_02: src/teapot_02.c
 	$(CXX) $(COMPILER_FLAGS) -o bin/$@ $< $(INCLUDE) $(LIBS)
 
+test_bezier: src/test_bezier.c
+	$(CXX) $(COMPILER_FLAGS) -o bin/$@ $< $(INCLUDE) $(LIBS)
+
 clean:
 	rm -f $(EXEC) $(OBJS)
