@@ -176,8 +176,8 @@ Point* projection (Point p[]){
         pp=isometric_projection(p[i].x,p[i].y,p[i].z);
         x = pp.x;
         y = pp.y;
-        xs = 100*x + X_MAX/2;
-        ys = 100*y + Y_MAX/2;
+        xs = 200*x + X_MAX/2;
+        ys = 200*y + Y_MAX/2;
         poly[i].x=xs;
         poly[i].y=ys;
         //printf("%f,%f ",xs,ys);
@@ -196,13 +196,13 @@ void interpolate_mesh(Point C[], float n) {
             patch[1]=bezier_curve(C,t+(1/n),s);
             patch[2]=bezier_curve(C,t+(1/n),s+(1/n));
             patch[3]=bezier_curve(C,t,s+(1/n));
+            poly=projection(patch);
+            line_color = al_map_rgb(128,128,128);
+            if (j==0) line_color = al_map_rgb(255, 255, 255);
+            if (j==15) line_color = al_map_rgb(32, 32, 32);
+            draw_polygon(poly, 4);
+            j++;
         }
-        poly=projection(patch);
-        line_color = al_map_rgb(32,32,32);
-        if (j==0) line_color = al_map_rgb(255, 255, 255);
-        if (j==2) line_color = al_map_rgb(128, 125, 128);
-        draw_polygon(poly, 4);
-        j++;
     }
 }
 int draw(void) {
@@ -236,7 +236,7 @@ int draw(void) {
             patch[j].y=y;
             patch[j].z=z;
 		}
-        interpolate_mesh(patch,4);
+        interpolate_mesh(patch,20);
      }
     return EXIT_SUCCESS;
 }
