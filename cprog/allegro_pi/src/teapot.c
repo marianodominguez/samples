@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <string.h>
 #define N_VERTICES 32*16
 
 const int nvert=4;
@@ -19,13 +20,12 @@ unsigned int screen,row,col;
 float th=M_PI;
 int X_MAX=800,Y_MAX=600;
 
-float Mx[N_VERTICES],My[N_VERTICES], Mz[N_VERTICES];
-
 typedef struct {
     float x, y, z;
 } Point;
 
-Point VIEWPOINT={0.0,-2.0,-2.0};
+Point M[N_VERTICES];
+Point VIEWPOINT={0.0,1.0,1.0};
 
 Point normalize(Point v) {
     Point r;
@@ -50,10 +50,29 @@ float dot(Point a, Point b) {
     return a.x*b.x+a.y*b.y+a.z*b.z;
 }
 
+
+void split(int a[], char *s) {
+    char *token;
+    const char delim[2]=",";
+
+    token=strtok(s,delim);
+    int i=0;
+    while (token !=NULL)
+    {
+        a[i]=atoi(token);
+        i++;
+        token=strtok(NULL, delim);
+    }
+
+}
+
 void read_model(char *fn) {
     char tmpx[12],tmpy[12],tmpz[12];
     char *dummy;
     char nv[5], line[255];
+    int patch[16][32], points[16];
+    Point P[306];
+
     FILE* f=fopen(fn, "r");
     if (f==NULL) {
         printf("Unable to read model");
@@ -65,15 +84,45 @@ void read_model(char *fn) {
         exit(1);
     }
 
-    for(int i=0;i<N_VERTICES; i++) {
+    //read patch vertices
+    for(int i=0;i<32; i++) {
         dummy=fgets(line,sizeof(line),f);
-        if (strlen(line) <= 10)
+        //printf("%s\n",line);
+        split(points,line);
+        for(int j=0;j<16;j++) {
+            patch[j][i]=points[j];
+            //printf("%d, ", points[j]);
+        }
+        //printf("\n");
+    }
+
+    //Read points
+
+    dummy=fgets(line,sizeof(line),f);
+    if (atoi(line) != 306) {
+        printf("Invalid model, wrong number of points");
+        exit(1);
+    }
+
+    for(int i=0;i<306; i++) {
+        dummy=fgets(line,sizeof(line),f);
+        if (strlen(line) < 5)
             dummy=fgets(line,sizeof(line),f);
-        sscanf(line,"%s %s %s",tmpx,tmpy,tmpz);
-        Mx[i]=atof(tmpx);
-        My[i]=atof(tmpy);
-        Mz[i]=atof(tmpz);
-        //printf("%f %f %f\n",Mx[i],My[i],Mz[i]);
+        sscanf(line,"%f,%f,%f",&P[i].x,&P[i].y,&P[i].z);
+        //printf("%f %f %f\n",P[i].x,P[i].y,P[i].z);
+    }
+    int idx=0;
+    int v;
+    for(int j=0; j<32; j++) {
+        for(int i=0;i<16; i++) {
+            v=patch[i][j]-1;
+            printf("%d :",v);
+            M[idx].x=P[v].x;
+            M[idx].y=P[v].y;
+            M[idx].z=P[v].z;
+            //printf("%f %f %f\n",M[idx].x,M[idx].y,M[idx].z);
+            idx++;
+        }
     }
 }
 
@@ -184,31 +233,35 @@ Point bezier(Point C[4][4],float t, float s) {
 }
 
 int visible(Point p[]) {
-    Point c,v1,v2,n;
+    Point c,v0,v1,n;
 
-    v1.x=p[1].x-p[0].x;
-    v1.y=p[1].y-p[0].y;
-    v1.z=p[1].z-p[0].z;
+    v0.x=p[1].x-p[0].x;
+    v0.y=p[1].y-p[0].y;
+    v0.z=p[1].z-p[0].z;
 
-    v2.x=p[2].x-p[0].x;
-    v2.y=p[2].y-p[0].y;
-    v2.z=p[2].z-p[0].z;
+    v1.x=p[2].x-p[0].x;
+    v1.y=p[2].y-p[0].y;
+    v1.z=p[2].z-p[0].z;
 
-    n=normalize(cross(v1,v2));
-    c.x=-VIEWPOINT.x-p[0].x;
-    c.y=-VIEWPOINT.y-p[0].y;
-    c.z=-VIEWPOINT.z-p[0].z;
+    n=normalize(cross(v0,v1));
+    //c.x=p[0].x-VIEWPOINT.x;
+    //c.y=p[0].y-VIEWPOINT.y;
+    //c.z=p[0].z-VIEWPOINT.z;
 
-    if (-dot(c,n) >= 0) return 1;
+    c.x=-p[0].x;
+    c.y=-p[0].y;
+    c.z=-p[0].z;
 
-    return 0;
+    if (dot(c,n) >= 0) return 0;
+
+    return 1;
 }
 
 Point bezier_curve(Point B[],float t, float s) {
     static Point p;
     Point C[4][4];
-    for(int i=0; i<4 ; i++) {
-        for(int j=0; j<4 ; j++)
+    for(int j=0; j<4 ; j++) {
+        for(int i=0; i<4 ; i++)
             C[i][j]=B[4*j+i];
     }
     p = bezier(C, t, s);
@@ -243,11 +296,18 @@ void interpolate_mesh(Point C[], float n) {
             patch[0]=bezier_curve(C,t,s);
             patch[1]=bezier_curve(C,t+(1/n),s);
             patch[2]=bezier_curve(C,t+(1/n),s+(1/n));
-            patch[3]=bezier_curve(C,t,s+(1/n));
 
             if(visible(patch)) {
                 poly=projection(patch);
-                draw_polygon(poly, 4);
+                draw_polygon(poly, 3);
+            }
+            patch[0]=bezier_curve(C,t,s);
+            patch[1]=bezier_curve(C,t+(1/n),s+(1/n));
+            patch[2]=bezier_curve(C,t,s+(1/n));
+
+            if(visible(patch)) {
+                poly=projection(patch);
+                draw_polygon(poly, 3);
             }
         }
     }
@@ -257,6 +317,7 @@ int draw(void) {
     unsigned int i,j;
     Point pp;
     Point patch[16];
+    Point trv={-VIEWPOINT.x,-VIEWPOINT.y,-VIEWPOINT.z};
 
 	idx=0;
 	al_clear_to_color(al_map_rgb(0, 0, 0));
@@ -264,12 +325,12 @@ int draw(void) {
 
 	for(i=0;i< N_VERTICES/16 ;i++) {
 		for(j=0; j<16; j++) {
-			x=Mx[idx];
-			y=My[idx];
-			z=Mz[idx];
+			x=M[idx].x;
+			y=M[idx].y;
+			z=M[idx].z;
             idx++;
             //translate to center
-            pp=translate(x,y,z,VIEWPOINT);
+            pp=translate(x,y,z,trv);
 			x = pp.x;
             y = pp.y;
 			z = pp.z;
@@ -293,7 +354,7 @@ int main()
     al_init();
     al_install_keyboard();
     al_init_primitives_addon();
-    read_model("models/teapot_orig.dta");
+    read_model("models/teapot");
 
     ALLEGRO_TIMER* timer = al_create_timer(1.0);
     ALLEGRO_EVENT_QUEUE* queue = al_create_event_queue();
