@@ -3,11 +3,14 @@
 import pygame,sys
 import math
 
+RESIZE=False
+
 def plot(xx,yy,zz,p,q):
    x1=xx+zz+p
    y1=-yy+zz+q
-   if y1==0: return
    screen.set_at((int(x1),int(y1)),pygame.Color('white'))
+   if y1==0: return
+   screen.set_at((int(x1),int(y1-1)),pygame.Color('white'))
 
 def draw():
   y=0
@@ -31,8 +34,8 @@ def draw():
        xx=x
        yy=(math.sin(xt)+0.4*math.sin(3*xt))*yf
        plot(xx,yy,zz,p,q)
-    pygame.display.update()
-    pygame.event.get()
+    pygame.display.flip()
+    #pygame.event.get()
 
 w,h=1440,960
 
@@ -40,7 +43,7 @@ black = pygame.Color('black')
 white = pygame.Color('white')
 
 pygame.init()
-screen = pygame.display.set_mode((w,h), pygame.RESIZABLE)
+screen = pygame.display.set_mode((w,h), pygame.RESIZABLE | pygame.DOUBLEBUF)
 screen.fill(black)
 draw()
 
@@ -50,5 +53,8 @@ while 1:
         sys.exit()
     if event.type == pygame.VIDEORESIZE:
         w,h = event.w,event.h
-        screen.fill(black)
-        draw()
+        RESIZE=True
+    if RESIZE:
+      screen.fill(black)
+      draw()
+      RESIZE=False
