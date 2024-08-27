@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+from concurrent.futures import ThreadPoolExecutor
 
 import pygame,sys
 import math
@@ -31,8 +32,7 @@ xmax =  1.0
 ymin = -1.5
 ymax =  1.5
 
-for xs in range(w):
-    pygame.display.update()
+def loopw(xs):
     for ys in range(h):
         x=xs*(xmax-xmin)/w+xmin
         y=ys*(ymax-ymin)/h+ymin
@@ -40,6 +40,12 @@ for xs in range(w):
         if o>=4:
             screen.set_at((xs,ys),color(o))
 
+#Parallel(n_jobs=10)(delayed(loopw)(xs) for xs in range(w))
+
+with ThreadPoolExecutor(max_workers=10) as executor:
+    for xs in range(w):
+        executor.submit(loopw, xs)
+        pygame.display.update()
 while 1:
   for event in pygame.event.get():
     if event.type == pygame.QUIT:
