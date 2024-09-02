@@ -47,6 +47,7 @@ def spyro(R,r,l, color):
 pygame.display.set_caption('Spyrographs !')
 
 args = [ 
+      (320.0, 65.0, 0.8, pygame.Color('magenta')),
       (300.0, 53.0, 0.9, red),
       (156.0, 56.0, 0.4, yellow),
       (200.0, 48.0, 0.9, cyan),
@@ -56,6 +57,10 @@ args = [
       ]
 i=0
 
+screen.fill(black)
+spyro(*args[0])
+
+i=1
 while 1:
   for event in pygame.event.get():
     if event.type == pygame.QUIT:
