@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
 import numpy as np
+import matplotlib
+matplotlib.use('QtAgg')
 import matplotlib.pyplot as plt
 
 def klein_bottle(u, v):
@@ -42,7 +44,7 @@ v = np.linspace(0, 2* np.pi, 100)
 #v = np.linspace(-10, 10, 100)
 
 u, v = np.meshgrid(u, v)
-x,y,z= klein_bottle(u, v)
+x,y,z= saddle(u, v)
 
 fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
 

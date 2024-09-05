@@ -9,7 +9,7 @@ w,h=800,600
 pygame.init()
 screen = pygame.display.set_mode((w,h))
 
-iterations = 1000
+iterations = 500
 
 def orbit(x,y):
     z=complex(0)
@@ -21,7 +21,7 @@ def orbit(x,y):
     return abs(z)
 
 def color(v):
-    return (int(255*v/100) % 255 , int(255*v/100) % 255, 170)
+    return (int(255*v/50) % 255 , int(255*v/50) % 255, 255)
 
 def gradient(v):
     return (int(255*v/100) % 255 , int(255*v/100) % 255, 170)
