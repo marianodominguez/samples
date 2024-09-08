@@ -4,7 +4,7 @@ from concurrent.futures import ThreadPoolExecutor
 import pygame,sys
 import math
 
-w,h=800,600
+w,h=1440,960
 
 pygame.init()
 screen = pygame.display.set_mode((w,h))
