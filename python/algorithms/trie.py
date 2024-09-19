@@ -59,7 +59,6 @@ class Tree:
             if c.endWord:
                 result.append(sw)
                 sw=''
-                
         return result
                  
 search_words=["Hello World", "Hello there", "some other word"]
