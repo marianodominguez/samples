@@ -44,26 +44,36 @@ class Tree:
                 stack.append(next)
         i=0
         
+        #get max prefix
+        cw=''
+        while stack:
+            c=stack.pop()
+            if i<len(prefix) and c.value == prefix[i] and len(c.children)==1:
+                stack.append(list(c.children.values())[0])
+                i+=1
+                cw+=c.value
+            elif i>=len(prefix) and len(c.children)==1:
+                stack.append(list(c.children.values())[0])
+                cw+=c.value
+        
+        for next in c.children.values():
+            stack.append(next)
+        cw+=c.value
+
         while stack:
             c=stack.pop()
             #print(stack)
-            if i>=len(prefix):
-                sw+=c.value
-                for next in c.children.values():
-                    stack.append(next)
-            if i<len(prefix) and c.value==prefix[i]:
-                i+=1
-                sw+=c.value
-                for next in c.children.values():
-                    stack.append(next)
+            sw+=c.value
+            for next in c.children.values():
+                stack.append(next)
             if c.endWord:
-                result.append(sw)
+                result.append(cw+sw)
                 sw=''
         return result
                  
-search_words=["Hello World", "Hello there", "some other word"]
+search_words=["Hello World", "Hello there", "some other word", "Hell yeah!" ]
 trie=Tree()
 for word in search_words:
     trie.add_word(word)
-trie.printTree(trie.root)
+#trie.printTree(trie.root)
 print(trie.autocomplete('Hell'))
