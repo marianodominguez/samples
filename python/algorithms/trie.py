@@ -33,45 +33,34 @@ class Tree:
         for ch in n.children:
             v=n.children[ch]
             self.printTree(v)
-            
-    def autocomplete(self,prefix):
+
+    def getPrefix(self,c, word):
+        #get max prefix
+        if c.endWord:
+            print(word)
+        for a,n in c.children.items():
+            self.getPrefix(n,word+a)
+
+    def autocomplete(self,key):
         r=self.root
+        c=r
         sw=''
         cw=''
         stack=[]
         result=[]
-        for next in r.children.values():
-                stack.append(next)
-        i=0
-        
-        #get max prefix
-        cw=''
-        while stack:
-            c=stack.pop()
-            if i<len(prefix) and c.value == prefix[i] and len(c.children)==1:
-                stack.append(list(c.children.values())[0])
-                i+=1
-                cw+=c.value
-            elif i>=len(prefix) and len(c.children)==1:
-                stack.append(list(c.children.values())[0])
-                cw+=c.value
-        
-        for next in c.children.values():
-            stack.append(next)
-        cw+=c.value
 
-        while stack:
-            c=stack.pop()
-            #print(stack)
-            sw+=c.value
-            for next in c.children.values():
-                stack.append(next)
-            if c.endWord:
-                result.append(cw+sw)
-                sw=''
-        return result
-                 
-search_words=["Hello World", "Hello there", "some other word", "Hell yeah!" ]
+        for a in key:
+            if a not in c.children:
+                return []
+            c = c.children[a]
+        if not c.children:
+            return [] 
+        self.getPrefix(c, key)
+        #TODO: Add to list
+        return ["Done"]
+
+
+search_words=["Hello World", "Hello there", "some other word", "Hell yeah!", "Hel, this should not show"]
 trie=Tree()
 for word in search_words:
     trie.add_word(word)
