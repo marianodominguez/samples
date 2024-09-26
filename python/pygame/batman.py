@@ -9,12 +9,6 @@ pygame.init()
 screen = pygame.display.set_mode((WIDTH,HEIGTH), pygame.RESIZABLE)
 screen.fill(pygame.Color('blue'))
 
-s=math.pi/40
-r=300
-p1=math.cos(math.pi/7)
-p2=math.cos(math.pi/7-p1)
-
-
 def Hs(a):
     if a<0:  return 0
     if a==0: return 1/2
