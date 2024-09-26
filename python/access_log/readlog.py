@@ -1,4 +1,4 @@
-f=open('access_sm.log',"r")
+f=open('access.log',"r")
 
 def rate(lines):
     num_200=0;
@@ -6,6 +6,13 @@ def rate(lines):
     #print(sl)
     num_200=len(sl)
     return num_200/len(lines)
+
+def unique_clients_hour(lines):
+    clients={}
+    for record in lines:
+        hour=record['date'][:-6]
+        clients[record['ip']+"_"+hour] = record
+    return len(clients.keys())
 
 lines = []
 for line in f:
@@ -15,9 +22,10 @@ for line in f:
     record= {
         "ip": fields[0],
         "status": fields[8],
-        "date": fields[3][-8:]
+        "date": fields[3][1:]
         }
     #print(record)
     lines.append(record)
 
 print(rate(lines))
+print(unique_clients_hour(lines))
