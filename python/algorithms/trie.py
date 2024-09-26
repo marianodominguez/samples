@@ -8,12 +8,12 @@ class Node:
     def __repr__(self):
         if self:
             return self.value
-        return ''        
+        return ''
 class Tree:
     def __init__(self):
         self.root=Node()
         self.root.value=''
-        
+
     def add_word(self,word):
         r=self.root
         for ch in word:
@@ -25,7 +25,7 @@ class Tree:
             else:
                 r=r.children[ch]
         r.endWord=True
-        
+
     def printTree(self,n):
         print(n.value, end=',')
         if n.endWord:
@@ -34,30 +34,25 @@ class Tree:
             v=n.children[ch]
             self.printTree(v)
 
-    def getPrefix(self,c, word):
+    def getPrefix(self,c, word, result):
         #get max prefix
         if c.endWord:
-            print(word)
+            result.append(word)
         for a,n in c.children.items():
-            self.getPrefix(n,word+a)
+            self.getPrefix(n,word+a, result)
+        return result
 
     def autocomplete(self,key):
-        r=self.root
-        c=r
-        sw=''
-        cw=''
-        stack=[]
-        result=[]
-
+        result = []
+        c=self.root
         for a in key:
             if a not in c.children:
                 return []
             c = c.children[a]
         if not c.children:
-            return [] 
-        self.getPrefix(c, key)
-        #TODO: Add to list
-        return ["Done"]
+            return []
+        self.getPrefix(c, key, result)
+        return result
 
 
 search_words=["Hello World", "Hello there", "some other word", "Hell yeah!", "Hel, this should not show"]
@@ -66,3 +61,6 @@ for word in search_words:
     trie.add_word(word)
 #trie.printTree(trie.root)
 print(trie.autocomplete('Hell'))
+print(trie.autocomplete('some'))
+print(trie.autocomplete('kwyjibo'))
+print(trie.autocomplete('Hello'))
