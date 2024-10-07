@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+from concurrent.futures import ThreadPoolExecutor
 
 # palindrome conjecture
 
@@ -28,9 +29,9 @@ def isPalindrome(n):
 def construct(n):
     return n + mirror(n)
 
-MAX_ITER = 2000
+MAX_ITER = 10000
 
-for n in range(10, 100000):
+def calculate(n):
     iter = 0
     x = n
     while not isPalindrome(x):
@@ -40,5 +41,9 @@ for n in range(10, 100000):
             print("iter(", n, ")= possible Lychrel")
             iter = -1
             break
-    if iter >= 1:
+    if iter >= 100:
         print("iter(", n, ")=", iter, " x=", x)
+        
+with ThreadPoolExecutor(max_workers=10) as executor:
+    for n in range(10, 100000):
+        executor.submit(calculate, n)

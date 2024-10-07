@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import turtle
+import tkinter
 
 backgroundcolor = "#18546A"
 
