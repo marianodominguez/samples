@@ -43,7 +43,7 @@ def calculate(n):
             break
     if iter >= 100:
         print("iter(", n, ")=", iter, " x=", x)
-        
-with ThreadPoolExecutor(max_workers=10) as executor:
+
+with ThreadPoolExecutor(max_workers=100) as executor:
     for n in range(10, 100000):
         executor.submit(calculate, n)
