@@ -4,6 +4,7 @@ import pygame
 import math,sys
 
 WIDTH,HEIGTH=1440,960
+RESIZE=False
 
 pygame.init()
 screen = pygame.display.set_mode((WIDTH,HEIGTH), pygame.RESIZABLE)
@@ -50,21 +51,20 @@ def draw():
 
         pygame.display.update()
 
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            sys.exit()
-        if event.type == pygame.VIDEORESIZE:
-            w,h = event.w,event.h
-            th=0
-            ph=0
-            screen.fill(pygame.Color('blue'))
-
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit()
 draw()
 while 1:
-  for event in pygame.event.get():
+    pygame.event.pump()
+    event = pygame.event.wait()
+    if RESIZE:
+        screen.fill(pygame.Color('blue'))
+        draw()
+        RESIZE=False
+
     if event.type == pygame.QUIT:
         sys.exit()
     if event.type == pygame.VIDEORESIZE:
         WIDTH,HEIGTH = event.w,event.h
-        screen.fill(pygame.Color('blue'))
-        draw()
+        RESIZE=True
