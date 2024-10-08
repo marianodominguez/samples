@@ -3,7 +3,7 @@ use rayon::prelude::*;
 
 use num_bigint::BigUint;
 use num::bigint::{ToBigUint};
-const MAX_ITER:u32=100000;
+const MAX_ITER:u32=20000;
 
 fn ispalindrome(n:&BigUint) -> bool {
     let num_as_string = n.to_string();
@@ -19,6 +19,7 @@ fn reverse_string(s: &str) -> String {
 
 fn main() {
     (100..10000).into_par_iter().for_each( |i| {
+        //println!("{i} - ");
         let mut n:BigUint = i.to_biguint().unwrap();
         let mut iter=0;
         
@@ -28,9 +29,15 @@ fn main() {
             let inv_int:BigUint=inv.parse::<BigUint>().unwrap();
             n=n+inv_int;
             iter+=1;
+            //if iter >9999 { print!("{iter}, ");}
         }
         if iter>= MAX_ITER {
-            println!("{i} possible Lychrel, {iter}")
+            println!("{i} possible Lychrel");
+        } 
+        else {
+            if iter>100 {
+                println!("{i} is palindrome, {iter}, {n}");
+            }
         }
     });
 }
