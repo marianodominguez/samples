@@ -24,7 +24,6 @@ fn draw_pixel(canvas: &mut WindowCanvas,x:u32,y:u32, k:u32 , i:u32) {
         Ok(_v) => {},
         Err(e) => println!("error drawing: {:?}", e),
     }
-    
 }
 
 fn process_input(sdl_context: &Sdl) {
@@ -45,12 +44,6 @@ fn main() {
     let ymax=1.5;
     let xmin=-2.5;
     let ymin=-1.5;
-
-    // let xmax=0.5;
-    // let ymax=-0.3;
-    // let xmin=-0.5;
-    // let ymin=-1.3;
-
     const W:u32=1440;
     const H:u32=1200;
 
@@ -90,14 +83,13 @@ fn main() {
             }
             y=y+dy;
             draw_pixel(&mut canvas,i,j,k, ITERATIONS);
+            sdl_context.event_pump().unwrap();            
         }
         x=x+dx;
         y=ymin;
+        sdl_context.event_pump().unwrap();
         canvas.present();
-        //process_input( &sdl_context);
     }
-
-// wait until user exits
 
     loop {
         process_input( &sdl_context);
