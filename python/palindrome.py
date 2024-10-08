@@ -38,11 +38,11 @@ def calculate(n):
         x = construct(x)
         iter += 1
         if iter > MAX_ITER or n==196:
-            print("iter(", n, ")= possible Lychrel")
+            print(iter,"(", n, ")= possible Lychrel")
             iter = -1
             break
     if iter >= 100:
-        print("iter(", n, ")=", iter, " x=", x)
+        print(iter,"(", n, ")=", iter, " x=", x)
 
 with ThreadPoolExecutor(max_workers=100) as executor:
     for n in range(10, 100000):
