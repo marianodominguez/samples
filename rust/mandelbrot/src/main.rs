@@ -1,5 +1,6 @@
 extern crate sdl2;
 extern crate num;
+use rayon::prelude::*;
 
 use sdl2::pixels::Color;
 use sdl2::event::Event;
@@ -70,7 +71,7 @@ fn main() {
     let mut c:Complex<f32>;
     let mut v:f32;
 
-    for i in 0..W {
+     (0..W).into_par_iter().for_each( |i| {
         for j in 0..H {
             k=0;
             z=Complex::new(0.0, 0.0);
@@ -89,7 +90,7 @@ fn main() {
         y=ymin;
         sdl_context.event_pump().unwrap();
         canvas.present();
-    }
+    });
 
     loop {
         process_input( &sdl_context);
