@@ -1,10 +1,9 @@
 #!/usr/bin/env python
 
-import date
-import time
-
-t1 = datetime.datetime()
-t1.hour
-time.strptime("17:45:52,186", "%hh:%mm:%ss")
+from datetime import datetime
+t1=datetime.now()
+print(t1)
+t1 = datetime.strptime("17:45:52,186", "%H:%M:%S,%f")
+print(t1)
 
 #datetime(year, month, day[, hour[, minute[, second[, microsecond[, tzinfo]]]]])

@@ -1,17 +1,15 @@
-from stack import Stack
-
 def inverse(s):
     word = ""
-    stack = Stack()
+    stack = []
     idx = 0
     for chr in s:
-        stack.push(chr)
+        stack.append(chr)
         if chr == " " or idx >= len(s) - 1:
-            while not stack.isEmpty():
+            while stack:
                 c = stack.pop()
                 word += c
-        print "[",word,"]"
+        print("[",word,"]")
         idx +=1
     return word
 
-print inverse("esto es una frase ")
+print(inverse("esto es una frase "))
