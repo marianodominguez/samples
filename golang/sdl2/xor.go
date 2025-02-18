@@ -6,10 +6,7 @@ import (
 	"github.com/veandco/go-sdl2/sdl"
 )
 
-const WIDTH = 1200
-const HEIGHT = 750
-
-func main() {
+func xor() {
 	if err := sdl.Init(sdl.INIT_EVERYTHING); err != nil {
 		panic(err)
 	}
@@ -35,28 +32,17 @@ func main() {
 			col = (uint8)(x ^ y)
 			colour := color.RGBA{0, col, col, 255}
 			surface.Set(x, y, colour)
-			window.UpdateSurface()
 		}
+
 		if !event() {
 			running = false
 			break
 		}
+		window.UpdateSurface()
 	}
 
 	for running {
 		running = event()
 		sdl.Delay(33)
 	}
-}
-
-func event() bool {
-	for event := sdl.PollEvent(); event != nil; event = sdl.PollEvent() {
-		switch event.(type) {
-		case *sdl.QuitEvent:
-			println("Quit")
-			return false
-			//break
-		}
-	}
-	return true
 }
