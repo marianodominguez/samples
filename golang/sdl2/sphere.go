@@ -2,6 +2,7 @@ package main
 
 import (
 	"image/color"
+	"math"
 
 	"github.com/veandco/go-sdl2/sdl"
 )
@@ -28,16 +29,17 @@ func sphere() {
 	sdl.Delay(100)
 	var col uint8
 	running := true
-	var xs, ys, scale int32
-	scale = 100
+	var xs, ys, z, scale float64
+	scale = -100.0
 
 	for running {
 		for x := 0; x < WIDTH; x++ {
 			for y := 0; y < HEIGHT; y++ {
-				xs = (int32)(x - WIDTH/2)
-				ys = (int32)(y - HEIGHT/2)
-				col = (uint8)(xs*xs/scale + ys*ys/scale)
-				colour := color.RGBA{0, col, col, 255}
+				xs = float64(x - WIDTH/2.0)
+				ys = float64(y - HEIGHT/2.0)
+				z = (xs*xs + ys*ys) / scale
+				col = (uint8)(z / math.Sqrt(255))
+				colour := color.RGBA{col, 255 - (uint8)(z), 255 - (uint8)(z), 255}
 				surface.Set(x, y, colour)
 			}
 
@@ -46,9 +48,9 @@ func sphere() {
 				break
 			}
 		}
-		scale -= 1
+		scale += 1
 		if scale == 0 {
-			scale = -1
+			scale = 1
 		}
 
 		window.UpdateSurface()
