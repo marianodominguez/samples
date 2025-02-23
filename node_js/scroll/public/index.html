@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <div id="scroll-container" 
+       style="height: 200px; overflow-y: auto; border: 1px solid #ccc;"
+       onscroll="checkScroll()">
+    <div id="content"></div>
+    <div id="loading" style="display: none;">Loading more items...</div>
+  </div>
+
+  <script>
+    let currentPage = 1;
+    let isLoading = false;
+    let hasMore = true;
+
+    async function loadMore() {
+      if (!hasMore || isLoading) return;
+      
+      isLoading = true;
+      document.getElementById('loading').style.display = 'block';
+      
+      try {
+        const response = await fetch(`/items?page=${currentPage}`);
+        const { data, page, hasMore: newHasMore } = await response.json();
+        
+        data.forEach(item => {
+          const div = document.createElement('div');
+          div.textContent = item;
+          document.getElementById('content').appendChild(div);
+        });
+
+        hasMore = newHasMore;
+        currentPage = page + 1;
+      } catch (error) {
+        console.error('Error loading data:', error);
+      }
+      
+      isLoading = false;
+      document.getElementById('loading').style.display = 'none';
+    }
+
+    function checkScroll() {
+      const container = document.getElementById('scroll-container');
+      const { scrollTop, scrollHeight, clientHeight } = container;
+      
+      // Load when 100px from bottom
+      if (scrollHeight - (scrollTop + clientHeight) < 100) {
+        loadMore();
+      }
+    }
+
+    // Initial load
+    loadMore();
+  </script>
+</body>
+</html>
