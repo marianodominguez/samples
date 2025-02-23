@@ -5,7 +5,7 @@ import (
 	"math"
 )
 
-func main() {
+func converge() {
 	x1 := 0.9
 	x2 := 0.9
 	var y1, y2 = 0.0, 0.0

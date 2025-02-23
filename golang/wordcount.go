@@ -20,6 +20,6 @@ func WordCount(s string) map[string]int {
 	return mapcount
 }
 
-func main() {
+func wordcount() {
 	wc.Test(WordCount)
 }

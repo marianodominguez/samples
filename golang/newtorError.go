@@ -28,7 +28,7 @@ func Sqrt(f float64) (float64, error) {
     return 0, error
 }
 
-func main() {
+func newton_error() {
     fmt.Println(Sqrt(2))
     fmt.Println(Sqrt(-2))
 }
