@@ -6,7 +6,7 @@ import (
 	"github.com/veandco/go-sdl2/sdl"
 )
 
-func sphere() {
+func curve() {
 	if err := sdl.Init(sdl.INIT_EVERYTHING); err != nil {
 		panic(err)
 	}
@@ -26,6 +26,7 @@ func sphere() {
 	surface.FillRect(&rect, 0)
 
 	sdl.Delay(100)
+
 	running := true
 	var xs, ys, z, scale float64
 	scale = -100.0
@@ -35,8 +36,8 @@ func sphere() {
 			for y := 0; y < HEIGHT; y++ {
 				xs = float64(x - WIDTH/2.0)
 				ys = float64(y - HEIGHT/2.0)
-				z = (xs*xs + ys*ys) / scale
-				colour := color.RGBA{0, 255 - (uint8)(z), 255 - (uint8)(z), 255}
+				z = (xs*xs - ys*ys) / scale
+				colour := color.RGBA{0, (uint8)(z), (uint8)(z), 255}
 				surface.Set(x, y, colour)
 			}
 
