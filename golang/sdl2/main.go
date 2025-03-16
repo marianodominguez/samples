@@ -6,7 +6,7 @@ const WIDTH = 1200
 const HEIGHT = 750
 
 func main() {
-	sphere()
+	mandelbrot()
 }
 
 func event() bool {
