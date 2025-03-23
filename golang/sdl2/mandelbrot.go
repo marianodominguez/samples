@@ -7,7 +7,7 @@ import (
 	"github.com/veandco/go-sdl2/sdl"
 )
 
-const MAX_ITERATIONS = 500
+const MAX_ITERATIONS = 600
 
 func orbit(x float64, y float64) float64 {
 	var d float64
@@ -47,6 +47,8 @@ func mandelbrot() {
 
 	running := true
 	var xs, ys float64
+	const zp_x = -0.99
+	const zp_y = 0.2775
 
 	xmin := -2.5
 	xmax := 1.2
@@ -67,17 +69,17 @@ func mandelbrot() {
 				running = false
 				break
 			}
-			window.UpdateSurface()
 		}
+		window.UpdateSurface()
 
 		sdl.Delay(33)
 		surface.FillRect(&rect, 0)
 
-		xmin += 0.1
-		xmax -= 0.1
+		xmax = zp_x + (xmax-zp_x)/2
+		xmin = zp_x - (zp_x-xmin)/2
 
-		ymin += 0.1
-		ymax -= 0.1
+		ymax = zp_y + (ymax-zp_y)/2
+		ymin = zp_y - (zp_y-ymin)/2
 
 		if !event() {
 			running = false
