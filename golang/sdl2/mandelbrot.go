@@ -93,17 +93,22 @@ func mandelbrot() {
 	renderMandelbrot(surface, xmin, xmax, ymin, ymax)
 	window.UpdateSurface()
 
-	for !clicked {
+	for clicked == false {
 		sdl.Delay(100)
 		_, mouseX, mouseY, clicked := mouseEvent()
 		if clicked {
 			zp_x = float64(mouseX)*(xmax-xmin)/WIDTH + xmin
 			zp_y = float64(mouseY)*(ymax-ymin)/HEIGHT + ymin
 			println("click", zp_x, zp_y)
+			break
 		}
 	}
 
+	zp_x = -0.99000003
+	zp_y = 0.277500001
+
 	for running {
+
 		running = renderMandelbrot(surface, xmin, xmax, ymin, ymax)
 
 		window.UpdateSurface()
@@ -120,7 +125,9 @@ func mandelbrot() {
 		if xmax-xmin == 0 || ymax-ymin == 0 {
 			running = false
 		}
-		print("loop")
+		if !running {
+			break
+		}
 	}
 
 }
