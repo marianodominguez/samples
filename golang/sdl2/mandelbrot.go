@@ -82,8 +82,11 @@ func mandelbrot() {
 
 	running := true
 
-	var zp_x = -0.99000003
-	var zp_y = 0.277500001
+	// var zp_x = -0.990000029
+	// var zp_y = 0.277500001
+
+	var zp_x = -0.0
+	var zp_y = 0.0
 
 	xmin := -2.5
 	xmax := 1.2
@@ -104,7 +107,8 @@ func mandelbrot() {
 		}
 	}
 
-	zp_x = -0.99000003
+	//Ignore click point for now
+	zp_x = -0.990000029
 	zp_y = 0.277500001
 
 	for running {
