@@ -33,7 +33,7 @@ func orbit(x float64, y float64) int {
 	var z = complex(0, 0)
 	var c = complex(x, y)
 	var i int
-	for i = 0; i < MAX_ITERATIONS && d <= 5.0; i++ {
+	for i = 0; i <= MAX_ITERATIONS && d <= 4.0; i++ {
 		z = z*z + c
 		d = cmplx.Abs(z)
 	}
@@ -41,7 +41,7 @@ func orbit(x float64, y float64) int {
 }
 
 func gcolor(o int) color.Color {
-	return gcolorGradient(o)
+	return gcolorSmooth(o)
 }
 
 func gcolorSmooth(o int) color.Color {
@@ -52,7 +52,7 @@ func gcolorSmooth(o int) color.Color {
 func gcolorGradient(o int) color.Color {
 	// Map the orbit value to a color gradient
 	if o < 1 {
-		return color.RGBA{R: 66, G: 30, B: 15, A: 255} // Dark brown
+		return color.RGBA{R: 0, G: 0, B: 0, A: 255} // black
 	} else if o < 2 {
 		return color.RGBA{R: 25, G: 7, B: 26, A: 255} // Purple
 	} else if o < 3 {
@@ -84,9 +84,10 @@ func renderMandelbrot(surface *sdl.Surface, xmin, xmax, ymin, ymax float64) bool
 
 			surface.Set(x, y, gcolor(o))
 		}
-
-		if !event() {
-			return false
+		if x%100 == 0 {
+			if !event() {
+				return false
+			}
 		}
 	}
 	return true
@@ -160,8 +161,8 @@ func mandelbrot() {
 	}
 
 	//Ignore click point for now
-	zp_x = -0.990000029
-	zp_y = 0.277500001
+	zp_x = -0.990000030001
+	zp_y = 0.2775000000000000001
 
 	for running {
 
