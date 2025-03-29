@@ -76,8 +76,8 @@ func gcolorGradient(o int) color.Color {
 
 func renderMandelbrot(surface *sdl.Surface, xmin, xmax, ymin, ymax float64) bool {
 	var xs, ys float64
-	for x := 0; x < WIDTH; x++ {
-		for y := 0; y < HEIGHT; y++ {
+	for x := range WIDTH {
+		for y := range HEIGHT {
 			xs = float64(x)*(xmax-xmin)/WIDTH + xmin
 			ys = float64(y)*(ymax-ymin)/HEIGHT + ymin
 			o := orbit(xs, ys)
