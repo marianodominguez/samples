@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"image/color"
+	"math"
 	"math/cmplx"
 
 	"github.com/veandco/go-sdl2/sdl"
@@ -37,15 +38,24 @@ func orbit(x float64, y float64) int {
 		z = z*z + c
 		d = cmplx.Abs(z)
 	}
-	return 10 - (i*10)/MAX_ITERATIONS
+	return i
 }
 
 func gcolor(o int) color.Color {
-	return gcolorSmooth(o)
+	return gcolorGray(o)
+}
+
+func gcolorGray(o int) color.Color {
+	if o >= MAX_ITERATIONS {
+		return color.RGBA{R: 0, G: 0, B: 0, A: 255} // black
+	}
+	c := uint8(math.Sqrt(float64(o)/MAX_ITERATIONS) * 255)
+	return color.RGBA{R: c, G: c, B: c, A: 255}
 }
 
 func gcolorSmooth(o int) color.Color {
-	c := uint8(255 * o / 10) // Scale orbit value to hue (0-255)
+	i := 10 - (o*10)/MAX_ITERATIONS
+	c := uint8(255 * i / 10) // Scale orbit value to hue (0-255)
 	return color.RGBA{R: 0, G: c, B: c, A: 255}
 }
 
