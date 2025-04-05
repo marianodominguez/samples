@@ -8,9 +8,9 @@ def build_order(dependencies):
     result=[]
     resolved={}
     i=0
-    while dep.items() and i<len(dependencies.keys()):    
+    while dep and i < len(dependencies):    
         for k,v in dep.items():
-            if v==[]:
+            if not v:
                 if k not in resolved: 
                     result.append(k)
                     resolved[k]=True
@@ -23,7 +23,7 @@ def build_order(dependencies):
             if item in dep: dep.pop(item)
         i+=1
         
-    if dep.items():
+    if dep:
         print("unable to resolve")
         return []
     

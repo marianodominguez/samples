@@ -1,4 +1,4 @@
-text = "this is an example text, for     justification. This should be nice formatted. Even long words like dexoxyribonucleic."
+text = "this is an example text, for     justification. This should be nice formatted. Even long words like deoxyribonucleic."
 
 def format(text, size):
     words = text.split()
@@ -24,7 +24,9 @@ def format(text, size):
             col+=n+1
             i+=1
             if i<len(words): n=len(words[i]) 
-        nspaces=size-col
+        if col > size:
+            col = size
+        nspaces = size - col
         
         sp=nspaces // len(row)
         frow = ""

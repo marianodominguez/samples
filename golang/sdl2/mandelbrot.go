@@ -135,7 +135,7 @@ func mandelbrot() {
 	if err != nil {
 		panic(err)
 	}
-	font, err := ttf.OpenFont("/usr/share/fonts/truetype/ubuntu/UbuntuMono-B.ttf", 50) // Replace with the path to your font file
+	font, err := ttf.OpenFont("/usr/share/fonts/truetype/ubuntu/UbuntuMono-B.ttf", 100) // Replace with the path to your font file
 
 	surface.FillRect(&rect, 0)
 
@@ -154,7 +154,7 @@ func mandelbrot() {
 	ymin := -1.5
 	ymax := 1.5
 	clicked := false
-	renderMandelbrot(surface, xmin, xmax, ymin, ymax)
+	//renderMandelbrot(surface, xmin, xmax, ymin, ymax)
 	renderText(surface, font, fmt.Sprintf("Click to begin"), 10, 10)
 
 	window.UpdateSurface()
