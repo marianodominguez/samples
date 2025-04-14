@@ -5,13 +5,13 @@ import matplotlib.pyplot as plt
 # Carga modelo y tokenizer
 model_name = "distilbert-base-uncased"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
-model = AutoModel.from_pretrained(model_name, output_attentions=True)
+model = AutoModel.from_pretrained(model_name, output_attentions=True, attn_implementation="eager")
 model.eval()
 
 # Texto a analizar
 #text = "The cat sat on the mat."
 
-text = "the cat eats the mouse"
+text = "the mouse was eaten by the cat"
 # Tokeniza
 inputs = tokenizer(text, return_tensors="pt")
 with torch.no_grad():
