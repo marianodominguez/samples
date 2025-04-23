@@ -25,7 +25,7 @@ print("Shape:", hidden_states.shape)  # Ejemplo: (1, 10, 768)
 attentions = outputs.attentions  # Esto es una tupla de (layers) con tensores
 print("Número de capas:", len(attentions))
 
-layer = 2 # Capa de atención a visualizar
+layer = 0 # Capa de atención a visualizar
 head = [1,0] # Cabeza de atención a visualizar
 
 print("Shape atención capa f{layer}:", attentions[layer].shape)  # (batch, heads, tokens, tokens)
