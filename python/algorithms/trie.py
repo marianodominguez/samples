@@ -1,8 +1,9 @@
+from collections import defaultdict
 class Node:
     def __init__(self):
-        self.value=''
         self.endWord=False
-        self.children={}
+        self.children=defaultdict(Node)
+        self.value=''
     def __str__(self):
         self.value
     def __repr__(self):
@@ -12,34 +13,39 @@ class Node:
 class Tree:
     def __init__(self):
         self.root=Node()
-        self.root.value=''
 
     def add_word(self,word):
-        r=self.root
+        n=self.root
         for ch in word:
-            if ch not in r.children:
-                n = Node()
-                n.value=ch
-                r.children[ch]=n
-                r=n
-            else:
-                r=r.children[ch]
-        r.endWord=True
+            n = n.children[ch]
+            n.value=ch
+        n.endWord=True
 
-    def printTree(self,n):
+    def print_tree(self,n):
         print(n.value, end=',')
         if n.endWord:
             print('')
         for ch in n.children:
             v=n.children[ch]
-            self.printTree(v)
+            self.print_tree(v)
 
-    def getPrefix(self,c, word, result):
+    def collect_words(self,c, word):
+        result = []
+        stack = [(c, word)]
+        while stack:
+            c, word = stack.pop()
+            if c.endWord:
+                result.append(word)
+            for a,n in c.children.items():
+                stack.append((n,word+a))
+        return result
+
+    def collect_words_rec(self,c, word, result):
         #get max prefix
         if c.endWord:
             result.append(word)
         for a,n in c.children.items():
-            self.getPrefix(n,word+a, result)
+            self.collect_words_rec(n,word+a, result)
         return result
 
     def autocomplete(self,key):
@@ -49,9 +55,7 @@ class Tree:
             if a not in c.children:
                 return []
             c = c.children[a]
-        if not c.children:
-            return []
-        self.getPrefix(c, key, result)
+        result = self.collect_words(c, key)
         return result
 
 
@@ -59,7 +63,7 @@ search_words=["Hello World", "Hello there", "some other word", "Hell yeah!", "He
 trie=Tree()
 for word in search_words:
     trie.add_word(word)
-#trie.printTree(trie.root)
+trie.print_tree(trie.root)
 print(trie.autocomplete('Hell'))
 print(trie.autocomplete('some'))
 print(trie.autocomplete('kwyjibo'))
