@@ -8,7 +8,7 @@
 
 from collections import deque
 
-def get_minimum_coins_dfs(denominations, n):
+def get_minimum_coins_bfs(denominations, n):
     result=[]
     queue=deque()
     visited=set()
@@ -19,10 +19,11 @@ def get_minimum_coins_dfs(denominations, n):
     queue.append((0,[]))
     while queue:
         current=queue.popleft()
-        current_amount+=current[0]
+        print(current)
+        current_amount=current[0]
         if current_amount==n:
             result.append(current[1])
-            return result
+            return result[0]
         for d in denominations:
             new_amount=current_amount+d
             if new_amount not in visited:
@@ -31,7 +32,7 @@ def get_minimum_coins_dfs(denominations, n):
                     new_combination=current[1].copy()
                     new_combination.append(d)
                     queue.append((new_amount,new_combination))
-    return result
+    return result[0] if len(result)>0 else []
 
 def get_minimum_coins_dp(denominations, n):
         result=[]
@@ -57,10 +58,10 @@ def get_minimum_coins_dp(denominations, n):
             for s in solution:
                 if s not in result: result.append(s)
         #print([len(x) for x in result])
-        return result[-1] if len(result)>0 else []
+        return result
 
     
-print(get_minimum_coins_dfs([1,2,3],4))
-#print(get_minimum_coins_dp([1,3,5,8],10))
-#print(get_minimum_coins_dp([2,9,7],100))
-#print(get_minimum_coins_dp([7,4,11],10))
+print(get_minimum_coins_bfs([1,2,3],4))
+print(get_minimum_coins_bfs([1,3,5,8],10))
+print(get_minimum_coins_bfs([2,9,7],17))
+print(get_minimum_coins_bfs([7,4,11],10))
