@@ -69,6 +69,7 @@ fn main() {
     let mut z:Complex<f32>;
     let mut c:Complex<f32>;
     let mut v:f32;
+    rayon::ThreadPoolBuilder::new().num_threads(8).build_global().unwrap();
 
     for i in 0..W {
         for j in 0..H {
@@ -88,8 +89,8 @@ fn main() {
         x=x+dx;
         y=ymin;
         sdl_context.event_pump().unwrap();
-        canvas.present();
     }
+    canvas.present();
 
     loop {
         process_input( &sdl_context);
