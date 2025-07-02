@@ -18,6 +18,7 @@ fn reverse_string(s: &str) -> String {
   }
 
 fn main() {
+    rayon::ThreadPoolBuilder::new().num_threads(8).build_global().unwrap();
     (100..10000).into_par_iter().for_each( |i| {
         //println!("{i} - ");
         let mut n:BigUint = i.to_biguint().unwrap();
