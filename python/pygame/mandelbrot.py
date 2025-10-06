@@ -1,51 +1,54 @@
 #!/usr/bin/env python3
-from concurrent.futures import ThreadPoolExecutor
+import numpy as np
+import pygame
+import sys
 
-import pygame,sys
-import math
-
-w,h=1440,960
+w, h = 1440, 960
 
 pygame.init()
-screen = pygame.display.set_mode((w,h))
+screen = pygame.display.set_mode((w, h))
 
-iterations = 500
+iterations = 700
 
-def orbit(x,y):
-    z=complex(0)
-    c=complex(x,y)
-    i=0
-    while i<iterations and abs(z)<4:
-        i+=1
-        z=z*z+c
-    return abs(z)
+def color_heatmap(v, max_iterations):
+    if v == max_iterations - 1:  # Point is in the set
+        return (0, 0, 0)  # Black
+    # Create a smooth color gradient for escaped points
+    t = v / max_iterations
+    r = int(9 * (1 - t) * t**3 * 255)
+    g = int(15 * (1 - t)**2 * t**2 * 255)
+    b = int(8.5 * (1 - t)**3 * t * 255)
+    return (r, g, b)
 
-def color(v):
-    return (int(255*v/50) % 255 , int(255*v/50) % 255, 255)
 
-def gradient(v):
-    return (int(255*v/100) % 255 , int(255*v/100) % 255, 170)
+def mandelbrot_vectorized(w, h, iterations=500):
+    x = np.linspace(-2.0, 1.0, w)
+    y = np.linspace(-1.3, 1.3, h)
+    X, Y = np.meshgrid(x, y)
+    C = X + 1j*Y
+    Z = np.zeros_like(C)
 
-xmin = -2.5
-xmax =  1.0
+    escape_count = np.zeros(C.shape, dtype=int)
 
-ymin = -1.5
-ymax =  1.5
+    for i in range(iterations):
+        mask = np.abs(Z) <= 4
+        Z[mask] = Z[mask]**2 + C[mask]
+        escape_count[mask] = i
 
-def loopw(xs):
-    for ys in range(h):
-        x=xs*(xmax-xmin)/w+xmin
-        y=ys*(ymax-ymin)/h+ymin
-        o=orbit(x,y)
-        if o>=4:
-            screen.set_at((xs,ys),color(o))
+    return escape_count
 
-#Parallel(n_jobs=10)(delayed(loopw)(xs) for xs in range(w))
 
-with ThreadPoolExecutor(max_workers=10) as executor:
-    for xs in range(w):
-        executor.submit(loopw, xs)
-        pygame.display.update()
+# Generate the Mandelbrot set using vectorized method
+escape_values = mandelbrot_vectorized(w, h, iterations)
+
+# Draw the Mandelbrot set
+for y in range(h):
+    for x in range(w):
+        v = escape_values[y, x]
+        screen.set_at((x, y), color_heatmap(v, iterations))
+
+pygame.display.update()
+
 while 1:
   for event in pygame.event.get():
     if event.type == pygame.QUIT:
