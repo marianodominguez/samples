@@ -14,7 +14,7 @@ sqrt_2 = math.sqrt(2)
 
 def print_msg():
     basicfont = pygame.font.SysFont(None, 48*width//1000)
-    text = basicfont.render('Press number keys 1-8', True, pygame.Color('red'), pygame.Color('black'))
+    text = basicfont.render('Press number keys 1-9', True, pygame.Color('red'), pygame.Color('black'))
     textrect = text.get_rect()
     textrect.centerx = screen.get_rect().centerx
     textrect.centery = screen.get_rect().centery
