@@ -79,8 +79,7 @@ def curve2():
         pygame.draw.aaline(screen, pygame.Color('yellow') , adjxy(x,y), adjxy(x1,y1) )
         pygame.display.update()
 
-SIEPINSKI_UPDATE_INTERVAL = 1000
-SIEPINSKI_DRAGON_UPDATE_INTERVAL = 500
+UPDATE_INTERVAL = 500
 
 def sierpinski_chaos():
     vertex = [(0, height/2), (-width/2, -height/2), (width/2, -height/2)]
@@ -90,7 +89,7 @@ def sierpinski_chaos():
         midpoint = (( randomVertex[0] + point[0] )/2, ( randomVertex[1] + point[1] )/2)
         screen.set_at(adjpt(midpoint), pygame.Color('papayawhip'))
         point = midpoint
-        if i % SIEPINSKI_UPDATE_INTERVAL == 0: pygame.display.update()
+        if i % UPDATE_INTERVAL == 0: pygame.display.update()
 
 def sierpinski_hexagon():
     vertex = [ ( 400*math.sin(math.radians(i)), 400*math.cos(math.radians(i)) )   for i in range(0,360,60)]
@@ -101,7 +100,7 @@ def sierpinski_hexagon():
                 point[1] + (randomVertex[1] - point[1]) * 2/3)
         screen.set_at(adjpt(midpoint), pygame.Color('lightgreen'))
         point = midpoint
-        if i % SIEPINSKI_DRAGON_UPDATE_INTERVAL == 0: pygame.display.update()
+        if i % UPDATE_INTERVAL == 0: pygame.display.update()
 
 def sierpinski(level,vx,vy,l):
     if level==0:
