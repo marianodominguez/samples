@@ -33,7 +33,7 @@ def cone():
 
 def triangle():
   for x in range(int(-width/2),int(width/2),5):
-    pygame.draw.aaline(screen, pygame.Color('coral'),
+    pygame.draw.aaline(screen, pygame.Color('bisque'),
                        adjxy(0,0), adjxy(x,height/2) )
   for x in range(int(-width/2),int(width/2),5):
     pygame.draw.aaline(screen, pygame.Color('bisque'),
@@ -43,19 +43,19 @@ def triangle():
     pygame.draw.aaline(screen, pygame.Color('goldenrod'),
                        adjxy(0,0), adjxy(-width/2, y) )
   for y in range(int(-height/2),int(height/2),5):
-    pygame.draw.aaline(screen, pygame.Color('gold'),
+    pygame.draw.aaline(screen, pygame.Color('goldenrod'),
                        adjxy(0,0), adjxy(width/2, y) )
     pygame.display.update()
 
 def diamond():
     r = height/2
-    for i in range(0, 360, 15):
+    for i in range(0, 360, 10):
         x=r * math.sin(math.radians(i))
         y=r * math.cos(math.radians(i))
         for j in range (0, 360, 15):
             x1=r * math.sin(math.radians(j))
             y1=r * math.cos(math.radians(j))
-            pygame.draw.aaline(screen, pygame.Color('plum') ,
+            pygame.draw.aaline(screen, pygame.Color('plum1') ,
                                adjxy(x,y), adjxy(x1,y1) )
             pygame.display.update()
 
@@ -78,8 +78,6 @@ def curve2():
         y1= (r+height/5) * math.cos(math.radians(th))
         pygame.draw.aaline(screen, pygame.Color('yellow') , adjxy(x,y), adjxy(x1,y1) )
         pygame.display.update()
-        #screen.set_at(adjxy(x,y), (0,255,255))
-        #screen.set_at(adjxy(x1,y1), (255,255,0))
 
 SIEPINSKI_UPDATE_INTERVAL = 1000
 SIEPINSKI_DRAGON_UPDATE_INTERVAL = 500
