@@ -68,6 +68,8 @@ def curve2():
         #screen.set_at(adjxy(x,y), (0,255,255))
         #screen.set_at(adjxy(x1,y1), (255,255,0))
 
+SIEPINSKI_UPDATE_INTERVAL = 1000
+SIEPINSKI_DRAGON_UPDATE_INTERVAL = 500
 
 def sierpinski_chaos():
     vertex = [(0, height/2), (-width/2, -height/2), (width/2, -height/2)]
@@ -77,7 +79,18 @@ def sierpinski_chaos():
         midpoint = (( randomVertex[0] + point[0] )/2, ( randomVertex[1] + point[1] )/2)
         screen.set_at(adjpt(midpoint), pygame.Color('papayawhip'))
         point = midpoint
-        if i % 500 == 0: pygame.display.update()
+        if i % SIEPINSKI_UPDATE_INTERVAL == 0: pygame.display.update()
+
+def sierpinski_hexagon():
+    vertex = [ ( 400*math.sin(math.radians(i)), 400*math.cos(math.radians(i)) )   for i in range(0,360,60)]
+    point = vertex[0]
+    for i in range(100000):
+        randomVertex = vertex[random.randint(0,5)]
+        midpoint = (point[0] + (randomVertex[0] - point[0]) * 2/3,
+                point[1] + (randomVertex[1] - point[1]) * 2/3)
+        screen.set_at(adjpt(midpoint), pygame.Color('lightgreen'))
+        point = midpoint
+        if i % SIEPINSKI_DRAGON_UPDATE_INTERVAL == 0: pygame.display.update()
 
 def sierpinski(level,vx,vy,l):
     if level==0:
@@ -132,35 +145,40 @@ l = 0
 ld =0
 
 while 1:
-  for event in pygame.event.get():
-    if event.type == QUIT:
-        sys.exit()
-    if event.type == VIDEORESIZE:
-        mode = width,height = event.w,event.h
-        print_msg()
-    elif event.type == KEYDOWN:
-      screen.fill(pygame.Color('black'))
-      if event.key == pygame.K_1:
-          cone()
-      if event.key == pygame.K_2:
-          triangle()
-      if event.key == pygame.K_3:
-          diamond()
-      if event.key == pygame.K_4:
-          curve()
-      if event.key == pygame.K_5:
-          sierpinski(l, width /2, 0 , width)
-          if l<9: l = l+1
-          else : l=0
-      if event.key == pygame.K_6:
-          alpha=0
-          xpos, ypos = width/3,height/4
-          dragon(ld, height/2)
-          if ld<16: ld +=1
-          else : ld=0
-      if event.key == pygame.K_7:
-          curve2()
-      if event.key == pygame.K_8:
-          sierpinski_chaos()
-  pygame.display.update()
+    for event in pygame.event.get():
+        if event.type == QUIT:
+                sys.exit()
+        if event.type == VIDEORESIZE:
+                mode = width,height = event.w,event.h
+                print_msg()
+        elif event.type == KEYDOWN:
+            # ignore non-numeric keys; only respond to keys 1-9
+            if not (pygame.K_1 <= event.key <= pygame.K_9):
+                continue
+            screen.fill(pygame.Color('black'))
+            if event.key == pygame.K_1:
+                    cone()
+            elif event.key == pygame.K_2:
+                    triangle()
+            elif event.key == pygame.K_3:
+                    diamond()
+            elif event.key == pygame.K_4:
+                    curve()
+            elif event.key == pygame.K_5:
+                    sierpinski(l, width /2, 0 , width)
+                    if l<9: l = l+1
+                    else : l=0
+            elif event.key == pygame.K_6:
+                    alpha=0
+                    xpos, ypos = width/3,height/4
+                    dragon(ld, height/2)
+                    if ld<16: ld +=1
+                    else : ld=0
+            elif event.key == pygame.K_7:
+                    curve2()
+            elif event.key == pygame.K_8:
+                    sierpinski_chaos()
+            elif event.key == pygame.K_9:
+                    sierpinski_hexagon()
+    pygame.display.update()
 
