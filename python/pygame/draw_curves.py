@@ -27,12 +27,24 @@ def cone():
   for th in range(0,360, 2):
     x1=height/3 * math.sin(math.radians(th))
     y1=height/3 * math.cos(math.radians(th))
-    pygame.draw.aaline(screen, pygame.Color('mistyrose1') , adjxy(-height/2 , height/2-10), adjxy(x1,y1) )
+    pygame.draw.aaline(screen, pygame.Color('mistyrose1') , 
+                       adjxy(-height/2 , height/2-10), adjxy(x1,y1) )
     pygame.display.update()
 
 def triangle():
   for x in range(int(-width/2),int(width/2),5):
-    pygame.draw.aaline(screen, pygame.Color('coral') , adjxy(0,0), adjxy(x,height/2) )
+    pygame.draw.aaline(screen, pygame.Color('coral'),
+                       adjxy(0,0), adjxy(x,height/2) )
+  for x in range(int(-width/2),int(width/2),5):
+    pygame.draw.aaline(screen, pygame.Color('bisque'),
+                       adjxy(0,0), adjxy(x,-height/2) )
+    pygame.display.update()
+  for y in range(int(-height/2),int(height/2),5):
+    pygame.draw.aaline(screen, pygame.Color('goldenrod'),
+                       adjxy(0,0), adjxy(-width/2, y) )
+  for y in range(int(-height/2),int(height/2),5):
+    pygame.draw.aaline(screen, pygame.Color('gold'),
+                       adjxy(0,0), adjxy(width/2, y) )
     pygame.display.update()
 
 def diamond():
@@ -43,7 +55,8 @@ def diamond():
         for j in range (0, 360, 15):
             x1=r * math.sin(math.radians(j))
             y1=r * math.cos(math.radians(j))
-            pygame.draw.aaline(screen, pygame.Color('plum') , adjxy(x,y), adjxy(x1,y1) )
+            pygame.draw.aaline(screen, pygame.Color('plum') ,
+                               adjxy(x,y), adjxy(x1,y1) )
             pygame.display.update()
 
 def curve():
@@ -74,7 +87,7 @@ SIEPINSKI_DRAGON_UPDATE_INTERVAL = 500
 def sierpinski_chaos():
     vertex = [(0, height/2), (-width/2, -height/2), (width/2, -height/2)]
     point = (0, height/2)
-    for i in range(100000):
+    for i in range(200000):
         randomVertex = vertex[random.randint(0,2)]
         midpoint = (( randomVertex[0] + point[0] )/2, ( randomVertex[1] + point[1] )/2)
         screen.set_at(adjpt(midpoint), pygame.Color('papayawhip'))
@@ -84,7 +97,7 @@ def sierpinski_chaos():
 def sierpinski_hexagon():
     vertex = [ ( 400*math.sin(math.radians(i)), 400*math.cos(math.radians(i)) )   for i in range(0,360,60)]
     point = vertex[0]
-    for i in range(100000):
+    for i in range(200000):
         randomVertex = vertex[random.randint(0,5)]
         midpoint = (point[0] + (randomVertex[0] - point[0]) * 2/3,
                 point[1] + (randomVertex[1] - point[1]) * 2/3)
