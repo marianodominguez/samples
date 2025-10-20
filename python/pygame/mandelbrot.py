@@ -2,13 +2,14 @@
 import numpy as np
 import pygame
 import sys
+from numba import jit, prange
+import math
 
 w, h = 1440, 960
+iterations = 700
 
 pygame.init()
 screen = pygame.display.set_mode((w, h))
-
-iterations = 700
 
 def color_heatmap(v, max_iterations):
     if v == max_iterations - 1:  # Point is in the set
@@ -21,25 +22,49 @@ def color_heatmap(v, max_iterations):
     return (r, g, b)
 
 
-def mandelbrot_vectorized(w, h, iterations=500):
-    x = np.linspace(-2.0, 1.0, w)
-    y = np.linspace(-1.3, 1.3, h)
-    X, Y = np.meshgrid(x, y)
-    C = X + 1j*Y
-    Z = np.zeros_like(C)
+@jit(nopython=True, parallel=True)
+def compute_mandelbrot(width, height, max_iter):
+    """Compute Mandelbrot set using CPU parallelization"""
+    output = np.zeros((height, width), dtype=np.int32)
+    
+    # Define the complex plane range
+    min_x, max_x = -2.0, 1.0
+    min_y, max_y = -1.3, 1.3
+    
+    # Compute each row in parallel
+    for y in prange(height):
+        for x in range(width):
+            # Map pixel coordinates to complex plane
+            real = min_x + (max_x - min_x) * x / width
+            imag = min_y + (max_y - min_y) * y / height
+            
+            # Initialize values for iteration
+            c_real = real
+            c_imag = imag
+            z_real = 0.0
+            z_imag = 0.0
+            
+            # Iterate until escape or max iterations
+            for i in range(max_iter):
+                # Calculate z = z^2 + c
+                new_real = z_real * z_real - z_imag * z_imag + c_real
+                new_imag = 2 * z_real * z_imag + c_imag
+                
+                z_real = new_real
+                z_imag = new_imag
+                
+                # Check if point has escaped
+                if (z_real * z_real + z_imag * z_imag) > 4.0:
+                    output[y, x] = i
+                    break
+            else:
+                output[y, x] = max_iter - 1
+                
+    return output
 
-    escape_count = np.zeros(C.shape, dtype=int)
 
-    for i in range(iterations):
-        mask = np.abs(Z) <= 4
-        Z[mask] = Z[mask]**2 + C[mask]
-        escape_count[mask] = i
-
-    return escape_count
-
-
-# Generate the Mandelbrot set using vectorized method
-escape_values = mandelbrot_vectorized(w, h, iterations)
+# Generate the Mandelbrot set using CPU parallelization
+escape_values = compute_mandelbrot(w, h, iterations)
 
 # Draw the Mandelbrot set
 for y in range(h):
