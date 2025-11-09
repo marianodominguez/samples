@@ -7,9 +7,11 @@ import math
 
 w, h = 1440, 960
 iterations = 700
+zoom_factor = 0.5  # how much to zoom in each click
 
 pygame.init()
 screen = pygame.display.set_mode((w, h))
+pygame.display.set_caption("Mandelbrot Zoom (click to zoom)")
 
 def color_heatmap(v, max_iterations):
     if v == max_iterations - 1:  # Point is in the set
@@ -23,13 +25,9 @@ def color_heatmap(v, max_iterations):
 
 
 @jit(nopython=True, parallel=True)
-def compute_mandelbrot(width, height, max_iter):
+def compute_mandelbrot(width, height, max_iter, min_x, max_x, min_y, max_y):
     """Compute Mandelbrot set using CPU parallelization"""
     output = np.zeros((height, width), dtype=np.int32)
-    
-    # Define the complex plane range
-    min_x, max_x = -2.0, 1.0
-    min_y, max_y = -1.3, 1.3
     
     # Compute each row in parallel
     for y in prange(height):
@@ -63,18 +61,50 @@ def compute_mandelbrot(width, height, max_iter):
     return output
 
 
-# Generate the Mandelbrot set using CPU parallelization
-escape_values = compute_mandelbrot(w, h, iterations)
+def draw_mandelbrot(min_x, max_x, min_y, max_y):
+    escape_values = compute_mandelbrot(w, h, iterations, min_x, max_x, min_y, max_y)
+    for y in range(h):
+        for x in range(w):
+            v = escape_values[y, x]
+            screen.set_at((x, y), color_heatmap(v, iterations))
+    pygame.display.update()
 
-# Draw the Mandelbrot set
-for y in range(h):
-    for x in range(w):
-        v = escape_values[y, x]
-        screen.set_at((x, y), color_heatmap(v, iterations))
+# initial view range
+min_x, max_x = -2.0, 1.0
+min_y, max_y = -1.3, 1.3
 
-pygame.display.update()
 
 while 1:
   for event in pygame.event.get():
     if event.type == pygame.QUIT:
         sys.exit()
+    elif event.type == pygame.MOUSEBUTTONDOWN:
+        if event.button == 1:  # Left click to zoom in
+            mouse_x, mouse_y = event.pos
+            # Map pixel to complex plane
+            click_real = min_x + (max_x - min_x) * mouse_x / w
+            click_imag = min_y + (max_y - min_y) * mouse_y / h
+
+            # Zoom around click
+            range_x = (max_x - min_x) * zoom_factor
+            range_y = (max_y - min_y) * zoom_factor
+            min_x = click_real - range_x / 2
+            max_x = click_real + range_x / 2
+            min_y = click_imag - range_y / 2
+            max_y = click_imag + range_y / 2
+
+            draw_mandelbrot(min_x, max_x, min_y, max_y)
+
+        elif event.button == 3:  # Right click to zoom out
+            mouse_x, mouse_y = event.pos
+            click_real = min_x + (max_x - min_x) * mouse_x / w
+            click_imag = min_y + (max_y - min_y) * mouse_y / h
+
+            range_x = (max_x - min_x) / zoom_factor
+            range_y = (max_y - min_y) / zoom_factor
+            min_x = click_real - range_x / 2
+            max_x = click_real + range_x / 2
+            min_y = click_imag - range_y / 2
+            max_y = click_imag + range_y / 2
+
+            draw_mandelbrot(min_x, max_x, min_y, max_y)
