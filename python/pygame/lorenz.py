@@ -39,10 +39,8 @@ for i in range(320000):
 
         if 0 <= xp < w and 0 <= yp < h:
             color = pygame.Color('white') if j == 0 else pygame.Color('red')
-            screen.set_at((xp, yp), color)
+            pygame.draw.circle(screen, color, (xp, yp), 5)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
-            # Refrescar pantalla cada cierto número de pasos
-    if i % 10 == 0:
         pygame.display.update()
