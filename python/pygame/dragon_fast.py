@@ -13,8 +13,8 @@ import sys
 SCREEN_W, SCREEN_H = 1440, 960
 
 # Dragon parameters
-ITERATIONS = 14   # number of production iterations for the L-system
-STEP = 5          # pixel step length for each "F"
+ITERATIONS = 15   # number of production iterations for the L-system
+STEP = 4          # pixel step length for each "F"
 COLOR = pygame.Color('yellow')
 
 
@@ -73,7 +73,7 @@ def main():
     # Generate the instruction string and draw
     instr = generate_dragon_lsystem(ITERATIONS)
     # interpret only F,+,- (X/Y are expansion symbols and will not be drawn)
-    draw_dragon(screen, (SCREEN_W // 2, SCREEN_H // 2), STEP, instr, COLOR)
+    draw_dragon(screen, (SCREEN_W // 2, SCREEN_H // 4), STEP, instr, COLOR)
     pygame.display.update()
 
     # Event loop
