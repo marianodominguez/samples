@@ -8,7 +8,7 @@ import math
 w,h=1440,960
 
 # Number of particles to simulate
-NUMBER_OF_PARTICLES=30000
+NUMBER_OF_PARTICLES=60000
 
 pygame.init()
 screen = pygame.display.set_mode((w,h))
@@ -19,7 +19,7 @@ screen.fill(pygame.Color('black'))
 # s (sigma): Prandtl number
 # b (beta): Geometric factor
 # d (dt): Time step
-r,s,b,d=10,28,8/3,0.005
+r,s,b,d=10,28,8/3,0.002
 
 # Initialize state as numpy arrays, add a random offset to each particle
 # We use float32 for GPU compatibility and performance
