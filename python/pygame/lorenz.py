@@ -89,7 +89,10 @@ for i in range(320000):
 
         if 0 <= xp < w and 0 <= yp < h:
             color = pygame.Color('white') if j == 0 else pygame.Color('red')
-            pygame.draw.circle(screen, color, (xp, yp), 5)
+            screen.set_at((xp, yp), color)
+            screen.set_at((xp+1, yp), color)
+            screen.set_at((xp, yp+1), color)
+            screen.set_at((xp+1, yp+1), color)
         
         # Handle quit event
         for event in pygame.event.get():
