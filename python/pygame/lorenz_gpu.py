@@ -23,9 +23,9 @@ r,s,b,d=10,28,8/3,0.002
 
 # Initialize state as numpy arrays, add a random offset to each particle
 # We use float32 for GPU compatibility and performance
-x = np.array(1.2 + np.random.random(NUMBER_OF_PARTICLES) * 1.0, dtype=np.float32)
-y = np.array(0.0 + np.random.random(NUMBER_OF_PARTICLES) * 2.0, dtype=np.float32)
-z = np.array(0.0 + np.random.random(NUMBER_OF_PARTICLES) * 1.0, dtype=np.float32)
+x = np.array(1.2 + np.random.random(NUMBER_OF_PARTICLES) * 8.0, dtype=np.float32)
+y = np.array(0.0 + np.random.random(NUMBER_OF_PARTICLES) * 8.0, dtype=np.float32)
+z = np.array(0.0 + np.random.random(NUMBER_OF_PARTICLES) * 8.0, dtype=np.float32)
 scale=5
 
 # CUDA device function to calculate Lorenz derivatives
