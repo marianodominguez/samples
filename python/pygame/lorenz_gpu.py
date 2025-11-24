@@ -3,6 +3,7 @@ from numba import cuda
 import numpy as np
 import pygame,sys
 import math
+import colorsys
 
 # Window dimensions
 w,h=1440,960
@@ -74,11 +75,12 @@ d_z = cuda.to_device(z)
 
 # Precompute colors for each particle
 # This avoids calculating colors in the render loop
-indices = np.arange(NUMBER_OF_PARTICLES)
-colors = np.zeros((NUMBER_OF_PARTICLES, 3), dtype=np.int32)
-colors[:, 0] = indices % 255
-colors[:, 1] = (indices // 5) % 255
-colors[:, 2] = (indices // 4) % 255
+colors = np.zeros((NUMBER_OF_PARTICLES, 3), dtype=np.uint8)
+tsp = np.linspace(0, 1, NUMBER_OF_PARTICLES, dtype=np.float32)
+
+for idx, hue_val in enumerate(tsp):
+    rc, gc, bc = colorsys.hsv_to_rgb(hue_val, 1.0, 1.0)
+    colors[idx] = (int(rc*255), int(gc*255), int(bc*255))
 
 for i in range(320000):
     # Launch kernel to update physics on GPU
