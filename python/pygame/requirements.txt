@@ -1,5 +1,4 @@
 
 Pygame>=2
 joblib
-numba
-colorsys
+numba-cuda[cu13]
