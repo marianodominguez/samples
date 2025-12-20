@@ -1,15 +1,25 @@
+'''
+Binary search
+
+Chop is a recursive binary search algorithm that returns the index of the element in the array if found, otherwise returns -1.
+'''
+
 def chop(elem, a):
   n=len(a)
+  # Empty array
   if n==0:
-     return -1
+    return -1
   mid=n//2
+  # Element found
   if elem==a[mid]:
-     return mid
+    return mid
+  # Element is greater than the middle element
   if elem>a[mid]:
-     return chop(elem, a[mid+1:n])
-  else:
-     return chop(elem, a[0:mid])
+    return chop(elem, a[mid+1:n])
+  # Element is less than the middle element
+  return chop(elem, a[0:mid])
 
+# Test the function
 print(chop(2,[1,2,3]))
 
 print(chop(3, []))

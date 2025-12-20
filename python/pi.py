@@ -1,3 +1,9 @@
+'''
+Calculate pi using the Leibniz formula
+
+The Leibniz formula for pi is:
+pi = 4 * (1 - 1/3 + 1/5 - 1/7 + 1/9 - ...)
+'''
 def leibniz_pi():
     """generator for digits of pi"""
     q,r,t,k,n,l = 1,0,1,1,3,3
