@@ -1,24 +1,48 @@
+'''
+Binary Tree
+
+Binary Tree is a tree data structure in which each node has at most two children, which are referred to as the left child and the right child.
+
+Inorder: Left, Root, Right
+Preorder: Root, Left, Right
+Postorder: Left, Right, Root
+BFS: Level Order
+DFS: Preorder, Inorder, Postorder
+Binary Search: Root, Left, Right
+Height: Number of edges on the longest path from the root to a leaf
+
+'''
+
 from collections import deque
 
+# Make a node safely for null values
 def makeSafe(node):
     if node == None:
         return ""
     else:
         return node.content
 
+# Node class
 class Node:
+    # Node constructor
     def __init__(self, x):
         self.content = x
+        # Node left child
         self.left = None
+        # Node right child
         self.right = None
 
+    # Node string representation
     def __str__(self):
         return "/" + self.content + "/"
 
 class Tree:
+    # Tree constructor
     def __init__(self):
+        # Tree root
         self.root = None
 
+    # Add a node to the tree
     def add(self, node, pivot):
         if pivot == None:
             self.root = node
@@ -34,10 +58,12 @@ class Tree:
                 else:
                     self.add(node, pivot.left)
 
+    # put a node in the tree
     def put(self, x):
         n = Node(x)
         self.add(n, self.root)
 
+    # Inorder traversal
     def inorder(self, node):
         if node == None:
             return []
@@ -50,6 +76,7 @@ class Tree:
             result.extend(self.inorder(node.right))
             return result
 
+    # Postorder traversal
     def postorder(self, node):
         if node == None:
             return []
@@ -62,6 +89,7 @@ class Tree:
             result.extend([node.content])
             return result
 
+    # Preorder traversal
     def preorder(self, node):
         if node == None:
             return []
@@ -74,6 +102,7 @@ class Tree:
             result.extend(self.preorder(node.right))
             return result
 
+    # Breadth First Search
     def bfs(self, nodeToSearch):
         visited = []
         queue = deque([self.root])
@@ -94,6 +123,7 @@ class Tree:
             current = queue.popleft()
             path.append(current)
 
+    # Depth First Search
     def dfs(self, nodeToSearch):
         visited = []
         stack = [self.root]
@@ -113,6 +143,7 @@ class Tree:
             current = stack.pop()
             path.append(current)
 
+    # Binary Search
     def binarySearch(self, nodeToSearch):
         current = self.root
         path = [self.root]
@@ -131,6 +162,7 @@ class Tree:
             path.append(next)
             current = next
     
+    # Height of the tree
     def height(self, root):
         stack=[[root]]
         path=[]
@@ -138,7 +170,6 @@ class Tree:
         maxlen=1
         while stack:
             path=stack.pop()
-            #print([n.data for n in path])
             current=path[-1]
             visited.append(current)
             if current.right and current.right not in visited:

@@ -1,3 +1,14 @@
+'''
+Arrays algorithms
+
+Find the 3rd biggest element in an array
+Find the 2nd smallest element in an array
+Find the 4th smallest element in an array
+Invert a string
+Invert a string without using a list
+'''
+
+# Find the 3rd biggest element in an array
 from heapq import heappop,heappush
 
 a = [-1,0,5,67,23,2,3,4,5,6]
@@ -28,7 +39,8 @@ n=len(a)
 al=[a[-i-1] for i in range(n)]
 print("".join(al))
 
-# 
+#invert string no list
+
 a="inverting a string no list"
 r=""
 for c in a:
