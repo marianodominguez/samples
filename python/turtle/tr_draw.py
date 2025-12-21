@@ -1,7 +1,10 @@
-#!/usr/bin/env python
+'''
+Display stars using turtle.
+'''
 
 import turtle
 
+# background color
 backgroundcolor = "#18546A"
 
 window = turtle.Screen()

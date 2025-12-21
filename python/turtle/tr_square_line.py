@@ -1,4 +1,7 @@
-#!/usr/bin/env python
+'''
+Display square made of lines using turtle.
+'''
+
 import turtle
 
 backgroundcolor = "#18546A"
@@ -10,6 +13,7 @@ t.pensize(2)
 
 t.right(90)
 
+# squares
 for i in range(10):
 	t.forward(100)
 	t.right(90)

@@ -1,4 +1,6 @@
-#!/usr/bin/env python
+'''
+Display stars with different number of points using turtle.
+'''
 
 import turtle
 
@@ -9,6 +11,7 @@ window.bgcolor(backgroundcolor)
 window.delay(2)
 
 t = turtle.Turtle()
+t.speed(0)
 
 def star(n):
   angle=180-360/n
@@ -24,6 +27,7 @@ t.fd(100)
 t.lt(45)
 t.pd()
 
+# stars
 for i in range(15):
   star(i+5)
   t.pu()

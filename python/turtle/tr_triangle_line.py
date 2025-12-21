@@ -1,10 +1,13 @@
-#!/usr/bin/env python
+'''
+Display triangle made of lines using turtle.
+'''
 import turtle
 
 backgroundcolor = "#18546A"
 
 window = turtle.Screen()
 t = turtle.Turtle()
+t.speed(2)
 window.bgcolor(backgroundcolor)
 t.pensize(2)
 
@@ -24,4 +27,5 @@ for i in range(10):
 
 t.pu()
 t.home()
+# wait for click to exit
 window.exitonclick()

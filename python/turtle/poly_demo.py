@@ -1,15 +1,19 @@
-#!/usr/bin/env python
+'''
+Display polygons using turtle.
+'''
 
 import turtle
-import tkinter
 
+# background color
 backgroundcolor = "#18546A"
 
 window = turtle.Screen()
 window.bgcolor(backgroundcolor)
 
+# turtle
 t = turtle.Turtle()
 t.pensize(2)
+
 
 def poly(n,size):
   angle=360/n
@@ -24,7 +28,8 @@ t.rt(90)
 t.fd(120)
 t.lt(90)
 t.pd()
-
+# Draw the polygons
+cd = 0
 for i in range(10):
   t.pencolor(colors[i % len(colors)])
   poly(i+3, 70-5*i)

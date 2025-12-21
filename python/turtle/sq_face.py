@@ -1,6 +1,10 @@
-#!/usr/bin/env python
+'''
+Display a square face using turtle.
+'''
+
 import turtle
 
+# background color
 backgroundcolor = "#18546A"
 
 def square(size):
@@ -79,6 +83,7 @@ t.rt(90)
 t.fd(100)
 t.lt(100)
 t.pd()
+# body circle
 t.circle(120)
 
 window.exitonclick()

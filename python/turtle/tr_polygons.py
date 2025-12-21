@@ -1,4 +1,7 @@
-#!/usr/bin/env python
+'''
+Display polygons using turtle.
+'''
+
 import turtle
 
 backgroundcolor = "#18546A"
@@ -13,12 +16,13 @@ def poly(size, sides):
 def draw():
 	global sides
 	t.clear()
+	t.speed(0)
 	for i in range(10):
 		poly(60,sides)
 		t.rt(36)
 		t.fd(100)
 	sides+=1
-	if sizes>10: t.bye()
+	if sides>10: t.bye()
 
 window = turtle.Screen()
 t = turtle.Turtle()
@@ -27,4 +31,4 @@ t.pensize(2)
 draw()
 window.onclick(draw)
 window.listen()
-#window.exitonclick()
+window.exitonclick()
