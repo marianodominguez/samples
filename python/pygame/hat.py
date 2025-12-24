@@ -1,4 +1,9 @@
-#!/usr/bin/env python3
+'''Hat Function Curve
+
+see https://en.wikipedia.org/wiki/Hat_function
+
+Press ESC to quit
+'''
 
 import pygame,sys
 import math

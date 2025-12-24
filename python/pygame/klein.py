@@ -1,4 +1,9 @@
-#!/usr/bin/env python3
+'''Klein bottle
+
+see https://en.wikipedia.org/wiki/Klein_bottle
+
+Press ESC to quit
+'''
 
 import pygame,sys
 import math
@@ -11,13 +16,16 @@ pygame.init()
 screen = pygame.display.set_mode((w,h), pygame.RESIZABLE)
 screen.fill(pygame.Color('black'))
 
+# Lookup tables
 LUT_SIZE=70
 buf=[-99]*(LUT_SIZE+1)
 sbuf=[-99]*(LUT_SIZE+1)
 
+# Projection parameters
 p1=math.cos(math.pi/6)
 p2=math.cos(math.pi/2-p1)
 
+# Draw Klein bottle
 def draw_klein():
     v=0
     u=0
@@ -38,6 +46,7 @@ def draw_klein():
             else:
                 sinu=sbuf[idx]
 
+            # Compute coordinates
             c7u=cosu**7
             c6u=cosu**6
             c5u=cosu**5
@@ -53,6 +62,7 @@ def draw_klein():
             z=150*z+500
             xp=int(-p1*x+p1*y)
             yp=int(-p2*x-p2*y+z)
+            # Draw line
             if u==0:
                 screen.set_at(adjxy(xp,yp),pygame.Color('plum'))
                 x1=xp

@@ -1,17 +1,24 @@
-#!/usr/bin/env python3
+'''
+Draw curves
 
-from email.quoprimime import header_check
+Press number keys 1-9 to draw different parametric curves
+'''
+
 import os, sys
 import pygame
 import math
 import random
 from pygame.locals import *
 
-if not pygame.font: print('Warning, fonts disabled')
-if not pygame.mixer: print('Warning, sound disabled')
+# Initialize Pygame
+pygame.init()
+
+# Screen size
+width,height = 1440,960
 
 sqrt_2 = math.sqrt(2)
 
+# Initialize screen
 def print_msg():
     basicfont = pygame.font.SysFont(None, 48*width//1000)
     text = basicfont.render('Press number keys 1-9', True, pygame.Color('red'), pygame.Color('black'))
@@ -22,7 +29,7 @@ def print_msg():
     screen.blit(text, textrect)
     pygame.display.update()
 
-
+# Draw cone
 def cone():
   for th in range(0,360, 2):
     x1=height/3 * math.sin(math.radians(th))
@@ -31,6 +38,7 @@ def cone():
                        adjxy(-height/2 , height/2-10), adjxy(x1,y1) )
     pygame.display.update()
 
+# Draw triangle
 def triangle():
   for x in range(int(-width/2),int(width/2),5):
     pygame.draw.aaline(screen, pygame.Color('bisque'),
@@ -47,6 +55,7 @@ def triangle():
                        adjxy(0,0), adjxy(width/2, y) )
     pygame.display.update()
 
+# Draw diamond
 def diamond():
     r = height/2
     for i in range(0, 360, 10):
@@ -59,6 +68,7 @@ def diamond():
                                adjxy(x,y), adjxy(x1,y1) )
             pygame.display.update()
 
+# Draw curve
 def curve():
     r = 4/10*height
     for th in range(0,360):
@@ -69,6 +79,7 @@ def curve():
         pygame.draw.aaline(screen, pygame.Color('yellow2') , adjxy(x ,y), adjxy(x1,y1) )
         pygame.display.update()
 
+# Draw curve 2
 def curve2():
     r = height/4
     for th in range(0,360):
@@ -79,8 +90,7 @@ def curve2():
         pygame.draw.aaline(screen, pygame.Color('yellow') , adjxy(x,y), adjxy(x1,y1) )
         pygame.display.update()
 
-UPDATE_INTERVAL = 500
-
+# Sierpinski chaos
 def sierpinski_chaos():
     vertex = [(0, height/2), (-width/2, -height/2), (width/2, -height/2)]
     point = (0, height/2)
@@ -91,6 +101,7 @@ def sierpinski_chaos():
         point = midpoint
         if i % UPDATE_INTERVAL == 0: pygame.display.update()
 
+# Sierpinski hexagon
 def sierpinski_hexagon():
     vertex = [ ( 400*math.sin(math.radians(i)), 400*math.cos(math.radians(i)) )   for i in range(0,360,60)]
     point = vertex[0]
@@ -102,6 +113,7 @@ def sierpinski_hexagon():
         point = midpoint
         if i % UPDATE_INTERVAL == 0: pygame.display.update()
 
+# Sierpinski triangle
 def sierpinski(level,vx,vy,l):
     if level==0:
         if (l<=1):
@@ -115,12 +127,14 @@ def sierpinski(level,vx,vy,l):
         sierpinski(level-1 , vx - l/4 ,vy + l/4 , l/2)
         sierpinski(level-1 , vx + l/4 ,vy + l/4 , l/2)
 
+# Draw dragon
 def FD(l):
     global xpos,ypos,alpha
     newx, newy = xpos + l*math.sin(alpha), ypos + l*math.cos(alpha)
     pygame.draw.aaline(screen, pygame.Color('palegreen'), (xpos , ypos),(newx, newy))
     xpos,ypos = newx,newy
 
+# Draw dragon
 def dragon(level, l, i=1):
     global alpha
     if level==0:
@@ -154,6 +168,7 @@ print_msg()
 l = 0
 ld =0
 
+# Main loop
 while 1:
     for event in pygame.event.get():
         if event.type == QUIT:

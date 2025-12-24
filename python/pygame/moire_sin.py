@@ -1,10 +1,20 @@
-#!/usr/bin/env python3
+'''Moire pattern with s sine function
+
+see https://en.wikipedia.org/wiki/Moire_pattern
+
+Press ESC to quit
+'''
 
 import pygame,sys
 import math
 
 w,h=1440,960
 
+# Colors
+black = pygame.Color('black')
+white = pygame.Color('white')
+
+# Draw Moire pattern
 def draw():
   y=0
   x=0

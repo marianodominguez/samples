@@ -1,15 +1,19 @@
-#!/usr/bin/env python3
+'''
+Draw a bird using parametric equations
+'''
+
 import pygame,sys
 import math
 
 w,h=1440,960
 scale=5
 
+# Initialize Pygame
 pygame.init()
 screen = pygame.display.set_mode((w,h))
 screen.fill(pygame.Color('white'))
 
-
+# Draw the bird
 for k in range(-20000, 20000,3):
     a=3*k/45000 + math.sin(17*math.pi/20*math.pow(k/20000,5)) * math.pow(math.cos(41*math.pi*k/20000),6) + (1/3*math.pow(math.cos(41*math.pi*k/20000) ,16) + 1/3*math.pow(math.cos(41*math.pi*k/20000),80) )*math.pow(math.cos(math.pi*k/40000),12)*math.sin(6*math.pi*k/20000)
 
@@ -21,14 +25,11 @@ for k in range(-20000, 20000,3):
     yp=int(h/2-180*b-100)
 
     if xp>0 and xp<w and yp>0 and yp<h:
-        #screen.set_at((xp,yp),pygame.Color('black'))
         pygame.draw.circle(screen,pygame.Color('black'),(xp,yp),int(abs(r*300)), width=1)
         pygame.display.update()
+
+# Main loop
+while 1:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit()
-
-while 1:
-  for event in pygame.event.get():
-    if event.type == pygame.QUIT:
-        sys.exit()

@@ -1,12 +1,19 @@
-#!/usr/bin/env python3
+'''Moire pattern with antialiasing
+
+see https://en.wikipedia.org/wiki/Moire_pattern
+
+Press ESC to quit
+'''
 
 import pygame,sys
 
 w,h=1440,960
 
+# Colors
 black = pygame.Color('black')
 white = pygame.Color('white')
 
+# Draw Moire pattern
 def draw_moire():
   y=0
   for x in range(0,w,2):

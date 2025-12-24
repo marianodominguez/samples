@@ -1,16 +1,20 @@
-#!/usr/bin/env python3
+''' Nebula simulation
+
+Press ESC to quit
+'''
 from numba import cuda
 import numpy as np
 import pygame,sys
 import math
 import colorsys
+import random
 
 # Window dimensions
 w,h=1440,960
 r=1
 
 # Number of particles to simulate
-NUMBER_OF_ANGLES = 360
+NUMBER_OF_ANGLES = 720
 PARTICLES_PER_ANGLE = 28  # ~10,000 total particles
 NUMBER_OF_PARTICLES = NUMBER_OF_ANGLES * PARTICLES_PER_ANGLE
 
@@ -27,12 +31,12 @@ radii = np.zeros(NUMBER_OF_PARTICLES, dtype=np.float32)
 
 # Distribute particles: each angle gets multiple particles with different radii
 for i in range(NUMBER_OF_ANGLES):
-    angle = (i / NUMBER_OF_ANGLES) * 2 * np.pi
+    angle = (i / NUMBER_OF_ANGLES) * 2 * np.pi 
     for j in range(PARTICLES_PER_ANGLE):
         idx = i * PARTICLES_PER_ANGLE + j
         angles[idx] = angle
         # Stagger the radii so particles are spread out along each ray
-        radii[idx] = (j+20) * (h // 2) / PARTICLES_PER_ANGLE
+        radii[idx] = (j + random.randint(-10, 10)) * (h // 2) / PARTICLES_PER_ANGLE
 
 d_x = cuda.to_device(x)
 d_y = cuda.to_device(y)
@@ -41,20 +45,15 @@ d_radii = cuda.to_device(radii)
 
 threadsperblock = 256
 blockspergrid = (NUMBER_OF_PARTICLES + (threadsperblock - 1)) // threadsperblock
-
-@cuda.jit(device=True)
-def update_particle(angle, radius, time, r, w, h):
-    r = radius + time
-    xc = int(r * math.cos(angle)) + w // 2
-    yc = int(r * math.sin(angle)) + h // 2
-    return xc, yc
     
 @cuda.jit
 def step_kernel(x, y, angles, radii, time, w, h, max_radius):
     i = cuda.grid(1)
     if i < x.size:
         # Wrap radius when it exceeds max_radius
-        effective_radius = (radii[i] + time) % max_radius
+        effective_radius = (radii[i] + time ) % max_radius
+        effective_radius = max(effective_radius, 100)
+
         r = effective_radius
         x[i] = int(r * math.cos(angles[i])) + w // 2
         y[i] = int(r * math.sin(angles[i])) + h // 2

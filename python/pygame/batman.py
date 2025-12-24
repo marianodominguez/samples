@@ -1,35 +1,48 @@
-#!/usr/bin/env python3
+'''
+Draw Batman logo
+
+batman function from https://www.desmos.com/calculator/6qjyqjyqjy
+
+'''
 
 import pygame
 import math,sys
 
 WIDTH,HEIGTH=1440,960
+# flag to resize the window
 RESIZE=False
 
+# Initialize Pygame
 pygame.init()
 screen = pygame.display.set_mode((WIDTH,HEIGTH), pygame.RESIZABLE)
 screen.fill(pygame.Color('blue'))
 
 def Hs(a):
+    """Heaviside function"""
     if a<0:  return 0
     if a==0: return 1/2
     return 1
 
 def pow2(x):
+    """Square function"""
     return x*x
 
 def sgn(x):
+    """Sign function"""
     if x<0: return -1
     return 1
 
 def sqrt(x):
+    """Square root function"""
     if x>0: return math.sqrt(x)
     return 0
 
 def abs(x):
+    """Absolute value function"""
     return math.fabs(x)
 
 def draw():
+    """Draw Batman logo"""
     global WIDTH,HEIGTH
     x1,y1=-1,-1
     th=0
@@ -51,20 +64,22 @@ def draw():
 
         pygame.display.update()
 
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                sys.exit()
-draw()
-while 1:
-    pygame.event.pump()
-    event = pygame.event.wait()
-    if RESIZE:
-        screen.fill(pygame.Color('blue'))
-        draw()
-        RESIZE=False
+def main():
+    """Main function"""
+    global RESIZE
+    draw()
+    while 1:
+        pygame.event.pump()
+        event = pygame.event.wait()
+        if event.type == pygame.QUIT:
+            sys.exit()
+        if event.type == pygame.VIDEORESIZE:
+            WIDTH,HEIGTH = event.w,event.h
+            RESIZE=True
+        if RESIZE:
+            screen.fill(pygame.Color('blue'))
+            draw()
+            RESIZE=False
 
-    if event.type == pygame.QUIT:
-        sys.exit()
-    if event.type == pygame.VIDEORESIZE:
-        WIDTH,HEIGTH = event.w,event.h
-        RESIZE=True
+if __name__ == '__main__':
+    main()
