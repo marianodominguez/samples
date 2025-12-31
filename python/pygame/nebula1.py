@@ -14,7 +14,7 @@ w,h=1440,960
 r=1
 
 # Number of particles to simulate
-NUMBER_OF_ANGLES = 720
+NUMBER_OF_ANGLES = 360
 PARTICLES_PER_ANGLE = 28  # ~10,000 total particles
 NUMBER_OF_PARTICLES = NUMBER_OF_ANGLES * PARTICLES_PER_ANGLE
 
@@ -55,8 +55,8 @@ def step_kernel(x, y, angles, radii, time, w, h, max_radius):
         effective_radius = max(effective_radius, 100)
 
         r = effective_radius
-        x[i] = int(r * math.cos(angles[i])) + w // 2
-        y[i] = int(r * math.sin(angles[i])) + h // 2
+        x[i] = int(r * math.cos(angles[i]+time)) + w // 2
+        y[i] = int(r * math.sin(angles[i]+time)) + h // 2
 
 
 max_radius = h // 2
@@ -70,7 +70,7 @@ while running:
     
     # Update time
     time += 1
-    
+    screen.fill(pygame.Color('black'))
     # Update particles
     # Run GPU kernel
     step_kernel[blockspergrid, threadsperblock](
@@ -90,8 +90,8 @@ while running:
     
     # Create color gradient from center to edge
     normalized_dist = np.clip(distances / max_radius, 0, 1)
-    colors[:, 0] = (np.sin(normalized_dist * np.pi + time * 0.01) * 127 + 128).astype(np.uint8)  # Red
-    colors[:, 1] = (np.cos(normalized_dist * np.pi + time * 0.01) * 127 + 128).astype(np.uint8)  # Green
+    colors[:, 0] = (np.sin(normalized_dist * np.pi  * 0.01) * 127 + 128).astype(np.uint8)  # Red
+    colors[:, 1] = (np.cos(normalized_dist * np.pi * 0.01) * 127 + 128).astype(np.uint8)  # Green
     colors[:, 2] = 255 - (normalized_dist * 255).astype(np.uint8)  # Blue
     
     # Apply colors to pixels

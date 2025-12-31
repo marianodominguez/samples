@@ -15,7 +15,7 @@ pygame.init()
 
 # Screen size
 width,height = 1440,960
-
+UPDATE_INTERVAL = 100
 sqrt_2 = math.sqrt(2)
 
 # Initialize screen
