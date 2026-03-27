@@ -62,9 +62,11 @@ def compute_mandelbrot(width, height, max_iter, min_x, max_x, min_y, max_y):
 
 
 def draw_mandelbrot(min_x, max_x, min_y, max_y):
-    escape_values = compute_mandelbrot(w, h, iterations, min_x, max_x, min_y, max_y)
-    for y in range(h):
-        for x in range(w):
+    # Get current screen dimensions
+    current_w, current_h = screen.get_size()
+    escape_values = compute_mandelbrot(current_w, current_h, iterations, min_x, max_x, min_y, max_y)
+    for y in range(current_h):
+        for x in range(current_w):
             v = escape_values[y, x]
             screen.set_at((x, y), color_heatmap(v, iterations))
     pygame.display.update()
@@ -81,9 +83,10 @@ while 1:
     elif event.type == pygame.MOUSEBUTTONDOWN:
         if event.button == 1:  # Left click to zoom in
             mouse_x, mouse_y = event.pos
+            current_w, current_h = screen.get_size()
             # Map pixel to complex plane
-            click_real = min_x + (max_x - min_x) * mouse_x / w
-            click_imag = min_y + (max_y - min_y) * mouse_y / h
+            click_real = min_x + (max_x - min_x) * mouse_x / current_w
+            click_imag = min_y + (max_y - min_y) * mouse_y / current_h
 
             # Zoom around click
             range_x = (max_x - min_x) * zoom_factor
@@ -97,8 +100,9 @@ while 1:
 
         elif event.button == 3:  # Right click to zoom out
             mouse_x, mouse_y = event.pos
-            click_real = min_x + (max_x - min_x) * mouse_x / w
-            click_imag = min_y + (max_y - min_y) * mouse_y / h
+            current_w, current_h = screen.get_size()
+            click_real = min_x + (max_x - min_x) * mouse_x / current_w
+            click_imag = min_y + (max_y - min_y) * mouse_y / current_h
 
             range_x = (max_x - min_x) / zoom_factor
             range_y = (max_y - min_y) / zoom_factor
