@@ -1,4 +1,4 @@
 
-Pygame>=2
+pygame-ce>=2.5
 joblib
 numba-cuda[cu13]
